@@ -1,9 +1,30 @@
 package app.controller;
 
+
+import app.controller.validator.UserValidator;
+import app.dto.UserDto;
+import app.service.Service;
+import app.service.interfaces.LoginService;
+
+import javax.swing.*;
+import java.util.HashMap;
+import java.util.Map;
+
 public class LoginController implements ControllerInterface{
-
-    private static final String MENU= "ingrese la opcion que desea: \n 1. para iniciar sesion. \n 2. para detener la ejecucion.";
-
+    private UserValidator userValidator;
+    private LoginService service;
+    private Map<String,ControllerInterface> roles;
+    public LoginController() {
+        this.userValidator= new UserValidator();
+        this.service=new Service();
+        //ControllerInterface adminController = new AdminController();
+        //ControllerInterface sellerController = new SellerController();
+        //ControllerInterface veterinarianController = new VeterinarianController();
+        this.roles= new HashMap<String,ControllerInterface>();
+        //roles.put("admin", adminController);
+//        roles.put("veterinarian", veterinarianController);
+//        roles.put("seller", sellerController);
+    }
 
     @Override
     public void session() throws Exception {
@@ -15,32 +36,38 @@ public class LoginController implements ControllerInterface{
 
     private boolean menu() {
         try {
-            System.out.println(MENU);
-            String option = Utils.getReader().nextLine();
-            return options(option);
+            return login();
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            Utils.showError(e.getMessage());
             return true;
         }
     }
-    private boolean options(String option) throws Exception {
-        switch (option) {
-            case "1": {
-                this.login();
-                return true;
-            }
-            case "2": {
-                System.out.println("se detiene el programa");;
-                return false;
-            }
-            default: {
-                System.out.println("ingrese una opcion valida");
-                return true;
-            }
-        }
-    }
 
-    private void login()throws Exception {
+    private boolean login() throws Exception {
+        // Crear los campos de texto para usuario y contraseña
+        JTextField usernameField = new JTextField(30);
+        JPasswordField passwordField = new JPasswordField(30);
+
+        // Crear el panel para contener los campos
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.add(new JLabel("Usuario:"));
+        panel.add(usernameField);
+        panel.add(Box.createVerticalStrut(15)); // Espacio entre los campos
+        panel.add(new JLabel("Contraseña:"));
+        panel.add(passwordField);
+
+        if (Utils.showConfirmDialog(panel, "Inicio Sesión")){
+            userValidator.validUserName(usernameField.getText());
+            userValidator.validPassword(new String(passwordField.getPassword()));
+            UserDto userDto = new UserDto();
+            userDto.setPasswordUser(new String(passwordField.getPassword()));
+            userDto.setNameUser(usernameField.getText());
+            this.service.login(userDto);
+            return true;
+        } else {
+            return false;
+        }
 
     }
 

@@ -21,7 +21,7 @@ public class UserDaoImplementation  implements UserDao {
         if (resulSet.next()) {
             User user = new User();
             user.setIdUser(resulSet.getLong("ID"));
-            user.setNameUser(resulSet.getString("USERNAME"));
+            user.setUserName(resulSet.getString("USERNAME"));
             user.setPasswordUser(resulSet.getString("PASSWORD"));
             user.setRoleUser(resulSet.getString("ROLE"));
             Person person = new Person();
@@ -54,7 +54,7 @@ public class UserDaoImplementation  implements UserDao {
         User user = Helper.parse(userDto);
         String query = "INSERT INTO USER(USERNAME,PASSWORD,PERSONID,ROLE) VALUES (?,?,?,?) ";
         PreparedStatement preparedStatement = MYSQLConnection.getConnection().prepareStatement(query);
-        preparedStatement.setString(1, user.getNameUser());
+        preparedStatement.setString(1, user.getUserName());
         preparedStatement.setString(2, user.getPasswordUser());
         preparedStatement.setLong(3,user.getIdPerson().getIdPerson());
         preparedStatement.setString(4, user.getRoleUser());

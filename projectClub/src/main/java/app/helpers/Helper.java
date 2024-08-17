@@ -31,7 +31,7 @@ public class Helper {
         userDto.setPasswordUser(user.getPasswordUser());
         userDto.setIdPerson(parse(user.getIdPerson()));
         userDto.setRoleUser(user.getRoleUser());
-        userDto.setNameUser(user.getNameUser());
+        userDto.setNameUser(user.getUserName());
         return userDto;
     }
 
@@ -41,7 +41,7 @@ public class Helper {
         user.setPasswordUser(userDto.getPasswordUser());
         user.setIdPerson(parse(userDto.getIdPerson()));
         user.setRoleUser(userDto.getRoleUser());
-        user.setNameUser(userDto.getNameUser());
+        user.setUserName(userDto.getNameUser());
         return user;
     }
     

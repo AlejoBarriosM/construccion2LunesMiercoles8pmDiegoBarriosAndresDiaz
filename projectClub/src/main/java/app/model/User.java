@@ -4,7 +4,7 @@ public class User {
 
     private long idUser;
     private Person idPerson;
-    private String nameUser;
+    private String userName;
     private String passwordUser;
     private String roleUser;
 
@@ -28,12 +28,12 @@ public class User {
         this.idPerson = idPerson;
     }
 
-    public String getNameUser() {
-        return nameUser;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setNameUser(String nameUser) {
-        this.nameUser = nameUser;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getPasswordUser() {

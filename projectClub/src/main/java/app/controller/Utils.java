@@ -54,7 +54,6 @@ public abstract class Utils {
 		);
 	}
 
-
 	public static Map<String, Object> addFieldsToPanel(String[] labels){
 		Map<String, JTextField> fieldsMap = new HashMap<>();
 

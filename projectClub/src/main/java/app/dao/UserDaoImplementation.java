@@ -17,21 +17,21 @@ public class UserDaoImplementation  implements UserDao {
         String query = "SELECT ID,USERNAME,PASSWORD,ROLE,PERSONID FROM USER WHERE USERNAME = ?";
         PreparedStatement preparedStatement = MYSQLConnection.getConnection().prepareStatement(query);
         preparedStatement.setString(1, userDto.getNameUser());
-        ResultSet resulSet = preparedStatement.executeQuery();
-        if (resulSet.next()) {
+        ResultSet resultSet = preparedStatement.executeQuery();
+        if (resultSet.next()) {
             User user = new User();
-            user.setIdUser(resulSet.getLong("ID"));
-            user.setUserName(resulSet.getString("USERNAME"));
-            user.setPasswordUser(resulSet.getString("PASSWORD"));
-            user.setRoleUser(resulSet.getString("ROLE"));
+            user.setIdUser(resultSet.getLong("ID"));
+            user.setUserName(resultSet.getString("USERNAME"));
+            user.setPasswordUser(resultSet.getString("PASSWORD"));
+            user.setRoleUser(resultSet.getString("ROLE"));
             Person person = new Person();
-            person.setIdPerson(resulSet.getLong("PERSONID"));
+            person.setIdPerson(resultSet.getLong("PERSONID"));
             user.setIdPerson(person);
-            resulSet.close();
+            resultSet.close();
             preparedStatement.close();
             return Helper.parse(user);
         }
-        resulSet.close();
+        resultSet.close();
         preparedStatement.close();
         return null;
 
@@ -42,9 +42,9 @@ public class UserDaoImplementation  implements UserDao {
         String query = "SELECT 1 FROM USER WHERE USERNAME = ?";
         PreparedStatement preparedStatement = MYSQLConnection.getConnection().prepareStatement(query);
         preparedStatement.setString(1, userDto.getNameUser());
-        ResultSet resulSet = preparedStatement.executeQuery();
-        boolean exists = resulSet.next();
-        resulSet.close();
+        ResultSet resultSet = preparedStatement.executeQuery();
+        boolean exists = resultSet.next();
+        resultSet.close();
         preparedStatement.close();
         return exists;
     }

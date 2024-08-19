@@ -11,13 +11,26 @@ import javax.swing.*;
 import java.util.HashMap;
 import java.util.Map;
 
-public class UserController {
+public class UserController implements ControllerInterface {
 
     private UserValidator userValidator;
     private PersonValidator personValidator;
     private UserService service;
 
     private final String[] OPTIONS = {"Crear", "Modificar", "Eliminar", "Salir"};
+    private String role;
+
+    @Override
+    public void session() throws Exception {
+        boolean session = true;
+        while (session) {
+            session = menuUser();
+        }
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
 
     public UserController() {
         this.userValidator = new UserValidator();
@@ -25,31 +38,38 @@ public class UserController {
         this.service = new Service();
     }
 
-    public void menu() {
+    protected boolean menuUser() {
+
         try {
-            int option = Utils.showMenu("Menú Usuarios", "\nSelecciona una opción:\n", OPTIONS);
-            this.options(option);
+            int option = Utils.showMenu("Menú " + this.role, "\nSelecciona una opción:\n", OPTIONS);
+            return options(option);
         } catch (Exception e) {
             Utils.showError(e.getMessage());
+            return true;
         }
     }
 
-    private void options(int option) throws Exception{
+    private boolean options(int option) throws Exception{
         switch (option) {
             case 0: {
                 this.createUser();
-                return;
+                return true;
             }
             case 1: {
-                System.out.println("1");
-                return;
+                System.out.println("Opción 1: fut: modificar");
+                return true;
             }
             case 2: {
-                System.out.println("2");
-                return;
+                System.out.println("Opción 2: fut: eliminar");
+                return true;
+            }
+            case 3: {
+                System.out.println("Opción 3: fut: salir");
+                return false;
             }
             default: {
                 System.out.println("Ingrese una opcion valida");
+                return true;
             }
         }
     }
@@ -71,7 +91,7 @@ public class UserController {
 
             userDto.setPasswordUser(fieldsMap.get("Contraseña").getText());
             userDto.setNameUser(fieldsMap.get("Usuario").getText());
-            userDto.setRoleUser("admin");
+            userDto.setRoleUser(this.role);
 
             personValidator.validName(fieldsMap.get("Nombre").getText());
 

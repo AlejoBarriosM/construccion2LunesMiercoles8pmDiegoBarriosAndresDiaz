@@ -4,27 +4,29 @@ package app.controller;
 import app.service.Service;
 
 
-public class AdminController implements ControllerInterface {
+public class AdminController extends UserController {
 
-	private UserController userController;
 	private PartnerController partnerController;
 
+	private final String ROLE = "administrador";
 	private final String[] OPTIONS = {"Usuarios", "Socios", "Salir"};
 
+
+
 	public AdminController() {
-		this.userController = new UserController();
 		this.partnerController = new PartnerController();
+		super.setRole(ROLE);
 	}
 
 	@Override
 	public void session() throws Exception {
 		boolean session = true;
 		while (session) {
-			session = menu();
+			session = menuAdmin();
 		}
 	}
 
-	private boolean menu() {
+	private boolean menuAdmin() {
 		try {
         	int option = Utils.showMenu("Menú Principal", "Bienvenido " + Service.user.getNameUser() + "\nSelecciona una opción:", OPTIONS);
 			return options(option);
@@ -37,11 +39,12 @@ public class AdminController implements ControllerInterface {
 	private boolean options(int option) throws Exception{
 		switch (option) {
 		case 0: {
-			userController.menu();
+			super.menuUser();
 			return true;
 		}
 		case 1: {
-			partnerController.menu();
+			//partnerController.menu();
+
 			return true;
 		}
 		case 2: {

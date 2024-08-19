@@ -29,8 +29,8 @@ public class PersonDaoImplementation implements PersonDao {
         String query = "INSERT INTO PERSON(NAME,DOCUMENT,CELLPHONE) VALUES (?,?,?) ";
         PreparedStatement preparedStatement = MYSQLConnection.getConnection().prepareStatement(query);
         preparedStatement.setString(1, person.getNamePerson());
-        preparedStatement.setInt(2,person.getDocumentPerson());
-        preparedStatement.setInt(3, person.getCellphonePerson());
+        preparedStatement.setLong(2,person.getDocumentPerson());
+        preparedStatement.setLong(3, person.getCellphonePerson());
         preparedStatement.execute();
         preparedStatement.close();
     }
@@ -46,7 +46,7 @@ public class PersonDaoImplementation implements PersonDao {
 
     @Override
     public PersonDto findByDocument(PersonDto personDto) throws Exception {
-        String query = "SELECT ID,NAME,DOCUMENT,AGE FROM PERSON WHERE DOCUMENT = ?";
+        String query = "SELECT ID,NAME,DOCUMENT,CELLPHONE FROM PERSON WHERE DOCUMENT = ?";
         PreparedStatement preparedStatement = MYSQLConnection.getConnection().prepareStatement(query);
         preparedStatement.setLong(1, personDto.getDocumentPerson());
         ResultSet resulSet = preparedStatement.executeQuery();
@@ -54,8 +54,8 @@ public class PersonDaoImplementation implements PersonDao {
             Person person = new Person();
             person.setIdPerson(resulSet.getLong("ID"));
             person.setNamePerson(resulSet.getString("NAME"));
-            person.setDocumentPerson(resulSet.getInt("DOCUMENT"));
-            person.setCellphonePerson(resulSet.getInt("CELLPHONE"));
+            person.setDocumentPerson(resulSet.getLong("DOCUMENT"));
+            person.setCellphonePerson(resulSet.getLong("CELLPHONE"));
             resulSet.close();
             preparedStatement.close();
             return Helper.parse(person);

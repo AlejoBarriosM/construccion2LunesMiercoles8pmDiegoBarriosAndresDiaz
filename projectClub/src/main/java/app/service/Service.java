@@ -7,18 +7,15 @@ import app.dao.interfaces.*;
 import app.dto.*;
 import app.service.interfaces.AdminService;
 import app.service.interfaces.LoginService;
+import app.service.interfaces.UserService;
 
 import java.sql.Date;
 import java.sql.SQLException;
 
-public class Service implements LoginService, AdminService {
+public class Service implements LoginService, AdminService, UserService {
 	private UserDao userDao;
 	private PersonDao personDao;
 	public static UserDto user;
-//	private PetDao petDao;
-//	private ClinicalHistoryDao clinicalHistoryDao;
-//	private InvoiceDao invoiceDao;
-//	private OrderDao orderDao;
 
 
 	public Service() {
@@ -44,6 +41,33 @@ public class Service implements LoginService, AdminService {
 	public void logout() {
 		user = null;
 		Utils.showMessage("Se ha cerrado sesion");
+	}
+
+	@Override
+	public void createAdmin(UserDto userDto, PersonDto personDto) throws Exception {
+		this.createUser(userDto, personDto);
+	}
+
+	private void createUser(UserDto userDto, PersonDto personDto) throws Exception {
+		this.createPerson(personDto);
+		personDto = personDao.findByDocument(personDto);
+		userDto.setIdPerson(personDto);
+		if (this.userDao.existsByUserName(userDto)) {
+			this.personDao.deletePerson(userDto.getIdPerson());
+			throw new Exception("USERNAME ya está siendo usado");
+		}
+		try {
+			this.userDao.createUser(userDto);
+		} catch (SQLException e) {
+			this.personDao.deletePerson(userDto.getIdPerson());
+		}
+	}
+
+	private void createPerson(PersonDto personDto) throws Exception {
+		if (this.personDao.existsByDocument(personDto)) {
+			throw new Exception("Ya existe una persona con ese documento");
+		}
+		this.personDao.createPerson(personDto);
 	}
 
 
@@ -84,28 +108,6 @@ public class Service implements LoginService, AdminService {
 //	public void createVeterinarian(UserDto userDto) throws Exception {
 //		this.createUser(userDto);
 
-//	}
-
-//	private void createUser(UserDto userDto) throws Exception {
-//		this.createPerson(userDto.getPersonid());
-//		PersonDto personDto = personDao.findByDocument(userDto.getPersonid());
-//		userDto.setPersonid(personDto);
-//		if (this.userDao.existsByUserName(userDto)) {
-//			this.personDao.deletePerson(userDto.getPersonid());
-//			throw new Exception("ya existe un usuario con ese user name");
-//		}
-//		try {
-//			this.userDao.createUser(userDto);
-//		} catch (SQLException e) {
-//			this.personDao.deletePerson(userDto.getPersonid());
-//		}
-//	}
-//
-//	private void createPerson(PersonDto personDto) throws Exception {
-//		if (this.personDao.existsByDocument(personDto)) {
-//			throw new Exception("ya existe una persona con ese documento");
-//		}
-//		this.personDao.createPerson(personDto);
 //	}
 
 //	private OrderDto createOrder(ClinicalHistoryDto clinicalHistoryDto) throws Exception {

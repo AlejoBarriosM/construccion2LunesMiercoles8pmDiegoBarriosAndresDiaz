@@ -1,13 +1,16 @@
-package app.model;
+package app.dto;
 
-public class Partner {
+import app.model.User;
+
+public class PartnerDto {
+
     private long idPartner;
     private User idUserPartner;
     private double amountPartner;
     private String typePartner;
     private String creationDatePartner;
 
-    public Partner() {
+    public PartnerDto() {
     }
 
     public long getIdPartner() {

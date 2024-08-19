@@ -1,7 +1,9 @@
 package app.helpers;
 
+import app.dto.PartnerDto;
 import app.dto.PersonDto;
 import app.dto.UserDto;
+import app.model.Partner;
 import app.model.Person;
 import app.model.User;
 
@@ -44,5 +46,25 @@ public class Helper {
         user.setUserName(userDto.getNameUser());
         return user;
     }
-    
+
+    public static PartnerDto parse(Partner partner) {
+        PartnerDto partnerDto = new PartnerDto();
+        partnerDto.setIdPartner(partner.getIdPartner());
+        partnerDto.setIdUserPartner(partner.getIdUserPartner());
+        partnerDto.setAmountPartner(partner.getAmountPartner());
+        partnerDto.setTypePartner(partner.getTypePartner());
+        partnerDto.setCreationDatePartner(partner.getCreationDatePartner());
+        return partnerDto;
+    }
+
+    public static Partner parse(PartnerDto partnerDto) {
+        Partner partner = new Partner();
+        partner.setIdPartner(partnerDto.getIdPartner());
+        partner.setIdUserPartner(partnerDto.getIdUserPartner());
+        partner.setAmountPartner(partnerDto.getAmountPartner());
+        partner.setTypePartner(partnerDto.getTypePartner());
+        partner.setCreationDatePartner(partnerDto.getCreationDatePartner());
+        return partner;
+    }
+
 }

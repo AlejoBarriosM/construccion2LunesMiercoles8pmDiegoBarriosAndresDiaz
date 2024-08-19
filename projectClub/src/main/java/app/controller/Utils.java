@@ -1,6 +1,8 @@
 package app.controller;
 
 import javax.swing.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public abstract class Utils {
 
@@ -17,30 +19,6 @@ public abstract class Utils {
 	// Método para capturar una entrada de texto
 	public static String promptInput(String message) {
 		return JOptionPane.showInputDialog(null, message, "Entrada", JOptionPane.QUESTION_MESSAGE);
-	}
-
-	// Método para capturar un número entero
-	public static int promptIntInput(String message) {
-		while (true) {
-			try {
-				String input = promptInput(message);
-				return Integer.parseInt(input);
-			} catch (NumberFormatException e) {
-				showError("Entrada no válida. Por favor, ingresa un número entero.");
-			}
-		}
-	}
-
-	// Método para capturar un número decimal (double)
-	public static double promptDoubleInput(String message) {
-		while (true) {
-			try {
-				String input = promptInput(message);
-				return Double.parseDouble(input);
-			} catch (NumberFormatException e) {
-				showError("Entrada no válida. Por favor, ingresa un número decimal.");
-			}
-		}
 	}
 
 	// Método para capturar Sí/No
@@ -62,7 +40,6 @@ public abstract class Utils {
         return false;
     }
 
-
 	// Método para mostrar un menú con opciones
 	public static int showMenu(String title, String message, String[] options) {
 		return JOptionPane.showOptionDialog(
@@ -70,7 +47,7 @@ public abstract class Utils {
 			message,
 			title,
 			JOptionPane.DEFAULT_OPTION,
-			JOptionPane.QUESTION_MESSAGE,
+			JOptionPane.PLAIN_MESSAGE,
 			null,
 			options,
 			options[0] // Opción predeterminada
@@ -78,5 +55,25 @@ public abstract class Utils {
 	}
 
 
+	public static Map<String, Object> addFieldsToPanel(String[] labels){
+		Map<String, JTextField> fieldsMap = new HashMap<>();
+
+		JPanel panel = new JPanel();
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+
+		for (String label : labels) {
+			JTextField textField = new JTextField(30);
+			fieldsMap.put(label, textField);
+			panel.add(new JLabel(label + ":"));
+			panel.add(textField);
+			panel.add(Box.createVerticalStrut(15));
+		}
+
+		Map<String, Object> result = new HashMap<>();
+		result.put("panel", panel);
+		result.put("fields", fieldsMap);
+
+		return result;
+	}
 
 }

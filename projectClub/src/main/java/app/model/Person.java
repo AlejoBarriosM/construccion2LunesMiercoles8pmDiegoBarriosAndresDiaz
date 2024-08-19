@@ -3,9 +3,9 @@ package app.model;
 public class Person {
 
     private long idPerson;
-    private int documentPerson;
+    private Long documentPerson;
     private String namePerson;
-    private int cellphonePerson;
+    private Long cellphonePerson;
 
     public Person() {
     }
@@ -18,11 +18,11 @@ public class Person {
         this.idPerson = idPerson;
     }
 
-    public int getDocumentPerson() {
+    public Long getDocumentPerson() {
         return documentPerson;
     }
 
-    public void setDocumentPerson(int documentPerson) {
+    public void setDocumentPerson(Long documentPerson) {
         this.documentPerson = documentPerson;
     }
 
@@ -34,11 +34,11 @@ public class Person {
         this.namePerson = namePerson;
     }
 
-    public int getCellphonePerson() {
+    public Long getCellphonePerson() {
         return cellphonePerson;
     }
 
-    public void setCellphonePerson(int cellphonePerson) {
+    public void setCellphonePerson(Long cellphonePerson) {
         this.cellphonePerson = cellphonePerson;
     }
 }

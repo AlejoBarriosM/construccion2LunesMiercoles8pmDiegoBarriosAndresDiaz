@@ -1,5 +1,7 @@
 package app.helpers;
 
+import app.dto.InvoiceDto;
+import app.model.Invoice;
 import app.dto.PartnerDto;
 import app.dto.PersonDto;
 import app.dto.UserDto;
@@ -46,6 +48,16 @@ public class Helper {
         user.setUserName(userDto.getNameUser());
         return user;
     }
+    public static Partner parse(PartnerDto partnerDto) {
+        Partner partner = new Partner();
+        partner.setIdPartner(partnerDto.getIdPartner());
+        partner.setIdUserPartner(partnerDto.getIdUserPartner());
+        partner.setAmountPartner(partnerDto.getAmountPartner());
+        partner.setTypePartner(partnerDto.getTypePartner());
+        partner.setCreationDatePartner(partnerDto.getCreationDatePartner());
+        return partner;
+    }
+
 
     public static PartnerDto parse(Partner partner) {
         PartnerDto partnerDto = new PartnerDto();
@@ -57,14 +69,28 @@ public class Helper {
         return partnerDto;
     }
 
-    public static Partner parse(PartnerDto partnerDto) {
-        Partner partner = new Partner();
-        partner.setIdPartner(partnerDto.getIdPartner());
-        partner.setIdUserPartner(partnerDto.getIdUserPartner());
-        partner.setAmountPartner(partnerDto.getAmountPartner());
-        partner.setTypePartner(partnerDto.getTypePartner());
-        partner.setCreationDatePartner(partnerDto.getCreationDatePartner());
-        return partner;
+    public static Invoice parse(InvoiceDto invoiceDto) {
+        Invoice invoice = new Invoice();
+        invoice.setIdPerson(invoiceDto.getIdPerson());
+        invoice.setIdPartner(invoiceDto.getIdPartner());
+        invoice.setAmountInvoice(invoiceDto.getTotalAmount());
+        invoice.setStatusInvoice(invoice.getStatusInvoice());
+        return invoice;
     }
+
+
+    public static InvoiceDto parse (Invoice invoice) {
+        InvoiceDto invoiceDto = new InvoiceDto();
+        invoiceDto.setIdPerson(invoice.getIdPerson());
+        invoiceDto.setIdPartner(invoiceDto.getIdPartner());
+        invoiceDto.setTotalAmount(invoice.getAmountInvoice());
+        invoiceDto.setStatusInvoice(invoice.getStatusInvoice());
+        return invoiceDto;
+
+
+
+    }
+
+
 
 }

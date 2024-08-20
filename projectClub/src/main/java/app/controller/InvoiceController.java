@@ -1,7 +1,7 @@
 package app.controller;
 
 import static app.config.MYSQLConnection.getConnection;
-import app.dao.InvoiceDao;
+import app.dao.interfaces.InvoiceDao;
 import app.dto.InvoiceDto;
 import app.service.InvoiceService;
 
@@ -11,13 +11,34 @@ import java.sql.SQLException;
 import java.util.List;
 import javax.swing.JOptionPane;
 
-public abstract class InvoiceController implements ControllerInterface {
+public class InvoiceController {
 
     private InvoiceDao invoiceDao;
     private InvoiceService invoiceService;
 
     public InvoiceController() {
-        this.invoiceDao = new InvoiceDao(getConnection());
+        this.invoiceDao = new InvoiceDao(getConnection()) {
+
+            @Override
+            public void createInvoice(InvoiceDto invoice) throws Exception {
+
+            }
+
+            @Override
+            public void updateInvoice(InvoiceDto invoice) throws Exception {
+
+            }
+
+            @Override
+            public void deleteInvoice(InvoiceDto invoice) throws Exception {
+
+            }
+
+            @Override
+            public boolean payInvoice(InvoiceDto invoice) throws Exception {
+                return false;
+            }
+        };
         this.invoiceService = new InvoiceService(invoiceDao);
     }
 
@@ -25,7 +46,7 @@ public abstract class InvoiceController implements ControllerInterface {
     public void session() throws Exception {
         boolean session = true;
         while (session) {
-            session = menu();
+            session = true;
         }
     }
 
@@ -88,14 +109,13 @@ public abstract class InvoiceController implements ControllerInterface {
         }
     }
 
-    //Falta agregarle la dirección correcta del servidor BD
-    
-   /* private Connection getConnection() {
+
+    private Connection getConnection() {
         try {
             return DriverManager.getConnection("jdbc:mysql://localhost:3306/tu_base_de_datos", "usuario", "contraseña");
         } catch (Exception e) {
             throw new RuntimeException("Eror al conectar con la base de datos", e);
         }
-    }*/
+    }
 
 }

@@ -20,8 +20,8 @@ public class Invoice {
         this.idInvoice = idInvoice;
     }
 
-    public long getIdPerson() {
-        return idPerson;
+    public int getIdPerson() {
+        return (int) idPerson;
     }
 
     public void setIdPerson(long idPerson) {
@@ -58,5 +58,8 @@ public class Invoice {
 
     public void setStatusInvoice(String statusInvoice) {
         this.statusInvoice = statusInvoice;
+    }
+
+    public void getStatusInvoice(Object statusInvoice) {
     }
 }

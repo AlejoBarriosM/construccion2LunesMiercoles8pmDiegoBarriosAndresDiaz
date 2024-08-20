@@ -23,7 +23,7 @@ public class LoginController implements ControllerInterface{
         this.service=new Service();
         ControllerInterface adminController = new AdminController();
         this.roles= new HashMap<String,ControllerInterface>();
-        roles.put("admin", adminController);
+        roles.put("administrador", adminController);
     }
 
     @Override

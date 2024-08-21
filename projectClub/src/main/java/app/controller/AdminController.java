@@ -1,25 +1,14 @@
 package app.controller;
 
 
-import app.controller.validator.PartnerValidator;
-import app.dto.PartnerDto;
 import app.service.Service;
-import app.service.interfaces.PartnerService;
-
-import javax.swing.*;
 
 
 public class AdminController extends UserController implements ControllerInterface {
 
-	private PartnerService service;
-	private PartnerValidator partnerValidator;
-
-	private final String[] TYPES = {"Regular", "VIP"};
-	private final String[] OPTIONS = {"Usuarios", "Socios", "Cerrar Sesion"};
+	private final String[] OPTIONS = {"Usuarios", "Socios", "Historial Facturas", "Promoción VIP", "Cerrar Sesion"};
 
 	public AdminController() {
-		this.partnerValidator = new PartnerValidator();
-		this.service = new Service();
 	}
 
 	@Override
@@ -51,6 +40,12 @@ public class AdminController extends UserController implements ControllerInterfa
 			return true;
 		}
 		case 2: {
+            return Utils.showYesNoDialog("Historial Facturas");
+		}
+		case 3: {
+            return Utils.showYesNoDialog("Promoción VIP");
+		}
+		case 4: {
             return Utils.showYesNoDialog("¿Desea cerrar sesión?");
 		}
 		default: {
@@ -59,7 +54,5 @@ public class AdminController extends UserController implements ControllerInterfa
 		}
 		}
 	}
-
-
 
 }

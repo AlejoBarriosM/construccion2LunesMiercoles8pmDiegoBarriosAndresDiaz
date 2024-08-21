@@ -1,47 +1,55 @@
 package app.controller;
 
-import app.controller.validator.PartnerValidator;
-import app.dto.PartnerDto;
 import app.service.Service;
-import app.service.interfaces.PartnerService;
 
-import javax.swing.*;
 
-public class PartnerController extends UserController{
+public class PartnerController extends UserController implements ControllerInterface{
 
-    private PartnerService service;
-    private PartnerValidator partnerValidator;
 
-    private final String[] TYPES = {"Regular", "VIP"};
-    private final String ROLE = "socio";
+    private final String[] OPTIONS = {"Invitados", "Fondos", "Cambio Suscripción", "Darse de baja", "Cerrar Sesion"};
 
     public PartnerController() {
-        this.partnerValidator = new PartnerValidator();
-        this.service = new Service();
     }
 
+    @Override
+    public void session() throws Exception {
+        boolean session = true;
+        while (session) {
+            session = menuPartner();
+        }
+    }
 
+    private boolean menuPartner() {
+        try {
+            int option = Utils.showMenu("Menú Principal", "Bienvenido " + Service.user.getNameUser() + "\nSelecciona una opción:", OPTIONS);
+            return options(option);
+        } catch (Exception e) {
+            Utils.showError(e.getMessage());
+            return true;
+        }
+    }
 
     private boolean options(int option) throws Exception{
         switch (option) {
             case 0: {
-                //this.createUser();
+                super.menuUser("administrador");
                 return true;
             }
             case 1: {
-                System.out.println("Opción 1: fut: modificar");
+                super.menuUser("socio");
                 return true;
             }
             case 2: {
-                System.out.println("Opción 2: fut: eliminar");
-                return true;
+                return Utils.showYesNoDialog("Historial Facturas");
             }
             case 3: {
-                System.out.println("Opción 3: fut: salir");
-                return false;
+                return Utils.showYesNoDialog("Promoción VIP");
+            }
+            case 4: {
+                return Utils.showYesNoDialog("¿Desea cerrar sesión?");
             }
             default: {
-                System.out.println("Ingrese una opcion valida");
+                Utils.showError("Ingrese una opcion valida");
                 return true;
             }
         }

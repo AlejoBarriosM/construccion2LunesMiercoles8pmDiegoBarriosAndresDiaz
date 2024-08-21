@@ -1,21 +1,25 @@
 package app.controller;
 
 
+import app.controller.validator.PartnerValidator;
+import app.dto.PartnerDto;
 import app.service.Service;
+import app.service.interfaces.PartnerService;
+
+import javax.swing.*;
 
 
-public class AdminController extends UserController {
+public class AdminController extends UserController implements ControllerInterface {
 
-	private PartnerController partnerController;
+	private PartnerService service;
+	private PartnerValidator partnerValidator;
 
-	private final String ROLE = "administrador";
-	private final String[] OPTIONS = {"Usuarios", "Socios", "Salir"};
-
-
+	private final String[] TYPES = {"Regular", "VIP"};
+	private final String[] OPTIONS = {"Usuarios", "Socios", "Cerrar Sesion"};
 
 	public AdminController() {
-		this.partnerController = new PartnerController();
-		super.setRole(ROLE);
+		this.partnerValidator = new PartnerValidator();
+		this.service = new Service();
 	}
 
 	@Override
@@ -39,23 +43,23 @@ public class AdminController extends UserController {
 	private boolean options(int option) throws Exception{
 		switch (option) {
 		case 0: {
-			super.menuUser();
+			super.menuUser("administrador");
 			return true;
 		}
 		case 1: {
-			//partnerController.menu();
-
+			super.menuUser("socio");
 			return true;
 		}
 		case 2: {
-			System.out.println("2");
-			return false;
+            return Utils.showYesNoDialog("¿Desea cerrar sesión?");
 		}
 		default: {
-			Utils.showError("ingrese una opcion valida");
+			Utils.showError("Ingrese una opcion valida");
 			return true;
 		}
 		}
 	}
+
+
 
 }

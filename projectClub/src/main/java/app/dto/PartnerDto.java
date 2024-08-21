@@ -1,11 +1,9 @@
 package app.dto;
 
-import app.model.User;
-
 public class PartnerDto {
 
     private long idPartner;
-    private User idUserPartner;
+    private UserDto idUserPartner;
     private double amountPartner;
     private String typePartner;
     private String creationDatePartner;
@@ -21,11 +19,11 @@ public class PartnerDto {
         this.idPartner = idPartner;
     }
 
-    public User getIdUserPartner() {
+    public UserDto getIdUserPartner() {
         return idUserPartner;
     }
 
-    public void setIdUserPartner(User idUserPartner) {
+    public void setIdUserPartner(UserDto idUserPartner) {
         this.idUserPartner = idUserPartner;
     }
 

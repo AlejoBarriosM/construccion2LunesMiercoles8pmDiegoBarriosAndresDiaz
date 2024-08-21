@@ -54,8 +54,10 @@ public class Service implements LoginService, AdminService, UserService, Partner
 	}
 
 	@Override
-	public void createPartner(PartnerDto partnerDto) throws Exception{
-		this.partnerDao.createPartner(partnerDto);
+	public void createPartner(PartnerDto partnerDto, UserDto userDto, PersonDto personDto) throws Exception{
+		this.createUser(userDto, personDto);
+		userDto = userDao.findByUserName(userDto);
+		this.partnerDao.createPartner(partnerDto, userDto);
 	}
 
 	private void createUser(UserDto userDto, PersonDto personDto) throws Exception {
@@ -63,7 +65,7 @@ public class Service implements LoginService, AdminService, UserService, Partner
 		personDto = personDao.findByDocument(personDto);
 		userDto.setIdPerson(personDto);
 		if (this.userDao.existsByUserName(userDto)) {
-			this.personDao.deletePerson(userDto.getIdPerson());
+			//this.personDao.deletePerson(userDto.getIdPerson());
 			throw new Exception("El nombre de usuario ya está siendo usado");
 		}
 		try {

@@ -50,7 +50,7 @@ public class Helper {
     public static PartnerDto parse(Partner partner) {
         PartnerDto partnerDto = new PartnerDto();
         partnerDto.setIdPartner(partner.getIdPartner());
-        partnerDto.setIdUserPartner(partner.getIdUserPartner());
+        partnerDto.setIdUserPartner(parse(partner.getIdUserPartner()));
         partnerDto.setAmountPartner(partner.getAmountPartner());
         partnerDto.setTypePartner(partner.getTypePartner());
         partnerDto.setCreationDatePartner(partner.getCreationDatePartner());
@@ -60,7 +60,7 @@ public class Helper {
     public static Partner parse(PartnerDto partnerDto) {
         Partner partner = new Partner();
         partner.setIdPartner(partnerDto.getIdPartner());
-        partner.setIdUserPartner(partnerDto.getIdUserPartner());
+        partner.setIdUserPartner(parse(partnerDto.getIdUserPartner()));
         partner.setAmountPartner(partnerDto.getAmountPartner());
         partner.setTypePartner(partnerDto.getTypePartner());
         partner.setCreationDatePartner(partnerDto.getCreationDatePartner());

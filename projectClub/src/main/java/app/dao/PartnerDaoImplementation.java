@@ -3,6 +3,7 @@ package app.dao;
 import app.config.MYSQLConnection;
 import app.dao.interfaces.PartnerDao;
 import app.dto.PartnerDto;
+import app.dto.UserDto;
 import app.helpers.Helper;
 import app.model.Partner;
 import app.model.User;
@@ -37,11 +38,11 @@ public class PartnerDaoImplementation implements PartnerDao {
     }
 
     @Override
-    public void createPartner(PartnerDto partnerDto) throws Exception {
+    public void createPartner(PartnerDto partnerDto, UserDto userDto) throws Exception {
         Partner partner = Helper.parse(partnerDto);
         String query = "INSERT INTO PARTNER(USERID, AMOUNT, TYPE) VALUES (?,?,?)";
         PreparedStatement preparedStatement = MYSQLConnection.getConnection().prepareStatement(query);
-        preparedStatement.setLong(1,partnerDto.getIdUserPartner().getIdUser());
+        preparedStatement.setLong(1,userDto.getIdUser());
         preparedStatement.setDouble(2,partnerDto.getAmountPartner());
         preparedStatement.setString(3,partnerDto.getTypePartner());
         preparedStatement.execute();

@@ -22,8 +22,8 @@ public abstract class Utils {
 	}
 
 	// Método para capturar Sí/No
-	public static int showYesNoDialog(String message) {
-		return JOptionPane.showConfirmDialog(null, message, "Confirmar", JOptionPane.YES_NO_OPTION);
+	public static boolean showYesNoDialog(String message) {
+        return JOptionPane.showConfirmDialog(null, message, "Confirmar", JOptionPane.YES_NO_OPTION) == JOptionPane.NO_OPTION;
 	}
 
 	// Método para capturar una confirmación con panel
@@ -54,7 +54,7 @@ public abstract class Utils {
 		);
 	}
 
-	public static Map<String, Object> addFieldsToPanel(String[] labels){
+	public static Map<String, Object> addFieldsToPanel(String[] labels, String role){
 		Map<String, JTextField> fieldsMap = new HashMap<>();
 
 		JPanel panel = new JPanel();

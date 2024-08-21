@@ -52,7 +52,7 @@ public class UserDaoImplementation  implements UserDao {
     @Override
     public void createUser(UserDto userDto) throws Exception {
         User user = Helper.parse(userDto);
-        String query = "INSERT INTO USER(USERNAME,PASSWORD,PERSONID,ROLE) VALUES (?,?,?,?) ";
+        String query = "INSERT INTO USER(USERNAME,PASSWORD,PERSONID,ROLE) VALUES (?,?,?,?)";
         PreparedStatement preparedStatement = MYSQLConnection.getConnection().prepareStatement(query);
         preparedStatement.setString(1, user.getUserName());
         preparedStatement.setString(2, user.getPasswordUser());

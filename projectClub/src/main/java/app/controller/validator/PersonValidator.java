@@ -7,7 +7,7 @@ public class PersonValidator extends CommonsValidator {
 	}
 	
 	public long validDocument(String document) throws Exception{
-		return super.isValidLong("La cedula de la persona", document);
+		return super.isValidLong("La cédula de la persona", document);
 	}
 	
 	public long validCellphone(String cellphone) throws Exception{

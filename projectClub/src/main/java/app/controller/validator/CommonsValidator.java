@@ -33,4 +33,7 @@ public abstract class CommonsValidator {
 			throw new Exception(element + " debe ser un valor decimal valido");
 		}
 	}
-}
+
+
+
+	}

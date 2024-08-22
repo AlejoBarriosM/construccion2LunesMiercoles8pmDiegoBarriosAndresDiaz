@@ -1,5 +1,7 @@
 package app.helpers;
 
+import app.dto.InvoiceDto;
+import app.model.Invoice;
 import app.dto.PartnerDto;
 import app.dto.PersonDto;
 import app.dto.UserDto;
@@ -66,5 +68,40 @@ public class Helper {
         partner.setCreationDatePartner(partnerDto.getCreationDatePartner());
         return partner;
     }
+
+
+    public static PartnerDto parse(Partner partner) {
+        PartnerDto partnerDto = new PartnerDto();
+        partnerDto.setIdPartner(partner.getIdPartner());
+        partnerDto.setIdUserPartner(partner.getIdUserPartner());
+        partnerDto.setAmountPartner(partner.getAmountPartner());
+        partnerDto.setTypePartner(partner.getTypePartner());
+        partnerDto.setCreationDatePartner(partner.getCreationDatePartner());
+        return partnerDto;
+    }
+
+    public static Invoice parse(InvoiceDto invoiceDto) {
+        Invoice invoice = new Invoice();
+        invoice.setIdPerson(invoiceDto.getIdPerson());
+        invoice.setIdPartner(invoiceDto.getIdPartner());
+        invoice.setAmountInvoice(invoiceDto.getTotalAmount());
+        invoice.setStatusInvoice(invoice.getStatusInvoice());
+        return invoice;
+    }
+
+
+    public static InvoiceDto parse (Invoice invoice) {
+        InvoiceDto invoiceDto = new InvoiceDto();
+        invoiceDto.setIdPerson(invoice.getIdPerson());
+        invoiceDto.setIdPartner(invoiceDto.getIdPartner());
+        invoiceDto.setTotalAmount(invoice.getAmountInvoice());
+        invoiceDto.setStatusInvoice(invoice.getStatusInvoice());
+        return invoiceDto;
+
+
+
+    }
+
+
 
 }

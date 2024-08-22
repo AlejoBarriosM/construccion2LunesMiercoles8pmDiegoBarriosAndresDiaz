@@ -3,8 +3,8 @@ package app.model;
 public class Invoice {
 
     private long idInvoice;
-    private long idPerson;
-    private long idPartner;
+    private Person idPerson;
+    private Partner idPartner;
     private String creationDateInvoice;
     private double amountInvoice;
     private String statusInvoice;
@@ -20,19 +20,19 @@ public class Invoice {
         this.idInvoice = idInvoice;
     }
 
-    public int getIdPerson() {
-        return (int) idPerson;
+    public Person getIdPerson() {
+        return idPerson;
     }
 
-    public void setIdPerson(long idPerson) {
+    public void setIdPerson(Person idPerson) {
         this.idPerson = idPerson;
     }
 
-    public long getIdPartner() {
+    public Partner getIdPartner() {
         return idPartner;
     }
 
-    public void setIdPartner(long idPartner) {
+    public void setIdPartner(Partner idPartner) {
         this.idPartner = idPartner;
     }
 
@@ -58,8 +58,5 @@ public class Invoice {
 
     public void setStatusInvoice(String statusInvoice) {
         this.statusInvoice = statusInvoice;
-    }
-
-    public void getStatusInvoice(Object statusInvoice) {
     }
 }

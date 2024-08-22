@@ -1,55 +1,61 @@
 package app.controller;
 
-import app.controller.validator.PartnerValidator;
-import app.dto.PartnerDto;
-import app.dto.PersonDto;
-import app.dto.UserDto;
 import app.service.Service;
-import app.service.interfaces.PartnerService;
-
-import javax.swing.*;
-import java.util.HashMap;
-import java.util.Map;
-
-public class PartnerController extends UserController{
 
 
-    private PartnerService service;
-    private PartnerValidator parnerValidator;
+public class PartnerController extends UserController implements ControllerInterface{
 
 
-    private final String[] TYPES = {"Regular", "VIP"};
+    private final String[] OPTIONS = {"Invitados", "Fondos", "Cambio Suscripción", "Darse de baja", "Cerrar Sesion"};
 
     public PartnerController() {
-        this.parnerValidator = new PartnerValidator();
-        this.service = new Service();
     }
 
-    private void createPartner() throws Exception {
-
-        //userController.createUser("socio");
-
-        String[] labels = {"Fondos", "Tipo"};
-
-        JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-
-        JTextField amountField = new JTextField(30);
-
-        panel.add(new JLabel( "Fondos: "));
-        panel.add(amountField);
-        panel.add(Box.createVerticalStrut(15));
-
-        panel.add(new JLabel( "Tipo: "));
-        JComboBox<String> typeComboBox = new JComboBox<>(TYPES);
-        panel.add(typeComboBox);
-
-        if (Utils.showConfirmDialog(panel, "Crear Socio")) {
-            PartnerDto partnerDto = new PartnerDto();
-            partnerDto.setAmountPartner(parnerValidator.validAmount(amountField.getText()));
-            partnerDto.setTypePartner(typeComboBox.getSelectedItem().toString());
-            this.service.createPartner(partnerDto);
-            Utils.showMessage("El socio se ha creado con éxito");
+    @Override
+    public void session() throws Exception {
+        boolean session = true;
+        while (session) {
+            session = menuPartner();
         }
     }
+
+    private boolean menuPartner() {
+        try {
+            int option = Utils.showMenu("Menú Principal", "Bienvenido " + Service.user.getNameUser() + "\nSelecciona una opción:", OPTIONS);
+            return options(option);
+        } catch (Exception e) {
+            Utils.showError(e.getMessage());
+            return true;
+        }
+    }
+
+    private boolean options(int option) throws Exception{
+        switch (option) {
+            case 0: {
+                super.menuUser("administrador");
+                return true;
+            }
+            case 1: {
+                super.menuUser("socio");
+                return true;
+            }
+            case 2: {
+                return Utils.showYesNoDialog("Historial Facturas");
+            }
+            case 3: {
+                return Utils.showYesNoDialog("Promoción VIP");
+            }
+            case 4: {
+                return Utils.showYesNoDialog("¿Desea cerrar sesión?");
+            }
+            default: {
+                Utils.showError("Ingrese una opcion valida");
+                return true;
+            }
+        }
+    }
+
+
+
+
 }

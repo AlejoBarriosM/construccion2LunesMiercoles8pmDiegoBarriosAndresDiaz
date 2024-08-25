@@ -31,28 +31,28 @@ public class AdminController extends UserController implements ControllerInterfa
 
 	private boolean options(int option) throws Exception{
 		switch (option) {
-		case 0: {
-			super.menuUser("administrador");
-			return true;
-		}
-		case 1: {
-			super.menuUser("socio");
-			return true;
-		}
-		case 2: {
-            return Utils.showYesNoDialog("Historial Facturas");
-		}
-		case 3: {
-            return Utils.showYesNoDialog("Promoción VIP");
-		}
-		case 4: {
-            return Utils.showYesNoDialog("¿Desea cerrar sesión?");
-		}
-		default: {
-			Utils.showError("Ingrese una opcion valida");
-			return true;
-		}
-		}
+			case 0: {
+				super.menuUser("administrador");
+				return true;
+			}
+			case 1: {
+				super.menuUser("socio");
+				return true;
+			}
+			case 2: {
+				return Utils.showYesNoDialog("Historial Facturas");
+			}
+			case 3: {
+				return Utils.showYesNoDialog("Promoción VIP");
+			}
+			case 4: {
+				return Utils.showYesNoDialog("¿Desea cerrar sesión?");
+			}
+			default: {
+				Utils.showError("Ingrese una opcion valida");
+				return true;
+			}
+			}
 	}
 
 }

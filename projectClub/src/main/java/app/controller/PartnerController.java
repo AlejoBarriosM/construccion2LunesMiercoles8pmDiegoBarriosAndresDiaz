@@ -32,7 +32,7 @@ public class PartnerController extends UserController implements ControllerInter
     private boolean options(int option) throws Exception{
         switch (option) {
             case 0: {
-                super.menuUser("administrador");
+                super.menuUser("invitado");
                 return true;
             }
             case 1: {

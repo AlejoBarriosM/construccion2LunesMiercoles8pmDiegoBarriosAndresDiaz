@@ -5,7 +5,7 @@ import app.service.Service;
 
 public class GuestController extends UserController implements ControllerInterface{
 
-    private final String[] OPTIONS = {"Cambio Tipo Socio", "Consumos", "Cerrar Sesion"};
+    private final String[] OPTIONS = {"Cambio Tipo Socio", "Consumos", "Darse de Baja", "Cerrar Sesion"};
 
     @Override
     public void session() throws Exception {
@@ -28,20 +28,15 @@ public class GuestController extends UserController implements ControllerInterfa
     private boolean options(int option) throws Exception{
         switch (option) {
             case 0: {
-                super.menuUser("administrador");
-                return true;
+                return Utils.showYesNoDialog("Cambio Tipo Socio");
             }
             case 1: {
-                super.menuUser("socio");
-                return true;
+                return Utils.showYesNoDialog("Consumos");
             }
             case 2: {
-                return Utils.showYesNoDialog("Historial Facturas");
+                return Utils.showYesNoDialog("Darse de Baja");
             }
             case 3: {
-                return Utils.showYesNoDialog("Promoción VIP");
-            }
-            case 4: {
                 return Utils.showYesNoDialog("¿Desea cerrar sesión?");
             }
             default: {

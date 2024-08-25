@@ -5,8 +5,8 @@ import java.util.Date;
 public class InvoiceDto {
     
     private int id;
-    private int idPerson;
-    private int idPartner;
+    private PersonDto idPerson;
+    private PartnerDto idPartner;
     private Date date;
     private double totalAmount;
     private String statusInvoice;
@@ -14,9 +14,9 @@ public class InvoiceDto {
 
     public InvoiceDto(){
     }
-    public int getIdPerson(){return idPerson;}
+    public PersonDto getIdPerson(){return idPerson;}
 
-    public void setIdPerson(int idPerson){this.idPerson = idPerson;}
+    public void setIdPerson(PersonDto idPerson){this.idPerson = idPerson;}
 
     public int getId() {
         return id;
@@ -26,11 +26,11 @@ public class InvoiceDto {
         this.id = id;
     }
     
-    public int getIdPartner() {
+    public PartnerDto getIdPartner() {
         return idPartner;
     }
 
-    public void setIdPartner(int idPartner) {
+    public void setIdPartner(PartnerDto idPartner) {
         this.idPartner = idPartner;
     }
     

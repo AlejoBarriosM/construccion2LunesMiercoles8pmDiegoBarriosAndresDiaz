@@ -3,7 +3,7 @@ package app.model;
 public class InvoiceDetail {
 
     private long idInvoiceDetail;
-    private long idInvoice;
+    private Invoice idInvoice;
     private long item;
     private String descriptionInvoiceDetail;
     private double amountInvoiceDetail;
@@ -19,11 +19,11 @@ public class InvoiceDetail {
         this.idInvoiceDetail = idInvoiceDetail;
     }
 
-    public long getIdInvoice() {
+    public Invoice getIdInvoice() {
         return idInvoice;
     }
 
-    public void setIdInvoice(long idInvoice) {
+    public void setIdInvoice(Invoice idInvoice) {
         this.idInvoice = idInvoice;
     }
 

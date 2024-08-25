@@ -43,8 +43,8 @@ public class PartnerDaoImplementation implements PartnerDao {
         String query = "INSERT INTO PARTNER(USERID, AMOUNT, TYPE) VALUES (?,?,?)";
         PreparedStatement preparedStatement = MYSQLConnection.getConnection().prepareStatement(query);
         preparedStatement.setLong(1,userDto.getIdUser());
-        preparedStatement.setDouble(2,partnerDto.getAmountPartner());
-        preparedStatement.setString(3,partnerDto.getTypePartner());
+        preparedStatement.setDouble(2,partner.getAmountPartner());
+        preparedStatement.setString(3,partner.getTypePartner());
         preparedStatement.execute();
         preparedStatement.close();
     }

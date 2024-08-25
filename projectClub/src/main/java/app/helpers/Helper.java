@@ -1,13 +1,7 @@
 package app.helpers;
 
-import app.dto.InvoiceDto;
-import app.model.Invoice;
-import app.dto.PartnerDto;
-import app.dto.PersonDto;
-import app.dto.UserDto;
-import app.model.Partner;
-import app.model.Person;
-import app.model.User;
+import app.dto.*;
+import app.model.*;
 
 public class Helper {
 
@@ -69,21 +63,28 @@ public class Helper {
         return partner;
     }
 
+    public static Guest parse(GuestDto guestDto) {
+        Guest guest = new Guest();
+        guest.setIdGuest(guestDto.getIdGuest());
+        guest.setUserIdGuest(parse(guestDto.getUserIdGuest()));
+        guest.setPartnerIdGuest(parse(guestDto.getPartnerIdGuest()));
+        guest.setStatusGuest(guestDto.getStatusGuest());
+        return guest;
+    }
 
-    public static PartnerDto parse(Partner partner) {
-        PartnerDto partnerDto = new PartnerDto();
-        partnerDto.setIdPartner(partner.getIdPartner());
-        partnerDto.setIdUserPartner(partner.getIdUserPartner());
-        partnerDto.setAmountPartner(partner.getAmountPartner());
-        partnerDto.setTypePartner(partner.getTypePartner());
-        partnerDto.setCreationDatePartner(partner.getCreationDatePartner());
-        return partnerDto;
+    public static GuestDto parse(Guest guest) {
+        GuestDto guestDto = new GuestDto();
+        guestDto.setIdGuest(guest.getIdGuest());
+        guestDto.setUserIdGuest(parse(guest.getUserIdGuest()));
+        guestDto.setPartnerIdGuest(parse(guest.getPartnerIdGuest()));
+        guestDto.setStatusGuest(guest.getStatusGuest());
+        return guestDto;
     }
 
     public static Invoice parse(InvoiceDto invoiceDto) {
         Invoice invoice = new Invoice();
-        invoice.setIdPerson(invoiceDto.getIdPerson());
-        invoice.setIdPartner(invoiceDto.getIdPartner());
+        invoice.setIdPerson(parse(invoiceDto.getIdPerson()));
+        invoice.setIdPartner(parse(invoiceDto.getIdPartner()));
         invoice.setAmountInvoice(invoiceDto.getTotalAmount());
         invoice.setStatusInvoice(invoice.getStatusInvoice());
         return invoice;
@@ -92,7 +93,7 @@ public class Helper {
 
     public static InvoiceDto parse (Invoice invoice) {
         InvoiceDto invoiceDto = new InvoiceDto();
-        invoiceDto.setIdPerson(invoice.getIdPerson());
+        invoiceDto.setIdPerson(parse(invoice.getIdPerson()));
         invoiceDto.setIdPartner(invoiceDto.getIdPartner());
         invoiceDto.setTotalAmount(invoice.getAmountInvoice());
         invoiceDto.setStatusInvoice(invoice.getStatusInvoice());

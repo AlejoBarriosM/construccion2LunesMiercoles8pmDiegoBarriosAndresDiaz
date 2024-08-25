@@ -3,10 +3,12 @@ package app.controller;
 import app.controller.validator.PartnerValidator;
 import app.controller.validator.PersonValidator;
 import app.controller.validator.UserValidator;
+import app.dto.GuestDto;
 import app.dto.PartnerDto;
 import app.dto.PersonDto;
 import app.dto.UserDto;
 import app.service.Service;
+import app.service.interfaces.GuestService;
 import app.service.interfaces.PartnerService;
 import app.service.interfaces.UserService;
 
@@ -21,13 +23,17 @@ public class UserController {
     private PartnerValidator partnerValidator;
     private UserService userService;
     private PartnerService partnerService;
+    private GuestService guestService;
 
     private PersonDto personDto;
     private UserDto userDto;
     private PartnerDto partnerDto;
+    private GuestDto guestDto;
 
     private final String[] OPTIONS = {"Crear", "Modificar", "Eliminar", "Salir"};
-    private final String[] TYPES = {"Regular", "VIP"};
+    private final long AMOUNT = 50000;
+    private final String TYPE = "Regular";
+    private final String STATUS = "Activo";
     private String role;
 
     public UserController() {
@@ -37,8 +43,10 @@ public class UserController {
         this.userDto = new UserDto();
         this.personDto = new PersonDto();
         this.partnerDto = new PartnerDto();
+        this.guestDto = new GuestDto();
         this.userService = new Service();
         this.partnerService = new Service();
+        this.guestService = new Service();
     }
 
     protected void menuUser(String role) {
@@ -54,7 +62,7 @@ public class UserController {
     private void options(int option) throws Exception{
         switch (option) {
             case 0: {
-                this.create(this.role);
+                this.createUser();
                 break;
             }
             case 1: {
@@ -75,25 +83,6 @@ public class UserController {
         }
     }
 
-    private void create(String role) throws Exception {
-        switch (role) {
-        case "administrador": {
-            this.createUser();
-            Utils.showMessage("El usuario se ha creado con éxito");
-            break;
-        }
-        case "socio": {
-            this.createPartner();
-            Utils.showMessage("El socio se ha creado con éxito");
-            break;
-        }
-        default: {
-            break;
-        }
-        }
-    }
-
-
     private void createUser() throws Exception {
         String[] labels = {"Cedula", "Nombre", "Celular", "Usuario", "Contraseña"};
         Map<String, Object> fieldsToPanel = new HashMap<>(Utils.addFieldsToPanel(labels, role));
@@ -102,7 +91,7 @@ public class UserController {
 
         JPanel panel = (JPanel) fieldsToPanel.get("panel");
 
-        if (Utils.showConfirmDialog(panel, "Crear Usuario")) {
+        if (Utils.showConfirmDialog(panel, "Crear " + this.role)) {
 
             userValidator.validUserName(fieldsMap.get("Usuario").getText());
             userValidator.validPassword(fieldsMap.get("Contraseña").getText());
@@ -117,50 +106,38 @@ public class UserController {
             this.personDto.setNamePerson(fieldsMap.get("Nombre").getText());
             this.personDto.setCellphonePerson(personValidator.validCellphone(fieldsMap.get("Celular").getText()));
 
-            this.userService.createAdmin(this.userDto, this.personDto);
         }
+
+        switch (this.role){
+            case "administrador": {
+                this.userService.createAdmin(this.userDto, this.personDto);
+                break;
+            }
+            case "socio": {
+                this.partnerDto.setIdUserPartner(this.userDto);
+                this.partnerDto.setAmountPartner(this.AMOUNT);
+                this.partnerDto.setTypePartner(this.TYPE);
+                this.partnerService.createPartner(this.partnerDto, this.userDto, this.personDto);
+                break;
+            }
+            case "invitado": {
+                this.partnerDto.setIdUserPartner(this.userDto);
+                this.partnerDto.setAmountPartner(this.AMOUNT);
+                this.partnerDto.setTypePartner(this.TYPE);
+                this.guestDto.setUserIdGuest(this.userDto);
+                this.guestDto.setPartnerIdGuest(this.partnerDto);
+                this.guestDto.setStatusGuest(STATUS);
+                this.guestService.createGuest(this.guestDto, this.partnerDto, this.userDto, this.personDto);
+                break;
+            }
+            default: {
+                break;
+            }
+        }
+
+        Utils.showMessage("El %s se ha creado con éxito".formatted(this.role));
     }
 
-    private void createPartner() throws Exception {
-        String[] labels = {"Cedula", "Nombre", "Celular", "Usuario", "Contraseña"};
-        Map<String, Object> fieldsToPanel = new HashMap<>(Utils.addFieldsToPanel(labels, role));
-        Map<String, JTextField> fieldsMap = new HashMap<>();
-        fieldsMap.putAll((Map<? extends String, ? extends JTextField>) fieldsToPanel.get("fields"));
 
-        JPanel panel = (JPanel) fieldsToPanel.get("panel");
-
-        JTextField amountField = new JTextField(30);
-
-        panel.add(new JLabel( "Fondos: "));
-        panel.add(amountField);
-        panel.add(Box.createVerticalStrut(15));
-
-        panel.add(new JLabel( "Tipo: "));
-        JComboBox<String> typeComboBox = new JComboBox<>(TYPES);
-        panel.add(typeComboBox);
-
-
-        if (Utils.showConfirmDialog(panel, "Crear Socio")) {
-
-            userValidator.validUserName(fieldsMap.get("Usuario").getText());
-            userValidator.validPassword(fieldsMap.get("Contraseña").getText());
-
-            this.userDto.setPasswordUser(fieldsMap.get("Contraseña").getText());
-            this.userDto.setNameUser(fieldsMap.get("Usuario").getText());
-            this.userDto.setRoleUser(this.role);
-
-            personValidator.validName(fieldsMap.get("Nombre").getText());
-
-            this.personDto.setDocumentPerson(personValidator.validDocument(fieldsMap.get("Cedula").getText()));
-            this.personDto.setNamePerson(fieldsMap.get("Nombre").getText());
-            this.personDto.setCellphonePerson(personValidator.validCellphone(fieldsMap.get("Celular").getText()));
-
-            this.partnerDto.setIdUserPartner(this.userDto);
-            this.partnerDto.setAmountPartner(partnerValidator.validAmount(amountField.getText()));
-            this.partnerDto.setTypePartner(typeComboBox.getSelectedItem().toString());
-            this.partnerService.createPartner(this.partnerDto, this.userDto, this.personDto);
-
-        }
-    }
 
 }

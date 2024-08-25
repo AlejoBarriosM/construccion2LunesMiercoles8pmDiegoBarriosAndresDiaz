@@ -7,6 +7,7 @@ import app.dto.*;
 import app.service.interfaces.*;
 
 import java.sql.SQLException;
+import java.util.Objects;
 
 public class Service implements LoginService, AdminService, UserService, PartnerService, GuestService {
 	private UserDao userDao;
@@ -15,6 +16,9 @@ public class Service implements LoginService, AdminService, UserService, Partner
 	private GuestDao guestDao;
 
 	public static UserDto user;
+	public static PersonDto person;
+	public static GuestDto guest;
+	public static PartnerDto partner;
 
 	public Service() {
 		this.userDao = new UserDaoImplementation();
@@ -25,15 +29,26 @@ public class Service implements LoginService, AdminService, UserService, Partner
 
 	@Override
 	public void login(UserDto userDto) throws Exception {
-		UserDto validateDto = userDao.findByUserName(userDto);
-		if (validateDto == null) {
+		user = userDao.findByUserName(userDto);
+		if (user == null) {
 			throw new Exception("Usuario no registrado");
 		}
-		if (!userDto.getPasswordUser().equals(validateDto.getPasswordUser())) {
+		if (!userDto.getPasswordUser().equals(user.getPasswordUser())) {
 			throw new Exception("Usuario o contraseña incorrecto");
 		}
-		userDto.setRoleUser(validateDto.getRoleUser());
-		user = validateDto;
+
+		userDto.setRoleUser(user.getRoleUser());
+		person = personDao.findById(user.getIdPerson().getIdPerson());
+		user.setIdPerson(person);
+
+		switch (user.getRoleUser()){
+			case "socio":{
+                partner = partnerDao.findByDocument(user);
+			}
+			case "invitado": {
+				guest = guestDao.findByUserName(user);
+			}
+		}
 
 		Utils.showMessage("Se ha iniciado sesion");
 	}
@@ -57,12 +72,15 @@ public class Service implements LoginService, AdminService, UserService, Partner
 	}
 
 	@Override
-	public void createGuest(GuestDto guestDto, PartnerDto partnerDto, UserDto userDto, PersonDto personDto) throws Exception {
-		this.createUser(userDto, personDto);
-		userDto = userDao.findByUserName(userDto);
-		this.partnerDao.createPartner(partnerDto, userDto);
-		partnerDto = partnerDao.findByDocument(partnerDto);
-		this.guestDao.createGuest(guestDto,partnerDto, userDto);
+	public void createGuest(GuestDto guestDto, UserDto userDto, PersonDto personDto) throws Exception {
+		if (this.partnerDao.numberOfGuests(partner) <= 3 && Objects.equals(partner.getTypePartner(), "Regular")){
+			throw new Exception("Ya no tiene cupos disponibles");
+		} else {
+			this.createUser(userDto, personDto);
+			userDto = userDao.findByUserName(userDto);
+			guestDto.setPartnerIdGuest(partner);
+			this.guestDao.createGuest(guestDto, partner, userDto);
+		}
 	}
 
 	private void createPerson(PersonDto personDto) throws Exception {

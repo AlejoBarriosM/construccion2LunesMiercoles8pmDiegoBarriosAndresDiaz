@@ -13,7 +13,7 @@ import java.sql.PreparedStatement;
 public class GuestDaoImplementation implements GuestDao {
 
     @Override
-    public GuestDto findByUserName(GuestDto guestDto) throws Exception {
+    public GuestDto findByUserName(UserDto userDto) throws Exception {
         return null;
     }
 
@@ -28,7 +28,7 @@ public class GuestDaoImplementation implements GuestDao {
         String query = "INSERT INTO GUEST(USERID, PARTNERID, STATUS) VALUES (?,?,?)";
         PreparedStatement preparedStatement = MYSQLConnection.getConnection().prepareStatement(query);
         preparedStatement.setLong(1, userDto.getIdUser());
-        preparedStatement.setLong(1, partnerDto.getIdPartner());
+        preparedStatement.setLong(2, partnerDto.getIdPartner());
         preparedStatement.setString(3, user.getStatusGuest());
         preparedStatement.execute();
         preparedStatement.close();

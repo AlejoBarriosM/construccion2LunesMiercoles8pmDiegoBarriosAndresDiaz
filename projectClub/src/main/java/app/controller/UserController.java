@@ -121,13 +121,9 @@ public class UserController {
                 break;
             }
             case "invitado": {
-                this.partnerDto.setIdUserPartner(this.userDto);
-                this.partnerDto.setAmountPartner(this.AMOUNT);
-                this.partnerDto.setTypePartner(this.TYPE);
                 this.guestDto.setUserIdGuest(this.userDto);
-                this.guestDto.setPartnerIdGuest(this.partnerDto);
                 this.guestDto.setStatusGuest(STATUS);
-                this.guestService.createGuest(this.guestDto, this.partnerDto, this.userDto, this.personDto);
+                this.guestService.createGuest(this.guestDto, this.userDto, this.personDto);
                 break;
             }
             default: {

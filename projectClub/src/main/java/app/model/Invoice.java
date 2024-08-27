@@ -1,17 +1,15 @@
+package app.model;
 
-package app.dto;
-
-
-public class InvoiceDto {
+public class Invoice {
 
     private long idInvoice;
-    private PersonDto idPerson;
-    private PartnerDto idPartner;
+    private Person idPerson;
+    private Partner idPartner;
     private String creationDateInvoice;
     private double amountInvoice;
     private String statusInvoice;
 
-    public InvoiceDto() { }
+    public Invoice() {  }
 
     public long getIdInvoice() {
         return idInvoice;
@@ -21,19 +19,19 @@ public class InvoiceDto {
         this.idInvoice = idInvoice;
     }
 
-    public PersonDto getIdPerson() {
+    public Person getIdPerson() {
         return idPerson;
     }
 
-    public void setIdPerson(PersonDto idPerson) {
+    public void setIdPerson(Person idPerson) {
         this.idPerson = idPerson;
     }
 
-    public PartnerDto getIdPartner() {
+    public Partner getIdPartner() {
         return idPartner;
     }
 
-    public void setIdPartner(PartnerDto idPartner) {
+    public void setIdPartner(Partner idPartner) {
         this.idPartner = idPartner;
     }
 

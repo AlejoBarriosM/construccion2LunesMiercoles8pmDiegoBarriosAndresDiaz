@@ -7,24 +7,30 @@ import app.dto.*;
 import app.service.interfaces.*;
 
 import java.sql.SQLException;
-import java.util.Objects;
 
-public class Service implements LoginService, AdminService, UserService, PartnerService, GuestService {
+public class Service implements LoginService, AdminService, UserService, PartnerService, GuestService, InvoiceService {
+
 	private UserDao userDao;
 	private PersonDao personDao;
 	private PartnerDao partnerDao;
 	private GuestDao guestDao;
+	private InvoiceDao invoiceDao;
 
 	public static UserDto user;
 	public static PersonDto person;
 	public static GuestDto guest;
 	public static PartnerDto partner;
 
+	private final long AMOUNT = 50000;
+	private final String TYPE = "Regular";
+	private final String STATUS = "Activo";
+
 	public Service() {
 		this.userDao = new UserDaoImplementation();
 		this.personDao = new PersonDaoImplementation();
 		this.partnerDao = new PartnerDaoImplementation();
 		this.guestDao = new GuestDaoImplementation();
+		this.invoiceDao = new InvoiceDaoImplementation();
 	}
 
 	@Override
@@ -43,10 +49,10 @@ public class Service implements LoginService, AdminService, UserService, Partner
 
 		switch (user.getRoleUser()){
 			case "socio":{
-                partner = partnerDao.findByDocument(user);
+                partner = partnerDao.findByIdUser(user);
 			}
 			case "invitado": {
-				guest = guestDao.findByUserName(user);
+				guest = guestDao.findByUserId(user);
 			}
 		}
 
@@ -54,9 +60,12 @@ public class Service implements LoginService, AdminService, UserService, Partner
 	}
 
 	@Override
-	public void logout() {
+	public boolean logout() {
 		user = null;
+		partner = null;
+		guest = null;
 		Utils.showMessage("Se ha cerrado sesion");
+		return false;
 	}
 
 	@Override
@@ -65,22 +74,40 @@ public class Service implements LoginService, AdminService, UserService, Partner
 	}
 
 	@Override
-	public void createPartner(PartnerDto partnerDto, UserDto userDto, PersonDto personDto) throws Exception{
+	public void createPartner(UserDto userDto, PersonDto personDto) throws Exception{
+		PartnerDto partnerDto = new PartnerDto();
 		this.createUser(userDto, personDto);
 		userDto = userDao.findByUserName(userDto);
+		partnerDto.setIdUserPartner(userDto);
+		partnerDto.setAmountPartner(AMOUNT);
+		partnerDto.setTypePartner(TYPE);
 		this.partnerDao.createPartner(partnerDto, userDto);
 	}
 
 	@Override
-	public void createGuest(GuestDto guestDto, UserDto userDto, PersonDto personDto) throws Exception {
-		if (this.partnerDao.numberOfGuests(partner) <= 3 && Objects.equals(partner.getTypePartner(), "Regular")){
-			throw new Exception("Ya no tiene cupos disponibles");
-		} else {
-			this.createUser(userDto, personDto);
-			userDto = userDao.findByUserName(userDto);
-			guestDto.setPartnerIdGuest(partner);
-			this.guestDao.createGuest(guestDto, partner, userDto);
+	public void increaseAmount(PartnerDto partnerDto, Double amount) throws Exception {
+		int maxAmount = partnerDto.getTypePartner().equals("VIP") ? 5000000 : 1000000;
+
+		if ((partnerDto.getAmountPartner() + amount) <= maxAmount) {
+			this.partnerDao.increaseAmount(partnerDto, amount);
+			partner = partnerDao.findByIdUser(user);
+			Utils.showMessage("Se ha incrementado el monto: " + partner.getAmountPartner());
+			return;
 		}
+		throw new Exception("Monto supera los topes");
+	}
+
+	@Override
+	public void createGuest(GuestDto guestDto, UserDto userDto, PersonDto personDto) throws Exception {
+		if (partner.getTypePartner().equals("Regular") && this.partnerDao.numberOfGuests(partner) >= 3 ) {
+			throw new Exception("Ya no tiene cupos disponibles");
+        }
+		this.createUser(userDto, personDto);
+		userDto = userDao.findByUserName(userDto);
+		guestDto.setUserIdGuest(userDto);
+		guestDto.setPartnerIdGuest(partner);
+		guestDto.setStatusGuest(STATUS);
+		this.guestDao.createGuest(guestDto, partner, userDto);
 	}
 
 	private void createPerson(PersonDto personDto) throws Exception {
@@ -105,4 +132,8 @@ public class Service implements LoginService, AdminService, UserService, Partner
 		}
 	}
 
+	@Override
+	public void createInovice(InvoiceDto invoiceDto, InvoiceDetailDto invoiceDetailDto) {
+
+	}
 }

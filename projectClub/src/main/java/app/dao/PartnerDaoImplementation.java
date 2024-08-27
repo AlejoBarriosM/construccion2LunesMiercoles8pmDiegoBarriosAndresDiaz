@@ -13,7 +13,7 @@ import java.sql.ResultSet;
 public class PartnerDaoImplementation implements PartnerDao {
 
     @Override
-    public PartnerDto findByDocument(UserDto userDto) throws Exception {
+    public PartnerDto findByIdUser(UserDto userDto) throws Exception {
         String query = "SELECT * FROM PARTNER WHERE USERID = ?";
         PreparedStatement preparedStatement = MYSQLConnection.getConnection().prepareStatement(query);
         preparedStatement.setLong(1, userDto.getIdUser());
@@ -48,12 +48,12 @@ public class PartnerDaoImplementation implements PartnerDao {
 
     @Override
     public int numberOfGuests(PartnerDto partnerDto) throws Exception {
-        String query = "SELECT COUNT(ID) AS ID FROM PARTNER WHERE ID = ?";
+        String query = "SELECT COUNT(ID) FROM GUEST WHERE PARTNERID = ?";
         PreparedStatement preparedStatement = MYSQLConnection.getConnection().prepareStatement(query);
         preparedStatement.setLong(1, partnerDto.getIdPartner());
         ResultSet resultSet = preparedStatement.executeQuery();
         if (resultSet.next()) {
-            return resultSet.getInt("ID");
+            return resultSet.getInt(1);
         }
         resultSet.close();
         preparedStatement.close();
@@ -61,13 +61,12 @@ public class PartnerDaoImplementation implements PartnerDao {
     }
 
     @Override
-    public void updateAmount(PartnerDto partnerDto, Double amount) throws Exception {
+    public void increaseAmount(PartnerDto partnerDto, Double amount) throws Exception {
         String query = "UPDATE PARTNER SET AMOUNT = AMOUNT + ? WHERE ID = ?";
         PreparedStatement preparedStatement = MYSQLConnection.getConnection().prepareStatement(query);
-        preparedStatement.setLong(1, partnerDto.getIdPartner());
-        preparedStatement.setDouble(2, amount);
-        ResultSet resultSet = preparedStatement.executeQuery();
-        resultSet.close();
+        preparedStatement.setDouble(1, amount);
+        preparedStatement.setLong(2, partnerDto.getIdPartner());
+        preparedStatement.execute();
         preparedStatement.close();
     }
 

@@ -6,6 +6,11 @@ import app.service.Service;
 public class GuestController extends UserController implements ControllerInterface{
 
     private final String[] OPTIONS = {"Cambio Tipo Socio", "Consumos", "Darse de Baja", "Cerrar Sesion"};
+    private Service service;
+
+    public GuestController() {
+        this.service = new Service();
+    }
 
     @Override
     public void session() throws Exception {
@@ -37,7 +42,7 @@ public class GuestController extends UserController implements ControllerInterfa
                 return Utils.showYesNoDialog("Darse de Baja");
             }
             case 3: {
-                return Utils.showYesNoDialog("¿Desea cerrar sesión?");
+                return Utils.showYesNoDialog("¿Desea cerrar sesión?") || (this.service.logout());
             }
             default: {
                 Utils.showError("Ingrese una opcion valida");

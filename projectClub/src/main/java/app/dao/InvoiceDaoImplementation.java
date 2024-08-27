@@ -37,11 +37,12 @@ public class InvoiceDaoImplementation implements InvoiceDao {
 
     @Override
     public boolean payInvoice(InvoiceDto invoiceDto) throws Exception {
-        String query = "UPDATE invoice SET STATUS =? WHERE ID =?";
-        PreparedStatement preparedStatement = MYSQLConnection.getConnection().prepareStatement(query);
-        preparedStatement.setBoolean(1,true);
-        preparedStatement.setInt(2,invoiceDto.getId());
-        int rowsUpdated = preparedStatement.executeUpdate();
-        return rowsUpdated > 0;
+//        String query = "UPDATE invoice SET STATUS =? WHERE ID =?";
+//        PreparedStatement preparedStatement = MYSQLConnection.getConnection().prepareStatement(query);
+//        preparedStatement.setBoolean(1,true);
+//        preparedStatement.setInt(2,invoiceDto.getId());
+//        int rowsUpdated = preparedStatement.executeUpdate();
+//        return rowsUpdated > 0;
+        return true;
     }
 }

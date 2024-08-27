@@ -1,6 +1,5 @@
 package app.controller;
 
-import app.controller.validator.PartnerValidator;
 import app.controller.validator.PersonValidator;
 import app.controller.validator.UserValidator;
 import app.dto.GuestDto;
@@ -20,29 +19,22 @@ public class UserController {
 
     private UserValidator userValidator;
     private PersonValidator personValidator;
-    private PartnerValidator partnerValidator;
     private UserService userService;
     private PartnerService partnerService;
     private GuestService guestService;
 
     private PersonDto personDto;
     private UserDto userDto;
-    private PartnerDto partnerDto;
     private GuestDto guestDto;
 
     private final String[] OPTIONS = {"Crear", "Modificar", "Eliminar", "Salir"};
-    private final long AMOUNT = 50000;
-    private final String TYPE = "Regular";
-    private final String STATUS = "Activo";
     private String role;
 
     public UserController() {
         this.userValidator = new UserValidator();
         this.personValidator = new PersonValidator();
-        this.partnerValidator = new PartnerValidator();
         this.userDto = new UserDto();
         this.personDto = new PersonDto();
-        this.partnerDto = new PartnerDto();
         this.guestDto = new GuestDto();
         this.userService = new Service();
         this.partnerService = new Service();
@@ -85,7 +77,7 @@ public class UserController {
 
     private void createUser() throws Exception {
         String[] labels = {"Cedula", "Nombre", "Celular", "Usuario", "Contraseña"};
-        Map<String, Object> fieldsToPanel = new HashMap<>(Utils.addFieldsToPanel(labels, role));
+        Map<String, Object> fieldsToPanel = new HashMap<>(Utils.addFieldsToPanel(labels));
         Map<String, JTextField> fieldsMap = new HashMap<>();
         fieldsMap.putAll((Map<? extends String, ? extends JTextField>) fieldsToPanel.get("fields"));
 
@@ -114,15 +106,10 @@ public class UserController {
                 break;
             }
             case "socio": {
-                this.partnerDto.setIdUserPartner(this.userDto);
-                this.partnerDto.setAmountPartner(this.AMOUNT);
-                this.partnerDto.setTypePartner(this.TYPE);
-                this.partnerService.createPartner(this.partnerDto, this.userDto, this.personDto);
+                this.partnerService.createPartner(this.userDto, this.personDto);
                 break;
             }
             case "invitado": {
-                this.guestDto.setUserIdGuest(this.userDto);
-                this.guestDto.setStatusGuest(STATUS);
                 this.guestService.createGuest(this.guestDto, this.userDto, this.personDto);
                 break;
             }

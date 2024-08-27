@@ -83,25 +83,46 @@ public class Helper {
 
     public static Invoice parse(InvoiceDto invoiceDto) {
         Invoice invoice = new Invoice();
+        invoice.setIdInvoice(invoiceDto.getIdInvoice());
         invoice.setIdPerson(parse(invoiceDto.getIdPerson()));
         invoice.setIdPartner(parse(invoiceDto.getIdPartner()));
-        invoice.setAmountInvoice(invoiceDto.getTotalAmount());
+        invoice.setCreationDateInvoice(invoiceDto.getCreationDateInvoice());
+        invoice.setAmountInvoice(invoiceDto.getAmountInvoice());
         invoice.setStatusInvoice(invoice.getStatusInvoice());
         return invoice;
     }
 
-
     public static InvoiceDto parse (Invoice invoice) {
         InvoiceDto invoiceDto = new InvoiceDto();
+        invoiceDto.setIdInvoice(invoice.getIdInvoice());
         invoiceDto.setIdPerson(parse(invoice.getIdPerson()));
         invoiceDto.setIdPartner(invoiceDto.getIdPartner());
-        invoiceDto.setTotalAmount(invoice.getAmountInvoice());
+        invoiceDto.setAmountInvoice(invoice.getAmountInvoice());
+        invoiceDto.setCreationDateInvoice(invoice.getCreationDateInvoice());
         invoiceDto.setStatusInvoice(invoice.getStatusInvoice());
         return invoiceDto;
-
-
-
     }
+
+    public static InvoiceDetail parse(InvoiceDetailDto invoiceDetailDto) {
+        InvoiceDetail invoiceDetail = new InvoiceDetail();
+        invoiceDetail.setIdInvoiceDetail(invoiceDetailDto.getIdInvoiceDetail());
+        invoiceDetail.setIdInvoice(parse(invoiceDetailDto.getIdInvoice()));
+        invoiceDetail.setItem(invoiceDetailDto.getItem());
+        invoiceDetail.setDescriptionInvoiceDetail(invoiceDetailDto.getDescriptionInvoiceDetail());
+        invoiceDetail.setAmountInvoiceDetail(invoiceDetailDto.getAmountInvoiceDetail());
+        return invoiceDetail;
+    }
+
+    public static InvoiceDetailDto parse(InvoiceDetail invoiceDetail) {
+        InvoiceDetailDto invoiceDetailDto = new InvoiceDetailDto();
+        invoiceDetailDto.setIdInvoiceDetail(invoiceDetail.getIdInvoiceDetail());
+        invoiceDetailDto.setIdInvoice(parse(invoiceDetail.getIdInvoice()));
+        invoiceDetailDto.setItem(invoiceDetail.getItem());
+        invoiceDetailDto.setDescriptionInvoiceDetail(invoiceDetail.getDescriptionInvoiceDetail());
+        invoiceDetailDto.setAmountInvoiceDetail(invoiceDetail.getAmountInvoiceDetail());
+        return invoiceDetailDto;
+    }
+
 
 
 

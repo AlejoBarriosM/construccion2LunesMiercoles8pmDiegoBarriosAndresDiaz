@@ -7,8 +7,10 @@ import app.service.Service;
 public class AdminController extends UserController implements ControllerInterface {
 
 	private final String[] OPTIONS = {"Usuarios", "Socios", "Historial Facturas", "Promoción VIP", "Cerrar Sesion"};
+	private Service service;
 
 	public AdminController() {
+		this.service = new Service();
 	}
 
 	@Override
@@ -46,7 +48,7 @@ public class AdminController extends UserController implements ControllerInterfa
 				return Utils.showYesNoDialog("Promoción VIP");
 			}
 			case 4: {
-				return Utils.showYesNoDialog("¿Desea cerrar sesión?");
+				return Utils.showYesNoDialog("¿Desea cerrar sesión?") || (this.service.logout());
 			}
 			default: {
 				Utils.showError("Ingrese una opcion valida");

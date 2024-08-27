@@ -1,13 +1,7 @@
 package app.helpers;
 
-import app.dto.InvoiceDto;
-import app.model.Invoice;
-import app.dto.PartnerDto;
-import app.dto.PersonDto;
-import app.dto.UserDto;
-import app.model.Partner;
-import app.model.Person;
-import app.model.User;
+import app.dto.*;
+import app.model.*;
 
 public class Helper {
 
@@ -69,38 +63,66 @@ public class Helper {
         return partner;
     }
 
+    public static Guest parse(GuestDto guestDto) {
+        Guest guest = new Guest();
+        guest.setIdGuest(guestDto.getIdGuest());
+        guest.setUserIdGuest(parse(guestDto.getUserIdGuest()));
+        guest.setPartnerIdGuest(parse(guestDto.getPartnerIdGuest()));
+        guest.setStatusGuest(guestDto.getStatusGuest());
+        return guest;
+    }
 
-    public static PartnerDto parse(Partner partner) {
-        PartnerDto partnerDto = new PartnerDto();
-        partnerDto.setIdPartner(partner.getIdPartner());
-        partnerDto.setIdUserPartner(partner.getIdUserPartner());
-        partnerDto.setAmountPartner(partner.getAmountPartner());
-        partnerDto.setTypePartner(partner.getTypePartner());
-        partnerDto.setCreationDatePartner(partner.getCreationDatePartner());
-        return partnerDto;
+    public static GuestDto parse(Guest guest) {
+        GuestDto guestDto = new GuestDto();
+        guestDto.setIdGuest(guest.getIdGuest());
+        guestDto.setUserIdGuest(parse(guest.getUserIdGuest()));
+        guestDto.setPartnerIdGuest(parse(guest.getPartnerIdGuest()));
+        guestDto.setStatusGuest(guest.getStatusGuest());
+        return guestDto;
     }
 
     public static Invoice parse(InvoiceDto invoiceDto) {
         Invoice invoice = new Invoice();
-        invoice.setIdPerson(invoiceDto.getIdPerson());
-        invoice.setIdPartner(invoiceDto.getIdPartner());
-        invoice.setAmountInvoice(invoiceDto.getTotalAmount());
+        invoice.setIdInvoice(invoiceDto.getIdInvoice());
+        invoice.setIdPerson(parse(invoiceDto.getIdPerson()));
+        invoice.setIdPartner(parse(invoiceDto.getIdPartner()));
+        invoice.setCreationDateInvoice(invoiceDto.getCreationDateInvoice());
+        invoice.setAmountInvoice(invoiceDto.getAmountInvoice());
         invoice.setStatusInvoice(invoice.getStatusInvoice());
         return invoice;
     }
 
-
     public static InvoiceDto parse (Invoice invoice) {
         InvoiceDto invoiceDto = new InvoiceDto();
-        invoiceDto.setIdPerson(invoice.getIdPerson());
+        invoiceDto.setIdInvoice(invoice.getIdInvoice());
+        invoiceDto.setIdPerson(parse(invoice.getIdPerson()));
         invoiceDto.setIdPartner(invoiceDto.getIdPartner());
-        invoiceDto.setTotalAmount(invoice.getAmountInvoice());
+        invoiceDto.setAmountInvoice(invoice.getAmountInvoice());
+        invoiceDto.setCreationDateInvoice(invoice.getCreationDateInvoice());
         invoiceDto.setStatusInvoice(invoice.getStatusInvoice());
         return invoiceDto;
-
-
-
     }
+
+    public static InvoiceDetail parse(InvoiceDetailDto invoiceDetailDto) {
+        InvoiceDetail invoiceDetail = new InvoiceDetail();
+        invoiceDetail.setIdInvoiceDetail(invoiceDetailDto.getIdInvoiceDetail());
+        invoiceDetail.setIdInvoice(parse(invoiceDetailDto.getIdInvoice()));
+        invoiceDetail.setItem(invoiceDetailDto.getItem());
+        invoiceDetail.setDescriptionInvoiceDetail(invoiceDetailDto.getDescriptionInvoiceDetail());
+        invoiceDetail.setAmountInvoiceDetail(invoiceDetailDto.getAmountInvoiceDetail());
+        return invoiceDetail;
+    }
+
+    public static InvoiceDetailDto parse(InvoiceDetail invoiceDetail) {
+        InvoiceDetailDto invoiceDetailDto = new InvoiceDetailDto();
+        invoiceDetailDto.setIdInvoiceDetail(invoiceDetail.getIdInvoiceDetail());
+        invoiceDetailDto.setIdInvoice(parse(invoiceDetail.getIdInvoice()));
+        invoiceDetailDto.setItem(invoiceDetail.getItem());
+        invoiceDetailDto.setDescriptionInvoiceDetail(invoiceDetail.getDescriptionInvoiceDetail());
+        invoiceDetailDto.setAmountInvoiceDetail(invoiceDetail.getAmountInvoiceDetail());
+        return invoiceDetailDto;
+    }
+
 
 
 

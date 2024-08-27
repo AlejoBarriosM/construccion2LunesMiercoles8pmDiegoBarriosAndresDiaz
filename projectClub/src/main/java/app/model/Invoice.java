@@ -9,8 +9,7 @@ public class Invoice {
     private double amountInvoice;
     private String statusInvoice;
 
-    public Invoice() {
-    }
+    public Invoice() {  }
 
     public long getIdInvoice() {
         return idInvoice;

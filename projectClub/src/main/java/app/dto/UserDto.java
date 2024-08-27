@@ -1,7 +1,5 @@
 package app.dto;
 
-import app.dto.PersonDto;
-
 public class UserDto {
 
     private long idUser;

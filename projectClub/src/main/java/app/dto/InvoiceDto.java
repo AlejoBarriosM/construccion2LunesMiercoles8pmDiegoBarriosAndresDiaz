@@ -1,52 +1,56 @@
 
 package app.dto;
-import java.util.Date;
+
 
 public class InvoiceDto {
-    
-    private int id;
-    private int idPerson;
-    private int idPartner;
-    private Date date;
-    private double totalAmount;
+
+    private long idInvoice;
+    private PersonDto idPerson;
+    private PartnerDto idPartner;
+    private String creationDateInvoice;
+    private double amountInvoice;
     private String statusInvoice;
 
+    public InvoiceDto() { }
 
-    public InvoiceDto(){
-    }
-    public int getIdPerson(){return idPerson;}
-
-    public void setIdPerson(int idPerson){this.idPerson = idPerson;}
-
-    public int getId() {
-        return id;
+    public long getIdInvoice() {
+        return idInvoice;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setIdInvoice(long idInvoice) {
+        this.idInvoice = idInvoice;
     }
-    
-    public int getIdPartner() {
+
+    public PersonDto getIdPerson() {
+        return idPerson;
+    }
+
+    public void setIdPerson(PersonDto idPerson) {
+        this.idPerson = idPerson;
+    }
+
+    public PartnerDto getIdPartner() {
         return idPartner;
     }
 
-    public void setIdPartner(int idPartner) {
+    public void setIdPartner(PartnerDto idPartner) {
         this.idPartner = idPartner;
     }
-    
-    public Date getDate() {
-        return date;
-    }
-    public void setDate(Date date) {
-        this.date = date;
+
+    public String getCreationDateInvoice() {
+        return creationDateInvoice;
     }
 
-    public double getTotalAmount() {
-        return totalAmount;
+    public void setCreationDateInvoice(String creationDateInvoice) {
+        this.creationDateInvoice = creationDateInvoice;
     }
 
-    public void setTotalAmount(double totalAmount) {
-        this.totalAmount = totalAmount;
+    public double getAmountInvoice() {
+        return amountInvoice;
+    }
+
+    public void setAmountInvoice(double amountInvoice) {
+        this.amountInvoice = amountInvoice;
     }
 
     public String getStatusInvoice() {
@@ -56,9 +60,4 @@ public class InvoiceDto {
     public void setStatusInvoice(String statusInvoice) {
         this.statusInvoice = statusInvoice;
     }
-    
-    
-    
-    
-    
 }

@@ -7,8 +7,10 @@ import app.service.Service;
 public class AdminController extends UserController implements ControllerInterface {
 
 	private final String[] OPTIONS = {"Usuarios", "Socios", "Historial Facturas", "Promoción VIP", "Cerrar Sesion"};
+	private Service service;
 
 	public AdminController() {
+		this.service = new Service();
 	}
 
 	@Override
@@ -31,28 +33,28 @@ public class AdminController extends UserController implements ControllerInterfa
 
 	private boolean options(int option) throws Exception{
 		switch (option) {
-		case 0: {
-			super.menuUser("administrador");
-			return true;
-		}
-		case 1: {
-			super.menuUser("socio");
-			return true;
-		}
-		case 2: {
-            return Utils.showYesNoDialog("Historial Facturas");
-		}
-		case 3: {
-            return Utils.showYesNoDialog("Promoción VIP");
-		}
-		case 4: {
-            return Utils.showYesNoDialog("¿Desea cerrar sesión?");
-		}
-		default: {
-			Utils.showError("Ingrese una opcion valida");
-			return true;
-		}
-		}
+			case 0: {
+				super.menuUser("administrador");
+				return true;
+			}
+			case 1: {
+				super.menuUser("socio");
+				return true;
+			}
+			case 2: {
+				return Utils.showYesNoDialog("Historial Facturas");
+			}
+			case 3: {
+				return Utils.showYesNoDialog("Promoción VIP");
+			}
+			case 4: {
+				return Utils.showYesNoDialog("¿Desea cerrar sesión?") || (this.service.logout());
+			}
+			default: {
+				Utils.showError("Ingrese una opcion valida");
+				return true;
+			}
+			}
 	}
 
 }

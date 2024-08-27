@@ -65,4 +65,25 @@ public class PersonDaoImplementation implements PersonDao {
         return null;
     }
 
+    @Override
+    public PersonDto findById(Long id) throws Exception {
+        String query = "SELECT ID,NAME,DOCUMENT,CELLPHONE FROM PERSON WHERE ID = ?";
+        PreparedStatement preparedStatement = MYSQLConnection.getConnection().prepareStatement(query);
+        preparedStatement.setLong(1, id);
+        ResultSet resulSet = preparedStatement.executeQuery();
+        if (resulSet.next()) {
+            Person person = new Person();
+            person.setIdPerson(resulSet.getLong("ID"));
+            person.setNamePerson(resulSet.getString("NAME"));
+            person.setDocumentPerson(resulSet.getLong("DOCUMENT"));
+            person.setCellphonePerson(resulSet.getLong("CELLPHONE"));
+            resulSet.close();
+            preparedStatement.close();
+            return Helper.parse(person);
+        }
+        resulSet.close();
+        preparedStatement.close();
+        return null;
+    }
+
 }

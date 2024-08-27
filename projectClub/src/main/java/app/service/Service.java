@@ -1,51 +1,71 @@
 package app.service;
 
 import app.controller.Utils;
-import app.dao.PartnerDaoImplementation;
-import app.dao.PersonDaoImplementation;
-import app.dao.UserDaoImplementation;
+import app.dao.*;
 import app.dao.interfaces.*;
 import app.dto.*;
-import app.model.Partner;
-import app.service.interfaces.AdminService;
-import app.service.interfaces.LoginService;
-import app.service.interfaces.PartnerService;
-import app.service.interfaces.UserService;
+import app.service.interfaces.*;
 
 import java.sql.SQLException;
 
-public class Service implements LoginService, AdminService, UserService, PartnerService {
+public class Service implements LoginService, AdminService, UserService, PartnerService, GuestService, InvoiceService {
+
 	private UserDao userDao;
 	private PersonDao personDao;
 	private PartnerDao partnerDao;
+	private GuestDao guestDao;
+	private InvoiceDao invoiceDao;
+
 	public static UserDto user;
 	public static PersonDto person;
-	public static Partner partner;
+	public static GuestDto guest;
+	public static PartnerDto partner;
+
+	private final long AMOUNT = 50000;
+	private final String TYPE = "Regular";
+	private final String STATUS = "Activo";
 
 	public Service() {
 		this.userDao = new UserDaoImplementation();
 		this.personDao = new PersonDaoImplementation();
 		this.partnerDao = new PartnerDaoImplementation();
+		this.guestDao = new GuestDaoImplementation();
+		this.invoiceDao = new InvoiceDaoImplementation();
 	}
 
 	@Override
 	public void login(UserDto userDto) throws Exception {
-		UserDto validateDto = userDao.findByUserName(userDto);
-		if (validateDto == null) {
+		user = userDao.findByUserName(userDto);
+		if (user == null) {
 			throw new Exception("Usuario no registrado");
 		}
-		if (!userDto.getPasswordUser().equals(validateDto.getPasswordUser())) {
+		if (!userDto.getPasswordUser().equals(user.getPasswordUser())) {
 			throw new Exception("Usuario o contraseña incorrecto");
 		}
-		userDto.setRoleUser(validateDto.getRoleUser());
-		user = validateDto;
+
+		userDto.setRoleUser(user.getRoleUser());
+		person = personDao.findById(user.getIdPerson().getIdPerson());
+		user.setIdPerson(person);
+
+		switch (user.getRoleUser()){
+			case "socio":{
+                partner = partnerDao.findByIdUser(user);
+			}
+			case "invitado": {
+				guest = guestDao.findByUserId(user);
+			}
+		}
+
 		Utils.showMessage("Se ha iniciado sesion");
 	}
 
 	@Override
-	public void logout() {
+	public boolean logout() {
 		user = null;
+		partner = null;
+		guest = null;
 		Utils.showMessage("Se ha cerrado sesion");
+		return false;
 	}
 
 	@Override
@@ -54,25 +74,40 @@ public class Service implements LoginService, AdminService, UserService, Partner
 	}
 
 	@Override
-	public void createPartner(PartnerDto partnerDto, UserDto userDto, PersonDto personDto) throws Exception{
+	public void createPartner(UserDto userDto, PersonDto personDto) throws Exception{
+		PartnerDto partnerDto = new PartnerDto();
 		this.createUser(userDto, personDto);
 		userDto = userDao.findByUserName(userDto);
+		partnerDto.setIdUserPartner(userDto);
+		partnerDto.setAmountPartner(AMOUNT);
+		partnerDto.setTypePartner(TYPE);
 		this.partnerDao.createPartner(partnerDto, userDto);
 	}
 
-	private void createUser(UserDto userDto, PersonDto personDto) throws Exception {
-		this.createPerson(personDto);
-		personDto = personDao.findByDocument(personDto);
-		userDto.setIdPerson(personDto);
-		if (this.userDao.existsByUserName(userDto)) {
-			//this.personDao.deletePerson(userDto.getIdPerson());
-			throw new Exception("El nombre de usuario ya está siendo usado");
+	@Override
+	public void increaseAmount(PartnerDto partnerDto, Double amount) throws Exception {
+		int maxAmount = partnerDto.getTypePartner().equals("VIP") ? 5000000 : 1000000;
+
+		if ((partnerDto.getAmountPartner() + amount) <= maxAmount) {
+			this.partnerDao.increaseAmount(partnerDto, amount);
+			partner = partnerDao.findByIdUser(user);
+			Utils.showMessage("Se ha incrementado el monto: " + partner.getAmountPartner());
+			return;
 		}
-		try {
-			this.userDao.createUser(userDto);
-		} catch (SQLException e) {
-			this.personDao.deletePerson(userDto.getIdPerson());
-		}
+		throw new Exception("Monto supera los topes");
+	}
+
+	@Override
+	public void createGuest(GuestDto guestDto, UserDto userDto, PersonDto personDto) throws Exception {
+		if (partner.getTypePartner().equals("Regular") && this.partnerDao.numberOfGuests(partner) >= 3 ) {
+			throw new Exception("Ya no tiene cupos disponibles");
+        }
+		this.createUser(userDto, personDto);
+		userDto = userDao.findByUserName(userDto);
+		guestDto.setUserIdGuest(userDto);
+		guestDto.setPartnerIdGuest(partner);
+		guestDto.setStatusGuest(STATUS);
+		this.guestDao.createGuest(guestDto, partner, userDto);
 	}
 
 	private void createPerson(PersonDto personDto) throws Exception {
@@ -82,4 +117,23 @@ public class Service implements LoginService, AdminService, UserService, Partner
 		this.personDao.createPerson(personDto);
 	}
 
+	private void createUser(UserDto userDto, PersonDto personDto) throws Exception {
+		this.createPerson(personDto);
+		personDto = personDao.findByDocument(personDto);
+		userDto.setIdPerson(personDto);
+		if (this.userDao.existsByUserName(userDto)) {
+			this.personDao.deletePerson(userDto.getIdPerson());
+			throw new Exception("El nombre de usuario ya está siendo usado");
+		}
+		try {
+			this.userDao.createUser(userDto);
+		} catch (SQLException e) {
+			this.personDao.deletePerson(userDto.getIdPerson());
+		}
+	}
+
+	@Override
+	public void createInovice(InvoiceDto invoiceDto, InvoiceDetailDto invoiceDetailDto) {
+
+	}
 }

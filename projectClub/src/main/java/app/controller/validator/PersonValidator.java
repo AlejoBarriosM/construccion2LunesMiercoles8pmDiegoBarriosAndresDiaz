@@ -11,8 +11,12 @@ public class PersonValidator extends CommonsValidator {
 	}
 	
 	public long validCellphone(String cellphone) throws Exception{
-		return super.isValidLong("La edad de la persona", cellphone);
+		if (cellphone.length() <= 10){
+			return super.isValidLong("El celular de la persona", cellphone);
+		} else {
+			throw new Exception("El celular de la persona no debe tener mas de 10 caracteres");
+		}
 	}
-	
+
 
 }

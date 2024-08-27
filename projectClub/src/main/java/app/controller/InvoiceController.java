@@ -1,121 +1,110 @@
 package app.controller;
 
-import static app.config.MYSQLConnection.getConnection;
-import app.dao.interfaces.InvoiceDao;
-import app.dto.InvoiceDto;
-import app.service.InvoiceService;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.util.List;
-import javax.swing.JOptionPane;
+import app.controller.validator.InvoiceValidator;
+import app.dto.InvoiceDetailDto;
+import app.dto.InvoiceDto;
+import app.dto.PartnerDto;
+import app.service.Service;
+import app.service.interfaces.InvoiceService;
+
+import javax.swing.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class InvoiceController {
 
-    private InvoiceDao invoiceDao;
+    private InvoiceDto invoiceDto;
+    private InvoiceDetailDto invoiceDetailDto;
     private InvoiceService invoiceService;
+    private InvoiceValidator invoiceValidator;
+    private PartnerDto partnerDto;
+
+    private final String[] OPTIONS = {"Crear Factura", "Ver Facturas", "Pagar facturas", "Salir"};
 
     public InvoiceController() {
-        this.invoiceDao = new InvoiceDao(getConnection()) {
-
-            @Override
-            public void createInvoice(InvoiceDto invoice) throws Exception {
-
-            }
-
-            @Override
-            public void updateInvoice(InvoiceDto invoice) throws Exception {
-
-            }
-
-            @Override
-            public void deleteInvoice(InvoiceDto invoice) throws Exception {
-
-            }
-
-            @Override
-            public boolean payInvoice(InvoiceDto invoice) throws Exception {
-                return false;
-            }
-        };
-        this.invoiceService = new InvoiceService(invoiceDao);
+        this.invoiceDto = new InvoiceDto();
+        this.invoiceDetailDto = new InvoiceDetailDto();
+        this.invoiceService = new Service();
+        this.invoiceValidator = new InvoiceValidator();
+        this.partnerDto = new PartnerDto();
     }
 
-    @Override
-    public void session() throws Exception {
-        boolean session = true;
-        while (session) {
-            session = true;
-        }
-    }
+    public boolean menuInvoice() {
+        this.partnerDto = Service.partner;
 
-    private boolean menu() {
+        String message = "\nMonto: " + partnerDto.getAmountPartner()
+                + "\nFacturas pendientes: " + partnerDto.getTypePartner()
+                + "\nValor pendientes " + partnerDto.getTypePartner()
+                + "\n\nSelecciona una opción:\n\n";
+
         try {
-            String[] options = {"Crear Factura", "Ver todas las Facturas", "Salir"};
-            int choice = Utils.showMenu("Menú de Facturas", "Seleccione una opción", options);
-            switch (choice) {
-
-                case 0:
-                    createInvoice();
-                    return true;
-
-                case 1:
-                    viewAllInvoices();
-                    return true;
-
-                case 2:
-                    JOptionPane.showMessageDialog(null, "Saliendo del menú de Facturas.");
-                    return false;
-
-                default:
-                    JOptionPane.showMessageDialog(null, "Opción no válida. Inténtelo de nuevo.");
-                    return true;
-
-            }
-
+            int option = Utils.showMenu("Menú Facturas", message, OPTIONS);
+            return options(option);
         } catch (Exception e) {
             Utils.showError(e.getMessage());
             return true;
         }
     }
 
-    private void createInvoice() {
-        try {
-            int id = Utils.promptIntInput("Ingrese el ID de la factura:");
-            int idPartner = Utils.promptIntInput("Ingrese el ID del socio:");
-            java.sql.Date date = java.sql.Date.valueOf(Utils.promptInput("Ingrese la fecha de la Facutra (yyyy-mm-dd)"));
-            double totalAmount = Utils.promptDoubleInput("Ingrese el monto toal de la factura:");
-
-            InvoiceDto invoiceDto = new InvoiceDto(id, idPartner, date, totalAmount);
-            invoiceService.createInvoice(invoiceDto);
-            Utils.showMessage("Factura creada exitosamente.");
-        } catch (Exception e) {
-            Utils.showError("Error al crear la factura: " + e.getMessage());
-        }
-    }
-
-    private void viewAllInvoices() {
-        try {
-            List<InvoiceDto> invoices = invoiceService.getAllInvoices();
-            for (InvoiceDto invoice : invoices) {
-                JOptionPane.showMessageDialog(null, "ID: " + invoice.getId()
-                        + "\n, Socio ID: " + invoice.getIdPartner()
-                        + "\n, Fecha: " + invoice.getDate()
-                        + "\n, Monto Total: " + invoice.getTotalAmount());
+    private boolean options(int option) throws Exception{
+        switch (option) {
+            case 0: {
+                this.createInvoice();
+                return true;
             }
-        } catch (Exception e) {
-            Utils.showError("Error al recuperar las facturas: " + e.getMessage());
+            case 1: {
+
+                return Utils.showYesNoDialog("Ver Facturas");
+            }
+            case 2: {
+                return Utils.showYesNoDialog("Pagar Facturas");
+            }
+            case 3: {
+                return !Utils.showYesNoDialog("Salir");
+            }
+            default: {
+                Utils.showError("Ingrese una opcion valida");
+                return true;
+            }
         }
     }
 
+    private void createInvoice() throws Exception {
+        String[] labels = {"Número de ítem", "Concepto", "Valor"};
+        Map<String, Object> fieldsToPanel = new HashMap<>(Utils.addFieldsToPanel(labels));
+        Map<String, JTextField> fieldsMap = new HashMap<>();
+        fieldsMap.putAll((Map<? extends String, ? extends JTextField>) fieldsToPanel.get("fields"));
 
-    private Connection getConnection() {
-        try {
-            return DriverManager.getConnection("jdbc:mysql://localhost:3306/tu_base_de_datos", "usuario", "contraseña");
-        } catch (Exception e) {
-            throw new RuntimeException("Eror al conectar con la base de datos", e);
+        JPanel panel = (JPanel) fieldsToPanel.get("panel");
+
+        if (Utils.showConfirmDialog(panel, "Crear Factura")) {
+
+            invoiceValidator.validDesciption(fieldsMap.get("Concepto").getText());
+            invoiceDto.setAmountInvoice(invoiceValidator.validItemValue(fieldsMap.get("Valor").getText()));
+            invoiceDetailDto.setDescriptionInvoiceDetail(fieldsMap.get("Concepto").getText());
+            invoiceDetailDto.setItem(invoiceValidator.validItemValue(fieldsMap.get("Número de ítem").getText()));
+            invoiceDetailDto.setAmountInvoiceDetail(invoiceValidator.validItemValue(fieldsMap.get("Valor").getText()));
+
+
         }
     }
+
+//    private void viewAllInvoices() {
+//        try {
+//            List<InvoiceDto> invoices = invoiceService.getAllInvoices();
+//            for (InvoiceDto invoice : invoices) {
+//                JOptionPane.showMessageDialog(null, "ID: " + invoice.getId()
+//                        + "\n, Socio ID: " + invoice.getIdPartner()
+//                        + "\n, Fecha: " + invoice.getDate()
+//                        + "\n, Monto Total: " + invoice.getTotalAmount());
+//            }
+//        } catch (Exception e) {
+//            Utils.showError("Error al recuperar las facturas: " + e.getMessage());
+//        }
+//    }
+
+
+
 
 }

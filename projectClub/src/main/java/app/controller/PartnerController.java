@@ -1,14 +1,31 @@
 package app.controller;
 
+import app.controller.validator.PartnerValidator;
+import app.dto.PartnerDto;
 import app.service.Service;
+import app.service.interfaces.PartnerService;
+
+import javax.swing.*;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class PartnerController extends UserController implements ControllerInterface{
 
+    private PartnerValidator partnerValidator;
+    private PartnerDto partnerDto;
+    private PartnerService partnerService;
+    private Service service;
+    private InvoiceController invoiceController;
 
-    private final String[] OPTIONS = {"Invitados", "Fondos", "Cambio Suscripción", "Darse de baja", "Cerrar Sesion"};
+    private final String[] OPTIONS = {"Invitados", "Aumentar Fondos", "Facturas", "Cambio Suscripción", "Darse de baja", "Cerrar Sesion"};
 
     public PartnerController() {
+        this.partnerValidator = new PartnerValidator();
+        this.partnerDto = new PartnerDto();
+        this.partnerService = new Service();
+        this.service = new Service();
+        this.invoiceController = new InvoiceController();
     }
 
     @Override
@@ -20,8 +37,16 @@ public class PartnerController extends UserController implements ControllerInter
     }
 
     private boolean menuPartner() {
+        this.partnerDto = Service.partner;
+
+        String message = "Bienvenido\n"
+                + "\nNombre: " + Service.user.getNameUser()
+                + "\nMonto: " + partnerDto.getAmountPartner()
+                + "\nTipo: " + partnerDto.getTypePartner()
+                + "\n\nSelecciona una opción:\n\n";
+
         try {
-            int option = Utils.showMenu("Menú Principal", "Bienvenido " + Service.user.getNameUser() + "\nSelecciona una opción:", OPTIONS);
+            int option = Utils.showMenu("Menú Principal", message, OPTIONS);
             return options(option);
         } catch (Exception e) {
             Utils.showError(e.getMessage());
@@ -32,26 +57,40 @@ public class PartnerController extends UserController implements ControllerInter
     private boolean options(int option) throws Exception{
         switch (option) {
             case 0: {
-                super.menuUser("administrador");
+                super.menuUser("invitado");
                 return true;
             }
             case 1: {
-                super.menuUser("socio");
+                this.increaseAmount();
                 return true;
             }
             case 2: {
+
                 return Utils.showYesNoDialog("Historial Facturas");
             }
             case 3: {
                 return Utils.showYesNoDialog("Promoción VIP");
             }
             case 4: {
-                return Utils.showYesNoDialog("¿Desea cerrar sesión?");
+                return Utils.showYesNoDialog("¿Desea cerrar sesión?") || (this.service.logout());
             }
             default: {
                 Utils.showError("Ingrese una opcion valida");
                 return true;
             }
+        }
+    }
+
+    private void increaseAmount () throws Exception {
+        String[] labels = {"Monto"};
+        Map<String, Object> fieldsToPanel = new HashMap<>(Utils.addFieldsToPanel(labels));
+        Map<String, JTextField> fieldsMap = new HashMap<>();
+        fieldsMap.putAll((Map<? extends String, ? extends JTextField>) fieldsToPanel.get("fields"));
+
+        JPanel panel = (JPanel) fieldsToPanel.get("panel");
+
+        if (Utils.showConfirmDialog(panel, "Aumentar Monto")) {
+            this.partnerService.increaseAmount(this.partnerDto, partnerValidator.validAmount(fieldsMap.get("Monto").getText()));
         }
     }
 

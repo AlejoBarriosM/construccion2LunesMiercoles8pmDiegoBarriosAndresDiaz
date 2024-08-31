@@ -7,12 +7,12 @@ public class InvoiceValidator extends CommonsValidator {
         super.isValidString("La descripción del producto: ", description);
     }
 
-    public Double validItemNumber (String itemNumber) throws Exception{
-        return super.isValidDouble("El número del item: ", itemNumber);
+    public Double validItemValue (String itemNumber) throws Exception{
+        return super.isValidDouble("El valor del item: ", itemNumber);
     }
 
-    public long validItemValue (String itemValue) throws Exception{
-        return super.isValidLong("El valor del item: ", itemValue);
+    public long validItemNumber (String itemValue) throws Exception{
+        return super.isValidLong("El número del item: ", itemValue);
     }
 
 }

@@ -7,6 +7,7 @@ import app.dto.*;
 import app.service.interfaces.*;
 
 import java.sql.SQLException;
+import java.util.Map;
 
 public class Service implements LoginService, AdminService, UserService, PartnerService, GuestService, InvoiceService {
 
@@ -24,6 +25,7 @@ public class Service implements LoginService, AdminService, UserService, Partner
 	private final long AMOUNT = 50000;
 	private final String TYPE = "Regular";
 	private final String STATUS = "Activo";
+	private final String STATUSINVOICE = "Debe";
 
 	public Service() {
 		this.userDao = new UserDaoImplementation();
@@ -133,7 +135,34 @@ public class Service implements LoginService, AdminService, UserService, Partner
 	}
 
 	@Override
-	public void createInovice(InvoiceDto invoiceDto, InvoiceDetailDto invoiceDetailDto) {
+	public void createInovice(InvoiceDto invoiceDto, Map<Long, InvoiceDetailDto> items) throws Exception {
+		invoiceDto.setIdPerson(user.getIdPerson());
+		invoiceDto.setStatusInvoice(STATUSINVOICE);
+		InvoiceDetailDto invoiceDetailDto = new InvoiceDetailDto();
 
+		switch (user.getRoleUser()){
+			case "socio":{
+				invoiceDto.setIdPartner(partner);
+				break;
+			}
+			case "invitado": {
+				invoiceDto.setIdPartner(guest.getPartnerIdGuest());
+				break;
+			}
+		}
+
+		invoiceDto.setIdInvoice(this.invoiceDao.createInvoice(invoiceDto));
+		for (Map.Entry<Long, InvoiceDetailDto> entry : items.entrySet()){
+			invoiceDetailDto.setIdInvoice(invoiceDto);
+			invoiceDetailDto.setItem(entry.getKey());
+			invoiceDetailDto.setDescriptionInvoiceDetail(entry.getValue().getDescriptionInvoiceDetail());
+			invoiceDetailDto.setAmountInvoiceDetail(entry.getValue().getAmountInvoiceDetail());
+			this.invoiceDao.createDetailInvoice(invoiceDetailDto);
+		}
+	}
+
+	@Override
+	public Map<InvoiceDto, Map<Long, InvoiceDetailDto>> showAllInvoices() throws Exception {
+		return invoiceDao.showAllInvoices();
 	}
 }

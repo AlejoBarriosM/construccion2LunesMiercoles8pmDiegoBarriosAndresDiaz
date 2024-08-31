@@ -2,6 +2,7 @@ package app.dao;
 
 import app.config.MYSQLConnection;
 import app.dao.interfaces.PartnerDao;
+import app.dao.interfaces.UserDao;
 import app.dto.PartnerDto;
 import app.dto.UserDto;
 import app.helpers.Helper;
@@ -11,6 +12,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 public class PartnerDaoImplementation implements PartnerDao {
+
+    private UserDao userDao = new UserDaoImplementation();
 
     @Override
     public PartnerDto findByIdUser(UserDto userDto) throws Exception {
@@ -25,6 +28,28 @@ public class PartnerDaoImplementation implements PartnerDao {
             partner.setTypePartner(resultSet.getString("TYPE"));
             partner.setCreationDatePartner(String.valueOf(resultSet.getTimestamp("CREATIONDATE")));
             partner.setIdUserPartner(Helper.parse(userDto));
+            resultSet.close();
+            preparedStatement.close();
+            return Helper.parse(partner);
+        }
+        resultSet.close();
+        preparedStatement.close();
+        return null;
+    }
+
+    @Override
+    public PartnerDto findById(Long id) throws Exception {
+        String query = "SELECT * FROM PARTNER WHERE ID = ?";
+        PreparedStatement preparedStatement = MYSQLConnection.getConnection().prepareStatement(query);
+        preparedStatement.setLong(1, id);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        if (resultSet.next()) {
+            Partner partner = new Partner();
+            partner.setIdPartner(resultSet.getLong("ID"));
+            partner.setAmountPartner(resultSet.getDouble("AMOUNT"));
+            partner.setTypePartner(resultSet.getString("TYPE"));
+            partner.setCreationDatePartner(String.valueOf(resultSet.getTimestamp("CREATIONDATE")));
+            partner.setIdUserPartner(Helper.parse(userDao.findById(resultSet.getLong("USERID"))));
             resultSet.close();
             preparedStatement.close();
             return Helper.parse(partner);

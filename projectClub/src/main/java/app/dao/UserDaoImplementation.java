@@ -1,10 +1,10 @@
 package app.dao;
 
 import app.config.MYSQLConnection;
+import app.dao.interfaces.PersonDao;
 import app.dao.interfaces.UserDao;
 import app.dto.UserDto;
 import app.helpers.Helper;
-import app.model.Person;
 import app.model.User;
 
 import java.sql.PreparedStatement;
@@ -12,9 +12,11 @@ import java.sql.ResultSet;
 
 public class UserDaoImplementation  implements UserDao {
 
+    private PersonDao personDao = new PersonDaoImplementation();
+
     @Override
     public UserDto findByUserName(UserDto userDto) throws Exception {
-        String query = "SELECT ID,USERNAME,PASSWORD,ROLE,PERSONID FROM USER WHERE USERNAME = ?";
+        String query = "SELECT * FROM USER WHERE USERNAME = ?";
         PreparedStatement preparedStatement = MYSQLConnection.getConnection().prepareStatement(query);
         preparedStatement.setString(1, userDto.getNameUser());
         ResultSet resultSet = preparedStatement.executeQuery();
@@ -24,9 +26,30 @@ public class UserDaoImplementation  implements UserDao {
             user.setUserName(resultSet.getString("USERNAME"));
             user.setPasswordUser(resultSet.getString("PASSWORD"));
             user.setRoleUser(resultSet.getString("ROLE"));
-            Person person = new Person();
-            person.setIdPerson(resultSet.getLong("PERSONID"));
-            user.setIdPerson(person);
+            user.setIdPerson(Helper.parse(personDao.findById(resultSet.getLong("PERSONID"))));
+            resultSet.close();
+            preparedStatement.close();
+            return Helper.parse(user);
+        }
+        resultSet.close();
+        preparedStatement.close();
+        return null;
+
+    }
+
+    @Override
+    public UserDto findById(Long id) throws Exception {
+        String query = "SELECT * FROM USER WHERE ID = ?";
+        PreparedStatement preparedStatement = MYSQLConnection.getConnection().prepareStatement(query);
+        preparedStatement.setLong(1, id);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        if (resultSet.next()) {
+            User user = new User();
+            user.setIdUser(resultSet.getLong("ID"));
+            user.setUserName(resultSet.getString("USERNAME"));
+            user.setPasswordUser(resultSet.getString("PASSWORD"));
+            user.setRoleUser(resultSet.getString("ROLE"));
+            user.setIdPerson(Helper.parse(personDao.findById(resultSet.getLong("PERSONID"))));
             resultSet.close();
             preparedStatement.close();
             return Helper.parse(user);

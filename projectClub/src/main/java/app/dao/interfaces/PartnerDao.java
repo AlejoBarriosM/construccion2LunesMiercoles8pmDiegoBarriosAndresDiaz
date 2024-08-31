@@ -5,6 +5,7 @@ import app.dto.UserDto;
 
 public interface PartnerDao {
     public PartnerDto findByIdUser(UserDto userDto) throws Exception;
+    public PartnerDto findById(Long id) throws Exception;
     public void createPartner(PartnerDto partnerDto, UserDto userDto) throws Exception;
     public int numberOfGuests(PartnerDto partnerDto) throws Exception;
     public void increaseAmount(PartnerDto partnerDto,Double amount) throws Exception;

@@ -1,6 +1,10 @@
 package app.controller;
 
+import app.dto.InvoiceDetailDto;
+import app.dto.InvoiceDto;
+
 import javax.swing.*;
+import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -54,10 +58,8 @@ public abstract class Utils {
 		);
 	}
 
-	public static Map<String, Object> addFieldsToPanel(String[] labels){
+	public static Map<String, JTextField> createPanelWithFields(String[] labels, JPanel panel) {
 		Map<String, JTextField> fieldsMap = new HashMap<>();
-
-		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
 		for (String label : labels) {
@@ -68,11 +70,27 @@ public abstract class Utils {
 			panel.add(Box.createVerticalStrut(15));
 		}
 
-		Map<String, Object> result = new HashMap<>();
-		result.put("panel", panel);
-		result.put("fields", fieldsMap);
-
-		return result;
+		return fieldsMap;
 	}
+
+	public static void createPanelWithScroll(Map<Long, String> fields, String title) {
+		JPanel panel = new JPanel();
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+
+		for (Map.Entry<Long, String> entry : fields.entrySet()) {
+			JTextArea textArea = new JTextArea(entry.getValue());
+			textArea.setEditable(false);
+			textArea.setLineWrap(true);
+			textArea.setWrapStyleWord(true);
+			panel.add(textArea);
+			panel.add(Box.createVerticalStrut(15));
+		}
+
+		JScrollPane scrollPane = new JScrollPane(panel);
+		scrollPane.setPreferredSize(new Dimension(600, 300));
+
+		JOptionPane.showMessageDialog(null, scrollPane, title, JOptionPane.PLAIN_MESSAGE);
+	}
+
 
 }

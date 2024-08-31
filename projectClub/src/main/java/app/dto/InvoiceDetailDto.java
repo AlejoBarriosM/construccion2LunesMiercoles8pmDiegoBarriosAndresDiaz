@@ -51,4 +51,11 @@ public class InvoiceDetailDto {
     public void setAmountInvoiceDetail(double amountInvoiceDetail) {
         this.amountInvoiceDetail = amountInvoiceDetail;
     }
+
+    @Override
+    public String toString() {
+        return "Item:" + item +
+                " | Concepto: '" + descriptionInvoiceDetail + '\'' +
+                " | Valor: " + amountInvoiceDetail;
+    }
 }

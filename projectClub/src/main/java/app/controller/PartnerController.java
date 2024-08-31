@@ -6,7 +6,6 @@ import app.service.Service;
 import app.service.interfaces.PartnerService;
 
 import javax.swing.*;
-import java.util.HashMap;
 import java.util.Map;
 
 
@@ -57,7 +56,8 @@ public class PartnerController extends UserController implements ControllerInter
     private boolean options(int option) throws Exception{
         switch (option) {
             case 0: {
-                super.menuUser("invitado");
+                super.setRole("invitado");
+                super.session();
                 return true;
             }
             case 1: {
@@ -65,13 +65,16 @@ public class PartnerController extends UserController implements ControllerInter
                 return true;
             }
             case 2: {
-
-                return Utils.showYesNoDialog("Historial Facturas");
+                this.invoiceController.session();
+                return true;
             }
             case 3: {
                 return Utils.showYesNoDialog("Promoción VIP");
             }
             case 4: {
+                return Utils.showYesNoDialog("Darse de Baja");
+            }
+            case 5: {
                 return Utils.showYesNoDialog("¿Desea cerrar sesión?") || (this.service.logout());
             }
             default: {
@@ -83,11 +86,8 @@ public class PartnerController extends UserController implements ControllerInter
 
     private void increaseAmount () throws Exception {
         String[] labels = {"Monto"};
-        Map<String, Object> fieldsToPanel = new HashMap<>(Utils.addFieldsToPanel(labels));
-        Map<String, JTextField> fieldsMap = new HashMap<>();
-        fieldsMap.putAll((Map<? extends String, ? extends JTextField>) fieldsToPanel.get("fields"));
-
-        JPanel panel = (JPanel) fieldsToPanel.get("panel");
+        JPanel panel = new JPanel();
+        Map<String, JTextField> fieldsMap = Utils.createPanelWithFields(labels, panel);
 
         if (Utils.showConfirmDialog(panel, "Aumentar Monto")) {
             this.partnerService.increaseAmount(this.partnerDto, partnerValidator.validAmount(fieldsMap.get("Monto").getText()));

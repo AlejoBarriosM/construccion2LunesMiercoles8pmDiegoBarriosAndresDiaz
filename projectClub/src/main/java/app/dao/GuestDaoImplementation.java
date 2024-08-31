@@ -2,6 +2,8 @@ package app.dao;
 
 import app.config.MYSQLConnection;
 import app.dao.interfaces.GuestDao;
+import app.dao.interfaces.PartnerDao;
+import app.dao.interfaces.UserDao;
 import app.dto.GuestDto;
 import app.dto.PartnerDto;
 import app.dto.UserDto;
@@ -16,27 +18,26 @@ import java.sql.ResultSet;
 
 public class GuestDaoImplementation implements GuestDao {
 
+    private UserDao userDao = new UserDaoImplementation();
+    private PartnerDao partnerDao = new PartnerDaoImplementation();
+
     @Override
     public GuestDto findByUserId(UserDto userDto) throws Exception {
         String query = "SELECT * FROM GUEST WHERE USERID = ?";
         PreparedStatement preparedStatement = MYSQLConnection.getConnection().prepareStatement(query);
         preparedStatement.setLong(1, userDto.getIdUser());
-        ResultSet resulSet = preparedStatement.executeQuery();
-        if (resulSet.next()) {
+        ResultSet resultSet = preparedStatement.executeQuery();
+        if (resultSet.next()) {
             Guest guest = new Guest();
-            guest.setIdGuest(resulSet.getLong("ID"));
-            User user = new User();
-            user.setIdUser(resulSet.getLong("USERID"));
-            guest.setUserIdGuest(user);
-            Partner partner = new Partner();
-            partner.setIdPartner(resulSet.getLong("PARNERID"));
-            guest.setPartnerIdGuest(partner);
-            guest.setStatusGuest(resulSet.getString("STATUS"));
-            resulSet.close();
+            guest.setIdGuest(resultSet.getLong("ID"));
+            guest.setUserIdGuest(Helper.parse(userDao.findById(resultSet.getLong("USERID"))));
+            guest.setPartnerIdGuest(Helper.parse(partnerDao.findById(resultSet.getLong("PARNERID"))));
+            guest.setStatusGuest(resultSet.getString("STATUS"));
+            resultSet.close();
             preparedStatement.close();
             return Helper.parse(guest);
         }
-        resulSet.close();
+        resultSet.close();
         preparedStatement.close();
         return null;
     }

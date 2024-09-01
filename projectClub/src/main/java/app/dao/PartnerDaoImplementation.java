@@ -10,6 +10,7 @@ import app.model.Partner;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.Map;
 
 public class PartnerDaoImplementation implements PartnerDao {
 
@@ -94,6 +95,18 @@ public class PartnerDaoImplementation implements PartnerDao {
         preparedStatement.execute();
         preparedStatement.close();
     }
+
+    @Override
+    public void decreaseAmount(PartnerDto partnerDto, Double amount) throws Exception {
+        String query = "UPDATE PARTNER SET AMOUNT = AMOUNT - ? WHERE ID = ?";
+        PreparedStatement preparedStatement = MYSQLConnection.getConnection().prepareStatement(query);
+        preparedStatement.setDouble(1, amount);
+        preparedStatement.setLong(2, partnerDto.getIdPartner());
+        preparedStatement.execute();
+        preparedStatement.close();
+    }
+
+
 
 
 }

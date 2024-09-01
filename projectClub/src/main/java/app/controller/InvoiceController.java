@@ -2,6 +2,7 @@ package app.controller;
 
 
 import app.controller.validator.InvoiceValidator;
+import app.dto.GuestDto;
 import app.dto.InvoiceDetailDto;
 import app.dto.InvoiceDto;
 import app.dto.PartnerDto;
@@ -12,21 +13,25 @@ import javax.swing.*;
 import java.util.HashMap;
 import java.util.Map;
 
+import static app.service.Service.user;
+
 public class InvoiceController implements ControllerInterface{
 
     private InvoiceDto invoiceDto;
     private InvoiceService invoiceService;
     private InvoiceValidator invoiceValidator;
+    private Service service;
     private PartnerDto partnerDto;
+    private GuestDto guestDto;
 
-    private final String[] OPTIONS = {"Crear Factura", "Ver Facturas", "Pagar facturas", "Volver"};
+    private String[] OPTIONS = {"Crear Factura", "Ver Facturas", "Pagar facturas", "Volver"};;
 
 
     public InvoiceController() {
         this.invoiceDto = new InvoiceDto();
         this.invoiceService = new Service();
+        this.service = new Service();
         this.invoiceValidator = new InvoiceValidator();
-        this.partnerDto = new PartnerDto();
     }
 
     @Override
@@ -38,10 +43,11 @@ public class InvoiceController implements ControllerInterface{
     }
 
     private boolean menuInvoice() {
+        this.guestDto = Service.guest;
         this.partnerDto = Service.partner;
 
         String message = "\nMonto: " + partnerDto.getAmountPartner()
-                + "\nFacturas pendientes: " + partnerDto.getTypePartner()
+                + "\nFacturas pendientes: " + service.getMaxAmount()
                 + "\nValor pendientes " + partnerDto.getTypePartner()
                 + "\n\nSelecciona una opción:\n\n";
 
@@ -57,13 +63,14 @@ public class InvoiceController implements ControllerInterface{
     private boolean options(int option) throws Exception{
         return switch (option) {
             case 0 -> this.createInvoice();
-            case 1 -> Utils.showYesNoDialog("Ver Facturas");
-            case 2 -> Utils.showYesNoDialog("Pagar Facturas");
+            case 1 -> showAllInvoices(partnerDto);
+            case 2 -> invoiceService.payInvoices(partnerDto);
             default -> false;
         };
     }
 
     private InvoiceDetailDto addItems() throws Exception {
+
         InvoiceDetailDto item = new InvoiceDetailDto();
 
         String[] labels = {"Número de ítem", "Concepto", "Valor"};
@@ -104,7 +111,7 @@ public class InvoiceController implements ControllerInterface{
         }
 
         invoiceDto.setAmountInvoice(totalAmount);
-        invoiceService.createInovice(invoiceDto, items);
+        invoiceService.validateInvoice(invoiceDto, items);
         return true;
     }
 
@@ -113,50 +120,36 @@ public class InvoiceController implements ControllerInterface{
         Utils.showMessage(message);
     }
 
+    protected boolean showAllInvoices(PartnerDto partnerDto) throws Exception {
 
+        Map<InvoiceDto, Map<Long, InvoiceDetailDto>> invoices;
+        invoices = (partnerDto == null) ? service.showAllInvoices() : service.showAllInvoicesByPartner(partnerDto);
+        StringBuilder messageBuilder = new StringBuilder();
+        Map<Long, String> fields = new HashMap<>();
 
+        for (Map.Entry<InvoiceDto, Map<Long, InvoiceDetailDto>> invoiceEntry : invoices.entrySet()) {
+            messageBuilder.setLength(0);
+            InvoiceDto invoiceDto = invoiceEntry.getKey();
+            Map<Long, InvoiceDetailDto> invoiceDetailDto  = invoiceEntry.getValue();
 
-//    private boolean createInvoice() throws Exception {
-//
-//
-//        String[] labels = {"Número de ítem", "Concepto", "Valor"};
-//        Map<String, Object> fieldsToPanel = new HashMap<>(Utils.addFieldsToPanel(labels));
-//        Map<String, JTextField> fieldsMap = new HashMap<>();
-//        fieldsMap.putAll((Map<? extends String, ? extends JTextField>) fieldsToPanel.get("fields"));
-//
-//        JPanel panel = (JPanel) fieldsToPanel.get("panel");
-//
-//        if (Utils.showConfirmDialog(panel, "Crear Factura")) {
-//
-//            invoiceValidator.validDesciption(fieldsMap.get("Concepto").getText());
-//            invoiceDto.setAmountInvoice(invoiceValidator.validItemValue(fieldsMap.get("Valor").getText()));
-//            invoiceDetailDto.setDescriptionInvoiceDetail(fieldsMap.get("Concepto").getText());
-//            invoiceDetailDto.setItem(invoiceValidator.validItemNumber(fieldsMap.get("Número de ítem").getText()));
-//            invoiceDetailDto.setAmountInvoiceDetail(invoiceValidator.validItemValue(fieldsMap.get("Valor").getText()));
-//            invoiceService.createInovice(invoiceDto, invoiceDetailDto);
-//            return true;
-//
-//        }
-//        return false;
-//    }
+            messageBuilder.append(invoiceDto.toString()).append("\n");
+            messageBuilder.append(showAllDetailInvoice(invoiceDetailDto)).append("\n");
+            messageBuilder.append("-------------------------------------------------------------------------------");
 
+            fields.put(invoiceDto.getIdInvoice(),messageBuilder.toString());
+        }
 
+        Utils.createPanelWithScroll(fields, "Listado Facturas");
+        return true;
+    }
 
-//    private void viewAllInvoices() {
-//        try {
-//            List<InvoiceDto> invoices = invoiceService.getAllInvoices();
-//            for (InvoiceDto invoice : invoices) {
-//                JOptionPane.showMessageDialog(null, "ID: " + invoice.getId()
-//                        + "\n, Socio ID: " + invoice.getIdPartner()
-//                        + "\n, Fecha: " + invoice.getDate()
-//                        + "\n, Monto Total: " + invoice.getTotalAmount());
-//            }
-//        } catch (Exception e) {
-//            Utils.showError("Error al recuperar las facturas: " + e.getMessage());
-//        }
-//    }
-
-
-
+    private String showAllDetailInvoice(Map<Long, InvoiceDetailDto> invoiceDetailDto){
+        StringBuilder messageBuilder = new StringBuilder();
+        for (Map.Entry<Long, InvoiceDetailDto> detailEntry : invoiceDetailDto.entrySet()) {
+            InvoiceDetailDto detail = detailEntry.getValue();
+            messageBuilder.append(detail.toString()).append("\n");
+        }
+        return messageBuilder.toString();
+    }
 
 }

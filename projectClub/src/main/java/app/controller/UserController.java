@@ -2,16 +2,13 @@ package app.controller;
 
 import app.controller.validator.PersonValidator;
 import app.controller.validator.UserValidator;
-import app.dto.GuestDto;
-import app.dto.PersonDto;
-import app.dto.UserDto;
+import app.dto.*;
 import app.service.Service;
 import app.service.interfaces.GuestService;
 import app.service.interfaces.PartnerService;
 import app.service.interfaces.UserService;
 
 import javax.swing.*;
-import java.util.HashMap;
 import java.util.Map;
 
 public class UserController implements ControllerInterface{
@@ -21,6 +18,7 @@ public class UserController implements ControllerInterface{
     private UserService userService;
     private PartnerService partnerService;
     private GuestService guestService;
+
 
     private PersonDto personDto;
     private UserDto userDto;

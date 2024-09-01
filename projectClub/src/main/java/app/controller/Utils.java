@@ -1,8 +1,5 @@
 package app.controller;
 
-import app.dto.InvoiceDetailDto;
-import app.dto.InvoiceDto;
-
 import javax.swing.*;
 import java.awt.*;
 import java.util.HashMap;
@@ -10,27 +7,22 @@ import java.util.Map;
 
 public abstract class Utils {
 
-	//Método para mostrar un mensaje de información
 	public static void showMessage(String message) {
 		JOptionPane.showMessageDialog(null, message, "Información", JOptionPane.INFORMATION_MESSAGE);
 	}
 
-	// Método para mostrar un mensaje de error
 	public static void showError(String message) {
 		JOptionPane.showMessageDialog(null, message, "Error", JOptionPane.ERROR_MESSAGE);
 	}
 
-	// Método para capturar una entrada de texto
 	public static String promptInput(String message) {
 		return JOptionPane.showInputDialog(null, message, "Entrada", JOptionPane.QUESTION_MESSAGE);
 	}
 
-	// Método para capturar Sí/No
 	public static boolean showYesNoDialog(String message) {
         return JOptionPane.showConfirmDialog(null, message, "Confirmar", JOptionPane.YES_NO_OPTION) == JOptionPane.NO_OPTION;
 	}
 
-	// Método para capturar una confirmación con panel
 	public static boolean showConfirmDialog(JPanel panel, String title) {
 
 		int result = JOptionPane.showConfirmDialog(null, panel, title, JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
@@ -44,7 +36,6 @@ public abstract class Utils {
         return false;
     }
 
-	// Método para mostrar un menú con opciones
 	public static int showMenu(String title, String message, String[] options) {
 		return JOptionPane.showOptionDialog(
 			null,
@@ -54,7 +45,7 @@ public abstract class Utils {
 			JOptionPane.PLAIN_MESSAGE,
 			null,
 			options,
-			options[0] // Opción predeterminada
+			options[0]
 		);
 	}
 

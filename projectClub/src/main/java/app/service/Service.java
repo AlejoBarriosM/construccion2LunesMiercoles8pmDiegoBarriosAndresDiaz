@@ -11,28 +11,33 @@ import java.util.Map;
 
 public class Service implements LoginService, AdminService, UserService, PartnerService, GuestService, InvoiceService {
 
-	private UserDao userDao;
-	private PersonDao personDao;
-	private PartnerDao partnerDao;
-	private GuestDao guestDao;
-	private InvoiceDao invoiceDao;
+	private final UserDao userDao;
+	private final PersonDao personDao;
+	private final PartnerDao partnerDao;
+	private final GuestDao guestDao;
+	private final InvoiceDao invoiceDao;
 
 	public static UserDto user;
 	public static PersonDto person;
 	public static GuestDto guest;
 	public static PartnerDto partner;
 
+	private final String STATUSINVOICE = "Debe";
 	private final long AMOUNT = 50000;
 	private final String TYPE = "Regular";
 	private final String STATUS = "Activo";
-	private final String STATUSINVOICE = "Debe";
+	private static int maxAmount;
 
-	public Service() {
+    public Service() {
 		this.userDao = new UserDaoImplementation();
 		this.personDao = new PersonDaoImplementation();
 		this.partnerDao = new PartnerDaoImplementation();
 		this.guestDao = new GuestDaoImplementation();
 		this.invoiceDao = new InvoiceDaoImplementation();
+	}
+
+	public int getMaxAmount() {
+		return maxAmount;
 	}
 
 	@Override
@@ -52,9 +57,13 @@ public class Service implements LoginService, AdminService, UserService, Partner
 		switch (user.getRoleUser()){
 			case "socio":{
                 partner = partnerDao.findByIdUser(user);
+				maxAmount = (partner.getTypePartner().equals("VIP") ? 5000000 : 1000000);
+				break;
 			}
 			case "invitado": {
 				guest = guestDao.findByUserId(user);
+				partner = partnerDao.findByIdUser(guest.getPartnerIdGuest().getIdUserPartner());
+				break;
 			}
 		}
 
@@ -88,7 +97,6 @@ public class Service implements LoginService, AdminService, UserService, Partner
 
 	@Override
 	public void increaseAmount(PartnerDto partnerDto, Double amount) throws Exception {
-		int maxAmount = partnerDto.getTypePartner().equals("VIP") ? 5000000 : 1000000;
 
 		if ((partnerDto.getAmountPartner() + amount) <= maxAmount) {
 			this.partnerDao.increaseAmount(partnerDto, amount);
@@ -135,9 +143,16 @@ public class Service implements LoginService, AdminService, UserService, Partner
 	}
 
 	@Override
+	public void validateInvoice(InvoiceDto invoiceDto, Map<Long, InvoiceDetailDto> items) throws Exception {
+		if (invoiceDto.getAmountInvoice() < maxAmount) {
+			createInovice(invoiceDto, items);
+		} else throw new Exception("El valor de la factura no puede exceder $ " + maxAmount);
+	}
+
+	@Override
 	public void createInovice(InvoiceDto invoiceDto, Map<Long, InvoiceDetailDto> items) throws Exception {
 		invoiceDto.setIdPerson(user.getIdPerson());
-		invoiceDto.setStatusInvoice(STATUSINVOICE);
+        invoiceDto.setStatusInvoice(STATUSINVOICE);
 		InvoiceDetailDto invoiceDetailDto = new InvoiceDetailDto();
 
 		switch (user.getRoleUser()){
@@ -163,6 +178,37 @@ public class Service implements LoginService, AdminService, UserService, Partner
 
 	@Override
 	public Map<InvoiceDto, Map<Long, InvoiceDetailDto>> showAllInvoices() throws Exception {
-		return invoiceDao.showAllInvoices();
+		return invoiceDao.showAllInvoices(null);
+	}
+
+	@Override
+	public Map<InvoiceDto, Map<Long, InvoiceDetailDto>> showAllInvoicesByPartner(PartnerDto partnerDto) throws Exception {
+		return invoiceDao.showAllInvoices(partnerDto.getIdPartner());
+
+	}
+
+	@Override
+	public boolean payInvoices(PartnerDto partnerDto) throws Exception {
+		partner = partnerDao.findById(partnerDto.getIdPartner());
+		Map<InvoiceDto, Map<Long, InvoiceDetailDto>> invoices = invoiceDao.showAllInvoices(partner.getIdPartner());
+
+		for (Map.Entry<InvoiceDto, Map<Long, InvoiceDetailDto>> invoiceEntry : invoices.entrySet()) {
+			InvoiceDto invoiceDto = invoiceEntry.getKey();
+			double amount = partner.getAmountPartner();
+
+			if (amount >= invoiceDto.getAmountInvoice()) {
+				invoiceDao.payInvoice(invoiceDto);
+				partnerDao.decreaseAmount(partner, invoiceDto.getAmountInvoice());
+				partner.setAmountPartner(amount - invoiceDto.getAmountInvoice());
+				Utils.showMessage("Factura " + invoiceDto.getIdInvoice() + " pagada"
+						+ "\nNuevo saldo: " + partner.getAmountPartner());
+			} else {
+				partner = partnerDao.findById(partnerDto.getIdPartner());
+				Utils.showMessage("Saldo insuficiente"
+						+ "\nSaldo: " + partner.getAmountPartner());
+				break;
+			}
+		}
+		return true;
 	}
 }

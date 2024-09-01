@@ -31,7 +31,7 @@ public class GuestDaoImplementation implements GuestDao {
             Guest guest = new Guest();
             guest.setIdGuest(resultSet.getLong("ID"));
             guest.setUserIdGuest(Helper.parse(userDao.findById(resultSet.getLong("USERID"))));
-            guest.setPartnerIdGuest(Helper.parse(partnerDao.findById(resultSet.getLong("PARNERID"))));
+            guest.setPartnerIdGuest(Helper.parse(partnerDao.findById(resultSet.getLong("PARTNERID"))));
             guest.setStatusGuest(resultSet.getString("STATUS"));
             resultSet.close();
             preparedStatement.close();

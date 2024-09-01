@@ -9,4 +9,5 @@ public interface PartnerDao {
     public void createPartner(PartnerDto partnerDto, UserDto userDto) throws Exception;
     public int numberOfGuests(PartnerDto partnerDto) throws Exception;
     public void increaseAmount(PartnerDto partnerDto,Double amount) throws Exception;
+    public void decreaseAmount(PartnerDto partnerDto,Double amount) throws Exception;
 }

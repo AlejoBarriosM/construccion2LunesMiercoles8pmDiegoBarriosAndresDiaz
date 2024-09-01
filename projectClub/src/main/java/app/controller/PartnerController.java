@@ -11,13 +11,13 @@ import java.util.Map;
 
 public class PartnerController extends UserController implements ControllerInterface{
 
-    private PartnerValidator partnerValidator;
+    private final PartnerValidator partnerValidator;
     private PartnerDto partnerDto;
-    private PartnerService partnerService;
-    private Service service;
-    private InvoiceController invoiceController;
+    private final PartnerService partnerService;
+    private final Service service;
+    private final InvoiceController invoiceController;
 
-    private final String[] OPTIONS = {"Invitados", "Aumentar Fondos", "Facturas", "Cambio Suscripción", "Darse de baja", "Cerrar Sesion"};
+    private final String[] OPTIONS = {"Invitados", "Aumentar Fondos", "Facturas", "Cambio Suscripción", "Darse de baja", "Cerrar Sesión"};
 
     public PartnerController() {
         this.partnerValidator = new PartnerValidator();
@@ -28,7 +28,7 @@ public class PartnerController extends UserController implements ControllerInter
     }
 
     @Override
-    public void session() throws Exception {
+    public void session() {
         boolean session = true;
         while (session) {
             session = menuPartner();
@@ -69,16 +69,16 @@ public class PartnerController extends UserController implements ControllerInter
                 return true;
             }
             case 3: {
-                return Utils.showYesNoDialog("Promoción VIP");
+                return Utils.showYesNoDialog("cambio suscripción");
             }
             case 4: {
-                return Utils.showYesNoDialog("Darse de Baja");
+                return Utils.showYesNoDialog("Darse de Baja") || (this.service.logout());
             }
             case 5: {
                 return Utils.showYesNoDialog("¿Desea cerrar sesión?") || (this.service.logout());
             }
             default: {
-                Utils.showError("Ingrese una opcion valida");
+                Utils.showError("Ingrese una opción valida");
                 return true;
             }
         }
@@ -91,7 +91,14 @@ public class PartnerController extends UserController implements ControllerInter
 
         if (Utils.showConfirmDialog(panel, "Aumentar Monto")) {
             this.partnerService.increaseAmount(this.partnerDto, partnerValidator.validAmount(fieldsMap.get("Monto").getText()));
+            this.payInvoices();
         }
+    }
+
+
+
+    private void payInvoices () throws Exception {
+        service.payInvoices(partnerDto);
     }
 
 

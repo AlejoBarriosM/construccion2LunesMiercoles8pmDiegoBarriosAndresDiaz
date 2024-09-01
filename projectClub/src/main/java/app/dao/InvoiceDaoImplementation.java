@@ -17,8 +17,8 @@ import java.util.Map;
 
 public class InvoiceDaoImplementation implements InvoiceDao {
 
-    private PartnerDao partnerDao = new PartnerDaoImplementation();
-    private PersonDao personDao = new PersonDaoImplementation();
+    private final PartnerDao partnerDao = new PartnerDaoImplementation();
+    private final PersonDao personDao = new PersonDaoImplementation();
 
     @Override
     public Long createInvoice(InvoiceDto invoiceDto) throws Exception {
@@ -53,34 +53,19 @@ public class InvoiceDaoImplementation implements InvoiceDao {
     }
 
     @Override
-    public InvoiceDto findIdInvoce (Long idInvoice) throws Exception {
-        String query = "SELECT * FROM INVOICE WHERE ID = ?";
-        PreparedStatement preparedStatement = MYSQLConnection.getConnection().prepareStatement(query);
-        preparedStatement.setLong(1, idInvoice);
-        ResultSet resultSet = preparedStatement.executeQuery();
-        if (resultSet.next()) {
-            Invoice invoice = new Invoice();
-            invoice.setIdInvoice(resultSet.getLong("ID"));
-            invoice.setIdPerson(Helper.parse(personDao.findById(resultSet.getLong("PERSONID"))));
-            invoice.setIdPartner(Helper.parse(partnerDao.findById(resultSet.getLong("PARTNERID"))));
-            invoice.setCreationDateInvoice(resultSet.getString("CREATIONDATE"));
-            invoice.setAmountInvoice(resultSet.getDouble("AMOUNT"));
-            invoice.setStatusInvoice(resultSet.getString("STATUS"));
+    public Map<InvoiceDto, Map<Long, InvoiceDetailDto>> showAllInvoices (Long partnerId) throws Exception {
+        String query;
+        PreparedStatement preparedStatement;
 
-            resultSet.close();
-            preparedStatement.close();
-            return Helper.parse(invoice);
+        if (partnerId == null){
+            query = "SELECT * FROM INVOICE ORDER BY CREATIONDATE";
+            preparedStatement =  MYSQLConnection.getConnection().prepareStatement(query);
+        } else {
+            query = "SELECT * FROM INVOICE WHERE PARTNERID = ? AND STATUS <> 'Pagó' ORDER BY CREATIONDATE";
+            preparedStatement =  MYSQLConnection.getConnection().prepareStatement(query);
+            preparedStatement.setLong(1, partnerId);
         }
-        resultSet.close();
-        preparedStatement.close();
-        return null;
 
-    }
-
-    @Override
-    public Map<InvoiceDto, Map<Long, InvoiceDetailDto>> showAllInvoices () throws Exception {
-        String query = "SELECT * FROM INVOICE";
-        PreparedStatement preparedStatement = MYSQLConnection.getConnection().prepareStatement(query);
         ResultSet resultSet = preparedStatement.executeQuery();
         Map<InvoiceDto, Map<Long, InvoiceDetailDto>> invoiceMap = new HashMap<>();
 
@@ -130,17 +115,39 @@ public class InvoiceDaoImplementation implements InvoiceDao {
 
 
     @Override
-    public void updateInvoice(InvoiceDto invoiceDto) throws Exception {
-
-    }
-
-    @Override
-    public void deleteInvoice(InvoiceDto invoiceDto) throws Exception {
-
-    }
-
-    @Override
     public boolean payInvoice(InvoiceDto invoiceDto) throws Exception {
+        Invoice invoice = Helper.parse(invoiceDto);
+        String query = "UPDATE INVOICE SET STATUS = 'Pagó' WHERE ID = ?";
+        PreparedStatement preparedStatement = MYSQLConnection.getConnection().prepareStatement(query);
+        preparedStatement.setLong(1,invoice.getIdInvoice());
+        preparedStatement.executeUpdate();
+        preparedStatement.close();
         return true;
+    }
+
+
+    @Override
+    public InvoiceDto findIdInvoce (Long idInvoice) throws Exception {
+        String query = "SELECT * FROM INVOICE WHERE ID = ?";
+        PreparedStatement preparedStatement = MYSQLConnection.getConnection().prepareStatement(query);
+        preparedStatement.setLong(1, idInvoice);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        if (resultSet.next()) {
+            Invoice invoice = new Invoice();
+            invoice.setIdInvoice(resultSet.getLong("ID"));
+            invoice.setIdPerson(Helper.parse(personDao.findById(resultSet.getLong("PERSONID"))));
+            invoice.setIdPartner(Helper.parse(partnerDao.findById(resultSet.getLong("PARTNERID"))));
+            invoice.setCreationDateInvoice(resultSet.getString("CREATIONDATE"));
+            invoice.setAmountInvoice(resultSet.getDouble("AMOUNT"));
+            invoice.setStatusInvoice(resultSet.getString("STATUS"));
+
+            resultSet.close();
+            preparedStatement.close();
+            return Helper.parse(invoice);
+        }
+        resultSet.close();
+        preparedStatement.close();
+        return null;
+
     }
 }

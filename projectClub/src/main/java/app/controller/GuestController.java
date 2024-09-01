@@ -1,15 +1,21 @@
 package app.controller;
 
 
+import app.dto.GuestDto;
+import app.dto.PartnerDto;
 import app.service.Service;
 
 public class GuestController extends UserController implements ControllerInterface{
 
     private final String[] OPTIONS = {"Cambio Tipo Socio", "Consumos", "Darse de Baja", "Cerrar Sesion"};
-    private Service service;
+    private final Service service;
+    private final InvoiceController invoiceController;
 
     public GuestController() {
         this.service = new Service();
+        this.invoiceController = new InvoiceController();
+        PartnerDto partnerDto = Service.partner;
+        GuestDto guestDto = Service.guest;
     }
 
     @Override
@@ -21,6 +27,7 @@ public class GuestController extends UserController implements ControllerInterfa
     }
 
     private boolean menuGuest() {
+
         try {
             int option = Utils.showMenu("Menú Principal", "Bienvenido " + Service.user.getNameUser() + "\nSelecciona una opción:", OPTIONS);
             return options(option);
@@ -36,7 +43,8 @@ public class GuestController extends UserController implements ControllerInterfa
                 return Utils.showYesNoDialog("Cambio Tipo Socio");
             }
             case 1: {
-                return Utils.showYesNoDialog("Consumos");
+                this.invoiceController.session();
+                return true;
             }
             case 2: {
                 return Utils.showYesNoDialog("Darse de Baja");

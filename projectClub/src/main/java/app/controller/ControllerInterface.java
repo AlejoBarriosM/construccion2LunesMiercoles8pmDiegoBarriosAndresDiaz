@@ -1,5 +1,5 @@
 package app.controller;
 
 public interface ControllerInterface {
-    public void session() throws Exception;
+    void session() throws Exception;
 }

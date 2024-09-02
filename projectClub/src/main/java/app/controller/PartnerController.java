@@ -6,19 +6,18 @@ import app.service.Service;
 import app.service.interfaces.PartnerService;
 
 import javax.swing.*;
-import java.util.HashMap;
 import java.util.Map;
 
 
 public class PartnerController extends UserController implements ControllerInterface{
 
-    private PartnerValidator partnerValidator;
+    private final PartnerValidator partnerValidator;
     private PartnerDto partnerDto;
-    private PartnerService partnerService;
-    private Service service;
-    private InvoiceController invoiceController;
+    private final PartnerService partnerService;
+    private final Service service;
+    private final InvoiceController invoiceController;
 
-    private final String[] OPTIONS = {"Invitados", "Aumentar Fondos", "Facturas", "Cambio Suscripción", "Darse de baja", "Cerrar Sesion"};
+    private final String[] OPTIONS = {"Invitados", "Aumentar Fondos", "Facturas", "Cambio Suscripción", "Darse de baja", "Cerrar Sesión"};
 
     public PartnerController() {
         this.partnerValidator = new PartnerValidator();
@@ -29,7 +28,7 @@ public class PartnerController extends UserController implements ControllerInter
     }
 
     @Override
-    public void session() throws Exception {
+    public void session() {
         boolean session = true;
         while (session) {
             session = menuPartner();
@@ -57,7 +56,8 @@ public class PartnerController extends UserController implements ControllerInter
     private boolean options(int option) throws Exception{
         switch (option) {
             case 0: {
-                super.menuUser("invitado");
+                super.setRole("invitado");
+                super.session();
                 return true;
             }
             case 1: {
@@ -65,34 +65,57 @@ public class PartnerController extends UserController implements ControllerInter
                 return true;
             }
             case 2: {
-
-                return Utils.showYesNoDialog("Historial Facturas");
+                this.invoiceController.session();
+                return true;
             }
             case 3: {
-                return Utils.showYesNoDialog("Promoción VIP");
+                this.changeSubscription();
+                return true;
             }
             case 4: {
-                return Utils.showYesNoDialog("¿Desea cerrar sesión?") || (this.service.logout());
+                return unsubscribe();
+            }
+            case 5: {
+                return Utils.showYesNoDialog("¿Desea cerrar sesión?") && (this.service.logout());
             }
             default: {
-                Utils.showError("Ingrese una opcion valida");
+                Utils.showError("Ingrese una opción valida");
                 return true;
             }
         }
     }
 
-    private void increaseAmount () throws Exception {
+    private void increaseAmount() throws Exception {
         String[] labels = {"Monto"};
-        Map<String, Object> fieldsToPanel = new HashMap<>(Utils.addFieldsToPanel(labels));
-        Map<String, JTextField> fieldsMap = new HashMap<>();
-        fieldsMap.putAll((Map<? extends String, ? extends JTextField>) fieldsToPanel.get("fields"));
-
-        JPanel panel = (JPanel) fieldsToPanel.get("panel");
+        JPanel panel = new JPanel();
+        Map<String, JTextField> fieldsMap = Utils.createPanelWithFields(labels, panel);
 
         if (Utils.showConfirmDialog(panel, "Aumentar Monto")) {
             this.partnerService.increaseAmount(this.partnerDto, partnerValidator.validAmount(fieldsMap.get("Monto").getText()));
+            this.payInvoices();
         }
     }
+
+    private void payInvoices() throws Exception {
+        service.payInvoices(partnerDto);
+    }
+
+    private void changeSubscription() throws Exception {
+        if (Utils.showYesNoDialog("¿Desea pasar a ser VIP?")){
+            this.partnerService.changeSubscription(partnerDto);
+        }
+    }
+
+    private boolean unsubscribe() throws Exception {
+        if (!partnerService.pendingInvoices(partnerDto)){
+            partnerService.unsubscribe(partnerDto);
+            return false;
+        } else {
+            Utils.showError("No se puede eliminar, tiene facturas pendientes");
+            return true;
+        }
+    }
+
 
 
 

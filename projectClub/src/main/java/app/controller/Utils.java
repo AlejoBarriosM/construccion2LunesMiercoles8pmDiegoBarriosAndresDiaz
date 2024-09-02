@@ -1,32 +1,24 @@
 package app.controller;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
 public abstract class Utils {
 
-	//Método para mostrar un mensaje de información
 	public static void showMessage(String message) {
 		JOptionPane.showMessageDialog(null, message, "Información", JOptionPane.INFORMATION_MESSAGE);
 	}
 
-	// Método para mostrar un mensaje de error
 	public static void showError(String message) {
 		JOptionPane.showMessageDialog(null, message, "Error", JOptionPane.ERROR_MESSAGE);
 	}
 
-	// Método para capturar una entrada de texto
-	public static String promptInput(String message) {
-		return JOptionPane.showInputDialog(null, message, "Entrada", JOptionPane.QUESTION_MESSAGE);
-	}
-
-	// Método para capturar Sí/No
 	public static boolean showYesNoDialog(String message) {
-        return JOptionPane.showConfirmDialog(null, message, "Confirmar", JOptionPane.YES_NO_OPTION) == JOptionPane.NO_OPTION;
+        return JOptionPane.showConfirmDialog(null, message, "Confirmar", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
 	}
 
-	// Método para capturar una confirmación con panel
 	public static boolean showConfirmDialog(JPanel panel, String title) {
 
 		int result = JOptionPane.showConfirmDialog(null, panel, title, JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
@@ -40,7 +32,6 @@ public abstract class Utils {
         return false;
     }
 
-	// Método para mostrar un menú con opciones
 	public static int showMenu(String title, String message, String[] options) {
 		return JOptionPane.showOptionDialog(
 			null,
@@ -50,14 +41,12 @@ public abstract class Utils {
 			JOptionPane.PLAIN_MESSAGE,
 			null,
 			options,
-			options[0] // Opción predeterminada
+			options[0]
 		);
 	}
 
-	public static Map<String, Object> addFieldsToPanel(String[] labels){
+	public static Map<String, JTextField> createPanelWithFields(String[] labels, JPanel panel) {
 		Map<String, JTextField> fieldsMap = new HashMap<>();
-
-		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
 		for (String label : labels) {
@@ -68,11 +57,27 @@ public abstract class Utils {
 			panel.add(Box.createVerticalStrut(15));
 		}
 
-		Map<String, Object> result = new HashMap<>();
-		result.put("panel", panel);
-		result.put("fields", fieldsMap);
-
-		return result;
+		return fieldsMap;
 	}
+
+	public static void createPanelWithScroll(Map<Long, String> fields, String title) {
+		JPanel panel = new JPanel();
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+
+		for (Map.Entry<Long, String> entry : fields.entrySet()) {
+			JTextArea textArea = new JTextArea(entry.getValue());
+			textArea.setEditable(false);
+			textArea.setLineWrap(true);
+			textArea.setWrapStyleWord(true);
+			panel.add(textArea);
+			panel.add(Box.createVerticalStrut(15));
+		}
+
+		JScrollPane scrollPane = new JScrollPane(panel);
+		scrollPane.setPreferredSize(new Dimension(600, 300));
+
+		JOptionPane.showMessageDialog(null, scrollPane, title, JOptionPane.PLAIN_MESSAGE);
+	}
+
 
 }

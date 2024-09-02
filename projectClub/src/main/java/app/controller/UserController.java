@@ -2,32 +2,29 @@ package app.controller;
 
 import app.controller.validator.PersonValidator;
 import app.controller.validator.UserValidator;
-import app.dto.GuestDto;
-import app.dto.PartnerDto;
-import app.dto.PersonDto;
-import app.dto.UserDto;
+import app.dto.*;
 import app.service.Service;
 import app.service.interfaces.GuestService;
 import app.service.interfaces.PartnerService;
 import app.service.interfaces.UserService;
 
 import javax.swing.*;
-import java.util.HashMap;
 import java.util.Map;
 
-public class UserController {
+public class UserController implements ControllerInterface{
 
-    private UserValidator userValidator;
-    private PersonValidator personValidator;
-    private UserService userService;
-    private PartnerService partnerService;
-    private GuestService guestService;
+    private final UserValidator userValidator;
+    private final PersonValidator personValidator;
+    private final UserService userService;
+    private final PartnerService partnerService;
+    private final GuestService guestService;
 
-    private PersonDto personDto;
-    private UserDto userDto;
-    private GuestDto guestDto;
 
-    private final String[] OPTIONS = {"Crear", "Modificar", "Eliminar", "Salir"};
+    private final PersonDto personDto;
+    private final UserDto userDto;
+    private final GuestDto guestDto;
+
+    private final String[] OPTIONS = {"Crear", "Volver"};//, "Modificar", "Eliminar", "Volver"};
     private String role;
 
     public UserController() {
@@ -41,47 +38,46 @@ public class UserController {
         this.guestService = new Service();
     }
 
-    protected void menuUser(String role) {
+    public void setRole(String role) {
         this.role = role;
+    }
+
+    @Override
+    public void session()  {
+        boolean session = true;
+        while (session) {
+            session = menuUser();
+        }
+    }
+
+    private boolean menuUser() {
         try {
             int option = Utils.showMenu("Menú " + this.role, "\nSelecciona una opción:\n", OPTIONS);
-            options(option);
+            return options(option);
         } catch (Exception e) {
             Utils.showError(e.getMessage());
         }
+        return false;
     }
 
-    private void options(int option) throws Exception{
-        switch (option) {
-            case 0: {
+    private boolean options(int option) throws Exception{
+        return switch (option) {
+            case 0 -> {
                 this.createUser();
-                break;
+                yield true;
             }
-            case 1: {
-                System.out.println("Opción 1: fut: modificar");
-                break;
+            case 1 -> false;
+            default -> {
+                Utils.showError("Ingrese una opción valida");
+                yield true;
             }
-            case 2: {
-                System.out.println("Opción 2: fut: eliminar");
-                break;
-            }
-            case 3: {
-                System.out.println("Opción 3: fut: salir");
-                break;
-            }
-            default: {
-                Utils.showError("Ingrese una opcion valida");
-            }
-        }
+        };
     }
 
     private void createUser() throws Exception {
-        String[] labels = {"Cedula", "Nombre", "Celular", "Usuario", "Contraseña"};
-        Map<String, Object> fieldsToPanel = new HashMap<>(Utils.addFieldsToPanel(labels));
-        Map<String, JTextField> fieldsMap = new HashMap<>();
-        fieldsMap.putAll((Map<? extends String, ? extends JTextField>) fieldsToPanel.get("fields"));
-
-        JPanel panel = (JPanel) fieldsToPanel.get("panel");
+        String[] labels = {"Cédula", "Nombre", "Celular", "Usuario", "Contraseña"};
+        JPanel panel = new JPanel();
+        Map<String, JTextField> fieldsMap = Utils.createPanelWithFields(labels, panel);
 
         if (Utils.showConfirmDialog(panel, "Crear " + this.role)) {
 
@@ -94,12 +90,16 @@ public class UserController {
 
             personValidator.validName(fieldsMap.get("Nombre").getText());
 
-            this.personDto.setDocumentPerson(personValidator.validDocument(fieldsMap.get("Cedula").getText()));
+            this.personDto.setDocumentPerson(personValidator.validDocument(fieldsMap.get("Cédula").getText()));
             this.personDto.setNamePerson(fieldsMap.get("Nombre").getText());
             this.personDto.setCellphonePerson(personValidator.validCellphone(fieldsMap.get("Celular").getText()));
 
+            this.createByRole();
+            Utils.showMessage("El %s se ha creado con éxito".formatted(this.role));
         }
+    }
 
+    private void createByRole() throws Exception{
         switch (this.role){
             case "administrador": {
                 this.userService.createAdmin(this.userDto, this.personDto);
@@ -117,10 +117,6 @@ public class UserController {
                 break;
             }
         }
-
-        Utils.showMessage("El %s se ha creado con éxito".formatted(this.role));
     }
-
-
 
 }

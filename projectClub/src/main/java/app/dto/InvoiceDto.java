@@ -60,4 +60,14 @@ public class InvoiceDto {
     public void setStatusInvoice(String statusInvoice) {
         this.statusInvoice = statusInvoice;
     }
+
+    @Override
+    public String toString() {
+        return "Nro. Factura: " + idInvoice +
+                "\nPersona: " + idPerson.getNamePerson() +
+                "\nSocio: " + idPartner.getIdUserPartner().getIdPerson().getNamePerson() +
+                "\nFecha: " + creationDateInvoice +
+                "\nTotal: " + amountInvoice +
+                "\nEstado: " + statusInvoice;
+    }
 }

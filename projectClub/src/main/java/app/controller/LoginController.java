@@ -14,9 +14,9 @@ import static java.lang.System.exit;
 
 public class LoginController implements ControllerInterface{
 
-    private UserValidator userValidator;
-    private LoginService service;
-    private Map<String,ControllerInterface> roles;
+    private final UserValidator userValidator;
+    private final LoginService service;
+    private final Map<String,ControllerInterface> roles;
 
     public LoginController() {
         this.userValidator= new UserValidator();
@@ -24,14 +24,14 @@ public class LoginController implements ControllerInterface{
         ControllerInterface adminController = new AdminController();
         ControllerInterface partnerController = new PartnerController();
         ControllerInterface guestController = new GuestController();
-        this.roles= new HashMap<String,ControllerInterface>();
+        this.roles= new HashMap<>();
         roles.put("administrador", adminController);
         roles.put("socio", partnerController);
         roles.put("invitado", guestController);
     }
 
     @Override
-    public void session() throws Exception {
+    public void session()  {
         boolean session = true;
         while (session) {
             session = menu();

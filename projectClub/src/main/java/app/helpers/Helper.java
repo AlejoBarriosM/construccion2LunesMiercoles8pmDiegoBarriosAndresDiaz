@@ -88,7 +88,7 @@ public class Helper {
         invoice.setIdPartner(parse(invoiceDto.getIdPartner()));
         invoice.setCreationDateInvoice(invoiceDto.getCreationDateInvoice());
         invoice.setAmountInvoice(invoiceDto.getAmountInvoice());
-        invoice.setStatusInvoice(invoice.getStatusInvoice());
+        invoice.setStatusInvoice(invoiceDto.getStatusInvoice());
         return invoice;
     }
 
@@ -96,7 +96,7 @@ public class Helper {
         InvoiceDto invoiceDto = new InvoiceDto();
         invoiceDto.setIdInvoice(invoice.getIdInvoice());
         invoiceDto.setIdPerson(parse(invoice.getIdPerson()));
-        invoiceDto.setIdPartner(invoiceDto.getIdPartner());
+        invoiceDto.setIdPartner(parse(invoice.getIdPartner()));
         invoiceDto.setAmountInvoice(invoice.getAmountInvoice());
         invoiceDto.setCreationDateInvoice(invoice.getCreationDateInvoice());
         invoiceDto.setStatusInvoice(invoice.getStatusInvoice());

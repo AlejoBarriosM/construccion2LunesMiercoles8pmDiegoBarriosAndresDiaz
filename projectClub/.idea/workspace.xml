@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="c6428a88-f5d8-4d35-9796-5bd4d20fdd4d" name="Changes" comment="build:invoice 01-09-24" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <excluded-from-favorite>
+      <branch-storage>
+        <map>
+          <entry type="LOCAL">
+            <value>
+              <list>
+                <branch-info repo="$PROJECT_DIR$/.." source="main" />
+              </list>
+            </value>
+          </entry>
+        </map>
+      </branch-storage>
+    </excluded-from-favorite>
+    <favorite-branches>
+      <branch-storage>
+        <map>
+          <entry type="LOCAL">
+            <value>
+              <list>
+                <branch-info repo="$PROJECT_DIR$/.." source="develop" />
+              </list>
+            </value>
+          </entry>
+        </map>
+      </branch-storage>
+    </favorite-branches>
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$/.." value="develop" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {}
+}</component>
+  <component name="GitHubPullRequestState"><![CDATA[{
+  "prStates": [
+    {
+      "id": {
+        "id": "PR_kwDOMdvdI855DuBQ",
+        "number": 4
+      },
+      "lastSeen": 1724286913410
+    },
+    {
+      "id": {
+        "id": "PR_kwDOMdvdI855Dy_C",
+        "number": 5
+      },
+      "lastSeen": 1724286917018
+    },
+    {
+      "id": {
+        "id": "PR_kwDOMdvdI856GgvX",
+        "number": 9
+      },
+      "lastSeen": 1725240276633
+    }
+  ]
+}]]></component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/alejo-barrios/construccion2LunesMiercoles8pmDiegoBarriosAndresDiaz.git&quot;,
+    &quot;accountId&quot;: &quot;2397ffd4-64b9-4294-bdff-bc6991e2181c&quot;
+  },
+  &quot;recentNewPullRequestHead&quot;: {
+    &quot;server&quot;: {
+      &quot;useHttp&quot;: false,
+      &quot;host&quot;: &quot;github.com&quot;,
+      &quot;port&quot;: null,
+      &quot;suffix&quot;: null
+    },
+    &quot;owner&quot;: &quot;alejo-barrios&quot;,
+    &quot;repository&quot;: &quot;construccion2LunesMiercoles8pmDiegoBarriosAndresDiaz&quot;
+  }
+}</component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 1
+}</component>
+  <component name="ProjectId" id="2kfLksJ6EGr3QTTCGYt4J5qZ8v7" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.App.executor": "Run",
+    "Application.Club.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "#10 on develop",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/bame0/OneDrive/Documents/GitHub/construccion2LunesMiercoles8pmDiegoBarriosAndresDiaz/projectClub/src/main/java/app/service",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "onboarding.tips.debug.path": "C:/Users/bame0/OneDrive/Documents/GitHub/construccion2LunesMiercoles8pmDiegoBarriosAndresDiaz/projectClub/src/main/java/org/example/Main.java",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.2",
+    "run.code.analysis.last.selected.profile": "pProject Default",
+    "settings.editor.selected.configurable": "org.intellij.featuresSuggester.FeatureSuggesterConfigurable",
+    "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "mysql"
+    ]
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\bame0\OneDrive\Documents\GitHub\construccion2LunesMiercoles8pmDiegoBarriosAndresDiaz\projectClub\src\main\java\app\service" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="app.controller.validator" />
+      <recent name="app.controller" />
+      <recent name="app.service" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="Club" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="app.App" />
+      <module name="projectClub" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-b114ca120d71-intellij.indexing.shared.core-IU-242.21829.142" />
+        <option value="bundled-js-predefined-d6986cc7102b-7c0b70fcd90d-JavaScript-IU-242.21829.142" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="c6428a88-f5d8-4d35-9796-5bd4d20fdd4d" name="Changes" comment="" />
+      <created>1723669831401</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1723669831401</updated>
+      <workItem from="1723669832537" duration="31407000" />
+      <workItem from="1723982639724" duration="30524000" />
+      <workItem from="1724082767619" duration="14393000" />
+      <workItem from="1724097995325" duration="32446000" />
+      <workItem from="1724536686586" duration="147000" />
+      <workItem from="1724536858286" duration="23415000" />
+      <workItem from="1724670987971" duration="27028000" />
+      <workItem from="1724844164575" duration="18628000" />
+      <workItem from="1724930626580" duration="14780000" />
+      <workItem from="1725049781314" duration="18169000" />
+      <workItem from="1725126246259" duration="110000" />
+      <workItem from="1725126776259" duration="9558000" />
+      <workItem from="1725138092366" duration="71000" />
+      <workItem from="1725138173136" duration="11311000" />
+      <workItem from="1725196516561" duration="6458000" />
+      <workItem from="1725211464088" duration="6778000" />
+      <workItem from="1725220278551" duration="18090000" />
+    </task>
+    <task id="LOCAL-00001" summary="build:Project">
+      <option name="closed" value="true" />
+      <created>1723689349501</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1723689349501</updated>
+    </task>
+    <task id="LOCAL-00002" summary="build:login">
+      <option name="closed" value="true" />
+      <created>1723916711095</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1723916711095</updated>
+    </task>
+    <task id="LOCAL-00003" summary="build:roles">
+      <option name="closed" value="true" />
+      <created>1724035616095</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1724035616095</updated>
+    </task>
+    <task id="LOCAL-00004" summary="build:roles">
+      <option name="closed" value="true" />
+      <created>1724097147773</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1724097147773</updated>
+    </task>
+    <task id="LOCAL-00005" summary="build:roles">
+      <option name="closed" value="true" />
+      <created>1724265705516</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1724265705516</updated>
+    </task>
+    <task id="LOCAL-00006" summary="build:roles">
+      <option name="closed" value="true" />
+      <created>1724284607712</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1724284607712</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Merge remote-tracking branch 'origin/develop' into feature/fixRoles&#10;&#10;# Conflicts:&#10;#&#9;projectClub/src/main/java/app/controller/InvoiceController.java&#10;#&#9;projectClub/src/main/java/app/controller/LoginController.java&#10;#&#9;projectClub/src/main/java/app/dao/InvoiceDao.java&#10;#&#9;projectClub/src/main/java/app/helpers/Helper.java&#10;#&#9;projectClub/src/main/java/app/model/Invoice.java">
+      <option name="closed" value="true" />
+      <created>1724286328697</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1724286328697</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Merge remote-tracking branch 'origin/develop' into feature/fixRoles&#10;&#10;# Conflicts:&#10;#&#9;projectClub/src/main/java/app/controller/InvoiceController.java&#10;#&#9;projectClub/src/main/java/app/controller/LoginController.java&#10;#&#9;projectClub/src/main/java/app/dao/InvoiceDao.java&#10;#&#9;projectClub/src/main/java/app/helpers/Helper.java&#10;#&#9;projectClub/src/main/java/app/model/Invoice.java">
+      <option name="closed" value="true" />
+      <created>1724286579324</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1724286579324</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Merge remote-tracking branch 'origin/develop' into feature/fixRoles&#10;&#10;# Conflicts:&#10;#&#9;projectClub/src/main/java/app/controller/InvoiceController.java&#10;#&#9;projectClub/src/main/java/app/controller/LoginController.java&#10;#&#9;projectClub/src/main/java/app/dao/InvoiceDao.java&#10;#&#9;projectClub/src/main/java/app/helpers/Helper.java&#10;#&#9;projectClub/src/main/java/app/model/Invoice.java">
+      <option name="closed" value="true" />
+      <created>1724604594574</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1724604594574</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Merge remote-tracking branch 'origin/develop' into feature/fixRoles&#10;&#10;# Conflicts:&#10;#&#9;projectClub/src/main/java/app/controller/InvoiceController.java&#10;#&#9;projectClub/src/main/java/app/controller/LoginController.java&#10;#&#9;projectClub/src/main/java/app/dao/InvoiceDao.java&#10;#&#9;projectClub/src/main/java/app/helpers/Helper.java&#10;#&#9;projectClub/src/main/java/app/model/Invoice.java">
+      <option name="closed" value="true" />
+      <created>1724629478840</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1724629478840</updated>
+    </task>
+    <task id="LOCAL-00011" summary="build:invoice">
+      <option name="closed" value="true" />
+      <created>1724762444493</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1724762444493</updated>
+    </task>
+    <task id="LOCAL-00012" summary="build:invoice">
+      <option name="closed" value="true" />
+      <created>1725122674972</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1725122674972</updated>
+    </task>
+    <task id="LOCAL-00013" summary="build:invoice 31-08-24">
+      <option name="closed" value="true" />
+      <created>1725150040130</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1725150040130</updated>
+    </task>
+    <task id="LOCAL-00014" summary="build:invoice 01-09-24">
+      <option name="closed" value="true" />
+      <created>1725240114773</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1725240114773</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <ignored-roots>
+      <path value="$PROJECT_DIR$/src/main/java/app" />
+    </ignored-roots>
+    <MESSAGE value="build:Project" />
+    <MESSAGE value="build:login" />
+    <MESSAGE value="build:roles" />
+    <MESSAGE value="Merge remote-tracking branch 'origin/develop' into feature/fixRoles&#10;&#10;# Conflicts:&#10;#&#9;projectClub/src/main/java/app/controller/InvoiceController.java&#10;#&#9;projectClub/src/main/java/app/controller/LoginController.java&#10;#&#9;projectClub/src/main/java/app/dao/InvoiceDao.java&#10;#&#9;projectClub/src/main/java/app/helpers/Helper.java&#10;#&#9;projectClub/src/main/java/app/model/Invoice.java" />
+    <MESSAGE value="build:invoice" />
+    <MESSAGE value="build:invoice 31-08-24" />
+    <MESSAGE value="build:invoice 01-09-24" />
+    <option name="LAST_COMMIT_MESSAGE" value="build:invoice 01-09-24" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/app/dao/PartnerDaoImplementation.java</url>
+          <line>73</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+</project>

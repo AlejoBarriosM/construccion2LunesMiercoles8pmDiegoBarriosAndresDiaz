@@ -13,18 +13,17 @@ import javax.swing.*;
 import java.util.HashMap;
 import java.util.Map;
 
-import static app.service.Service.user;
 
 public class InvoiceController implements ControllerInterface{
 
-    private InvoiceDto invoiceDto;
-    private InvoiceService invoiceService;
-    private InvoiceValidator invoiceValidator;
-    private Service service;
+    private final InvoiceDto invoiceDto;
+    private final InvoiceService invoiceService;
+    private final InvoiceValidator invoiceValidator;
+    private final Service service;
     private PartnerDto partnerDto;
     private GuestDto guestDto;
 
-    private String[] OPTIONS = {"Crear Factura", "Ver Facturas", "Pagar facturas", "Volver"};;
+    private final String[] OPTIONS = {"Crear Factura", "Ver Facturas", "Pagar facturas", "Volver"};
 
 
     public InvoiceController() {
@@ -35,7 +34,7 @@ public class InvoiceController implements ControllerInterface{
     }
 
     @Override
-    public void session() throws Exception {
+    public void session() {
         boolean session = true;
         while (session) {
             session = menuInvoice();
@@ -46,9 +45,9 @@ public class InvoiceController implements ControllerInterface{
         this.guestDto = Service.guest;
         this.partnerDto = Service.partner;
 
-        String message = "\nMonto: " + partnerDto.getAmountPartner()
-                + "\nFacturas pendientes: " + service.getMaxAmount()
-                + "\nValor pendientes " + partnerDto.getTypePartner()
+        String message = "\nMonto disponible: " + partnerDto.getAmountPartner()
+                //+ "\nFacturas pendientes: " + service.getMaxAmount()
+                //+ "\nValor pendientes " + partnerDto.getTypePartner()
                 + "\n\nSelecciona una opción:\n\n";
 
         try {

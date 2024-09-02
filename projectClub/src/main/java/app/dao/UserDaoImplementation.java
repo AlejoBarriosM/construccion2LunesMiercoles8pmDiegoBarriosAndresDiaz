@@ -12,7 +12,7 @@ import java.sql.ResultSet;
 
 public class UserDaoImplementation  implements UserDao {
 
-    private PersonDao personDao = new PersonDaoImplementation();
+    private final PersonDao personDao = new PersonDaoImplementation();
 
     @Override
     public UserDto findByUserName(UserDto userDto) throws Exception {

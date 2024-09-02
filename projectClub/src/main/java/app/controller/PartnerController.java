@@ -69,13 +69,14 @@ public class PartnerController extends UserController implements ControllerInter
                 return true;
             }
             case 3: {
-                return Utils.showYesNoDialog("cambio suscripción");
+                this.changeSubscription();
+                return true;
             }
             case 4: {
-                return Utils.showYesNoDialog("Darse de Baja") || (this.service.logout());
+                return unsubscribe();
             }
             case 5: {
-                return Utils.showYesNoDialog("¿Desea cerrar sesión?") || (this.service.logout());
+                return Utils.showYesNoDialog("¿Desea cerrar sesión?") && (this.service.logout());
             }
             default: {
                 Utils.showError("Ingrese una opción valida");
@@ -84,7 +85,7 @@ public class PartnerController extends UserController implements ControllerInter
         }
     }
 
-    private void increaseAmount () throws Exception {
+    private void increaseAmount() throws Exception {
         String[] labels = {"Monto"};
         JPanel panel = new JPanel();
         Map<String, JTextField> fieldsMap = Utils.createPanelWithFields(labels, panel);
@@ -95,11 +96,26 @@ public class PartnerController extends UserController implements ControllerInter
         }
     }
 
-
-
-    private void payInvoices () throws Exception {
+    private void payInvoices() throws Exception {
         service.payInvoices(partnerDto);
     }
+
+    private void changeSubscription() throws Exception {
+        if (Utils.showYesNoDialog("¿Desea pasar a ser VIP?")){
+            this.partnerService.changeSubscription(partnerDto);
+        }
+    }
+
+    private boolean unsubscribe() throws Exception {
+        if (!partnerService.pendingInvoices(partnerDto)){
+            partnerService.unsubscribe(partnerDto);
+            return false;
+        } else {
+            Utils.showError("No se puede eliminar, tiene facturas pendientes");
+            return true;
+        }
+    }
+
 
 
 

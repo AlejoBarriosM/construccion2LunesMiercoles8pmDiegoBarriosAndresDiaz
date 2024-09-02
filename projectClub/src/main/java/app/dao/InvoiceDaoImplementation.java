@@ -113,41 +113,14 @@ public class InvoiceDaoImplementation implements InvoiceDao {
         return items;
     }
 
-
     @Override
-    public boolean payInvoice(InvoiceDto invoiceDto) throws Exception {
+    public void payInvoice(InvoiceDto invoiceDto) throws Exception {
         Invoice invoice = Helper.parse(invoiceDto);
         String query = "UPDATE INVOICE SET STATUS = 'Pagó' WHERE ID = ?";
         PreparedStatement preparedStatement = MYSQLConnection.getConnection().prepareStatement(query);
         preparedStatement.setLong(1,invoice.getIdInvoice());
         preparedStatement.executeUpdate();
         preparedStatement.close();
-        return true;
     }
 
-
-    @Override
-    public InvoiceDto findIdInvoce (Long idInvoice) throws Exception {
-        String query = "SELECT * FROM INVOICE WHERE ID = ?";
-        PreparedStatement preparedStatement = MYSQLConnection.getConnection().prepareStatement(query);
-        preparedStatement.setLong(1, idInvoice);
-        ResultSet resultSet = preparedStatement.executeQuery();
-        if (resultSet.next()) {
-            Invoice invoice = new Invoice();
-            invoice.setIdInvoice(resultSet.getLong("ID"));
-            invoice.setIdPerson(Helper.parse(personDao.findById(resultSet.getLong("PERSONID"))));
-            invoice.setIdPartner(Helper.parse(partnerDao.findById(resultSet.getLong("PARTNERID"))));
-            invoice.setCreationDateInvoice(resultSet.getString("CREATIONDATE"));
-            invoice.setAmountInvoice(resultSet.getDouble("AMOUNT"));
-            invoice.setStatusInvoice(resultSet.getString("STATUS"));
-
-            resultSet.close();
-            preparedStatement.close();
-            return Helper.parse(invoice);
-        }
-        resultSet.close();
-        preparedStatement.close();
-        return null;
-
-    }
 }

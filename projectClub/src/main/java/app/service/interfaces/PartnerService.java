@@ -5,6 +5,9 @@ import app.dto.PersonDto;
 import app.dto.UserDto;
 
 public interface PartnerService {
-    public void createPartner(UserDto userDto, PersonDto personDto) throws Exception;
-    public void increaseAmount(PartnerDto partnerDto, Double amount) throws Exception;
+    void createPartner(UserDto userDto, PersonDto personDto) throws Exception;
+    void increaseAmount(PartnerDto partnerDto, Double amount) throws Exception;
+    void changeSubscription(PartnerDto partnerDto) throws Exception;
+    boolean pendingInvoices(PartnerDto partnerDto) throws Exception;
+    void unsubscribe(PartnerDto partnerDto) throws Exception;
 }

@@ -14,9 +14,9 @@ import static java.lang.System.exit;
 
 public class LoginController implements ControllerInterface{
 
-    private UserValidator userValidator;
-    private LoginService service;
-    private Map<String,ControllerInterface> roles;
+    private final UserValidator userValidator;
+    private final LoginService service;
+    private final Map<String,ControllerInterface> roles;
 
     public LoginController() {
         this.userValidator= new UserValidator();
@@ -31,7 +31,7 @@ public class LoginController implements ControllerInterface{
     }
 
     @Override
-    public void session() throws Exception {
+    public void session()  {
         boolean session = true;
         while (session) {
             session = menu();

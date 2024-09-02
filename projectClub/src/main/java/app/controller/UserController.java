@@ -13,18 +13,18 @@ import java.util.Map;
 
 public class UserController implements ControllerInterface{
 
-    private UserValidator userValidator;
-    private PersonValidator personValidator;
-    private UserService userService;
-    private PartnerService partnerService;
-    private GuestService guestService;
+    private final UserValidator userValidator;
+    private final PersonValidator personValidator;
+    private final UserService userService;
+    private final PartnerService partnerService;
+    private final GuestService guestService;
 
 
-    private PersonDto personDto;
-    private UserDto userDto;
-    private GuestDto guestDto;
+    private final PersonDto personDto;
+    private final UserDto userDto;
+    private final GuestDto guestDto;
 
-    private final String[] OPTIONS = {"Crear", "Modificar", "Eliminar", "Volver"};
+    private final String[] OPTIONS = {"Crear", "Volver"};//, "Modificar", "Eliminar", "Volver"};
     private String role;
 
     public UserController() {
@@ -43,7 +43,7 @@ public class UserController implements ControllerInterface{
     }
 
     @Override
-    public void session() throws Exception {
+    public void session()  {
         boolean session = true;
         while (session) {
             session = menuUser();
@@ -66,27 +66,16 @@ public class UserController implements ControllerInterface{
                 this.createUser();
                 yield true;
             }
-            case 1 -> {
-                System.out.println("Opción 1: fut: modificar");
-                yield true;
-            }
-            case 2 -> {
-                System.out.println("Opción 2: fut: eliminar");
-                yield true;
-            }
-            case 3 -> {
-                System.out.println("Opción 3: fut: salir");
-                yield false;
-            }
+            case 1 -> false;
             default -> {
-                Utils.showError("Ingrese una opcion valida");
+                Utils.showError("Ingrese una opción valida");
                 yield true;
             }
         };
     }
 
     private void createUser() throws Exception {
-        String[] labels = {"Cedula", "Nombre", "Celular", "Usuario", "Contraseña"};
+        String[] labels = {"Cédula", "Nombre", "Celular", "Usuario", "Contraseña"};
         JPanel panel = new JPanel();
         Map<String, JTextField> fieldsMap = Utils.createPanelWithFields(labels, panel);
 
@@ -101,7 +90,7 @@ public class UserController implements ControllerInterface{
 
             personValidator.validName(fieldsMap.get("Nombre").getText());
 
-            this.personDto.setDocumentPerson(personValidator.validDocument(fieldsMap.get("Cedula").getText()));
+            this.personDto.setDocumentPerson(personValidator.validDocument(fieldsMap.get("Cédula").getText()));
             this.personDto.setNamePerson(fieldsMap.get("Nombre").getText());
             this.personDto.setCellphonePerson(personValidator.validCellphone(fieldsMap.get("Celular").getText()));
 

@@ -15,12 +15,8 @@ public abstract class Utils {
 		JOptionPane.showMessageDialog(null, message, "Error", JOptionPane.ERROR_MESSAGE);
 	}
 
-	public static String promptInput(String message) {
-		return JOptionPane.showInputDialog(null, message, "Entrada", JOptionPane.QUESTION_MESSAGE);
-	}
-
 	public static boolean showYesNoDialog(String message) {
-        return JOptionPane.showConfirmDialog(null, message, "Confirmar", JOptionPane.YES_NO_OPTION) == JOptionPane.NO_OPTION;
+        return JOptionPane.showConfirmDialog(null, message, "Confirmar", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
 	}
 
 	public static boolean showConfirmDialog(JPanel panel, String title) {

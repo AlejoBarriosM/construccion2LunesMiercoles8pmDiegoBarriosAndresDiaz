@@ -116,8 +116,4 @@ public class PartnerController extends UserController implements ControllerInter
         }
     }
 
-
-
-
-
 }

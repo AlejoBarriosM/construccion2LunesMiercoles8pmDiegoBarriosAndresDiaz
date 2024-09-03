@@ -6,3 +6,4 @@ public interface LoginService {
 	void login(UserDto userDto) throws Exception;
 	boolean logout();
 }
+

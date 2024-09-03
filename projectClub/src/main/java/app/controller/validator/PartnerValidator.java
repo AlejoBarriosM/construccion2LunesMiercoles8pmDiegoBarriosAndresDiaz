@@ -6,6 +6,4 @@ public class PartnerValidator extends CommonsValidator {
         return super.isValidDouble("Los fondos ingresados", amount);
     }
 
-
-
 }

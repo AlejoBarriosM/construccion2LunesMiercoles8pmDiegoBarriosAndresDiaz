@@ -17,6 +17,4 @@ public class PersonValidator extends CommonsValidator {
 			throw new Exception("El celular de la persona no debe tener mas de 10 caracteres");
 		}
 	}
-
-
 }

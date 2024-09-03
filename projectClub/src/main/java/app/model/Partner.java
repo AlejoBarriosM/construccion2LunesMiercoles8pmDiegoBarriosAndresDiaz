@@ -50,3 +50,4 @@ public class Partner {
         this.creationDatePartner = creationDatePartner;
     }
 }
+

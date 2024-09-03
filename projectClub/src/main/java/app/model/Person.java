@@ -42,4 +42,3 @@ public class Person {
         this.cellphonePerson = cellphonePerson;
     }
 }
-

@@ -10,4 +10,3 @@ public class UserValidator extends CommonsValidator{
 	}
 
 }
-

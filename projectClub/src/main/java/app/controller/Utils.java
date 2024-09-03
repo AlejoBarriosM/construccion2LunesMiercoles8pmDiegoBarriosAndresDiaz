@@ -79,5 +79,4 @@ public abstract class Utils {
 		JOptionPane.showMessageDialog(null, scrollPane, title, JOptionPane.PLAIN_MESSAGE);
 	}
 
-
 }

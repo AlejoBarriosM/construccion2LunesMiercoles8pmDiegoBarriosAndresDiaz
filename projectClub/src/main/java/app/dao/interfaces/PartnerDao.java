@@ -19,3 +19,4 @@ public interface PartnerDao {
     void unsubscribe(PartnerDto partnerDto) throws Exception;
 
 }
+

@@ -13,3 +13,4 @@ public interface InvoiceService {
     boolean payInvoices(PartnerDto partnerDto) throws Exception;
     void validateInvoice(InvoiceDto invoiceDto, Map<Long, InvoiceDetailDto> items) throws Exception;
 }
+

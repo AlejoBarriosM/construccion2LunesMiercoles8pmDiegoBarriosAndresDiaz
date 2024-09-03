@@ -90,5 +90,4 @@ public class AdminController extends UserController implements ControllerInterfa
 		}
 	}
 
-
 }

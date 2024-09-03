@@ -50,3 +50,4 @@ public class InvoiceDetail {
         this.amountInvoiceDetail = amountInvoiceDetail;
     }
 }
+

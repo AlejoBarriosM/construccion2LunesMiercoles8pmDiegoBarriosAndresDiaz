@@ -11,3 +11,4 @@ public interface PartnerService {
     boolean pendingInvoices(PartnerDto partnerDto) throws Exception;
     void unsubscribe(PartnerDto partnerDto) throws Exception;
 }
+

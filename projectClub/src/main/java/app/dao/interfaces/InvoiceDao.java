@@ -15,3 +15,4 @@ public interface InvoiceDao {
    void payInvoice(InvoiceDto invoice) throws Exception;
 
 }
+

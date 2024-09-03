@@ -11,3 +11,4 @@ public interface GuestDao {
     void upgradeToPartner(GuestDto guestDto) throws Exception;
     void changeType(GuestDto guestDto) throws Exception;
 }
+

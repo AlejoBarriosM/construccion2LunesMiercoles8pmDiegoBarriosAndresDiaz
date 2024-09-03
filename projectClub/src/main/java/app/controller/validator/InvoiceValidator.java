@@ -15,5 +15,4 @@ public class InvoiceValidator extends CommonsValidator {
         return super.isValidLong("El número del item: ", itemValue);
     }
 
-
 }

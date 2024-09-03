@@ -1,14 +1,15 @@
-package app.dto;
+package app.model;
 
-public class UserDto {
+public class User {
 
     private long idUser;
-    private PersonDto idPerson;
-    private String nameUser;
+    private Person idPerson;
+    private String userName;
     private String passwordUser;
     private String roleUser;
 
-    public UserDto() {
+    public User() {
+
     }
 
     public long getIdUser() {
@@ -19,20 +20,20 @@ public class UserDto {
         this.idUser = idUser;
     }
 
-    public PersonDto getIdPerson() {
+    public Person getIdPerson() {
         return idPerson;
     }
 
-    public void setIdPerson(PersonDto idPerson) {
+    public void setIdPerson(Person idPerson) {
         this.idPerson = idPerson;
     }
 
-    public String getNameUser() {
-        return nameUser;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setNameUser(String nameUser) {
-        this.nameUser = nameUser;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getPasswordUser() {
@@ -51,4 +52,3 @@ public class UserDto {
         this.roleUser = roleUser;
     }
 }
-

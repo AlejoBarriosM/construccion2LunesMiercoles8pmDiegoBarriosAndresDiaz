@@ -6,3 +6,4 @@ import app.dto.UserDto;
 public interface UserService {
     void createAdmin(UserDto userDto, PersonDto personDto) throws Exception;
 }
+

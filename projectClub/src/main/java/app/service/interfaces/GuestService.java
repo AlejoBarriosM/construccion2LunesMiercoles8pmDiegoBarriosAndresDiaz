@@ -9,3 +9,4 @@ public interface GuestService {
     boolean pendingInvoices(GuestDto guestDto) throws Exception;
     void upgradeToPartner(GuestDto guestDto) throws Exception;
 }
+

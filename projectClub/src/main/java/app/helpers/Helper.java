@@ -1,7 +1,7 @@
 package app.helpers;
 
 import app.dto.*;
-import app.model.*;
+import app.entity.*;
 
 public class Helper {
 

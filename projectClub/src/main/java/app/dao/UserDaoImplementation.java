@@ -1,88 +1,41 @@
 package app.dao;
 
-import app.config.MYSQLConnection;
-import app.dao.interfaces.PersonDao;
 import app.dao.interfaces.UserDao;
 import app.dto.UserDto;
 import app.helpers.Helper;
-import app.model.User;
+import app.entity.User;
+import app.repository.UserRepository;
+import org.springframework.stereotype.Repository;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 
+@Repository
 public class UserDaoImplementation  implements UserDao {
 
-    private final PersonDao personDao = new PersonDaoImplementation();
+    private UserRepository userRepository;
 
     @Override
     public UserDto findByUserName(UserDto userDto) throws Exception {
-        String query = "SELECT * FROM USER WHERE USERNAME = ?";
-        PreparedStatement preparedStatement = MYSQLConnection.getConnection().prepareStatement(query);
-        preparedStatement.setString(1, userDto.getNameUser());
-        ResultSet resultSet = preparedStatement.executeQuery();
-        if (resultSet.next()) {
-            User user = new User();
-            user.setIdUser(resultSet.getLong("ID"));
-            user.setUserName(resultSet.getString("USERNAME"));
-            user.setPasswordUser(resultSet.getString("PASSWORD"));
-            user.setRoleUser(resultSet.getString("ROLE"));
-            user.setIdPerson(Helper.parse(personDao.findById(resultSet.getLong("PERSONID"))));
-            resultSet.close();
-            preparedStatement.close();
-            return Helper.parse(user);
-        }
-        resultSet.close();
-        preparedStatement.close();
-        return null;
-
+        User user = Helper.parse(userDto);
+        return Helper.parse(userRepository.findByUserName(user.getUserName()));
     }
 
     @Override
     public UserDto findById(Long id) throws Exception {
-        String query = "SELECT * FROM USER WHERE ID = ?";
-        PreparedStatement preparedStatement = MYSQLConnection.getConnection().prepareStatement(query);
-        preparedStatement.setLong(1, id);
-        ResultSet resultSet = preparedStatement.executeQuery();
-        if (resultSet.next()) {
-            User user = new User();
-            user.setIdUser(resultSet.getLong("ID"));
-            user.setUserName(resultSet.getString("USERNAME"));
-            user.setPasswordUser(resultSet.getString("PASSWORD"));
-            user.setRoleUser(resultSet.getString("ROLE"));
-            user.setIdPerson(Helper.parse(personDao.findById(resultSet.getLong("PERSONID"))));
-            resultSet.close();
-            preparedStatement.close();
-            return Helper.parse(user);
-        }
-        resultSet.close();
-        preparedStatement.close();
-        return null;
-
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new Exception("Usuario no encontrado"));
+        return Helper.parse(user);
     }
 
     @Override
     public boolean existsByUserName(UserDto userDto) throws Exception {
-        String query = "SELECT 1 FROM USER WHERE USERNAME = ?";
-        PreparedStatement preparedStatement = MYSQLConnection.getConnection().prepareStatement(query);
-        preparedStatement.setString(1, userDto.getNameUser());
-        ResultSet resultSet = preparedStatement.executeQuery();
-        boolean exists = resultSet.next();
-        resultSet.close();
-        preparedStatement.close();
-        return exists;
+        User user = Helper.parse(userDto);
+        return userRepository.existsByUserName(user.getUserName());
     }
 
     @Override
     public void createUser(UserDto userDto) throws Exception {
         User user = Helper.parse(userDto);
-        String query = "INSERT INTO USER(USERNAME,PASSWORD,PERSONID,ROLE) VALUES (?,?,?,?)";
-        PreparedStatement preparedStatement = MYSQLConnection.getConnection().prepareStatement(query);
-        preparedStatement.setString(1, user.getUserName());
-        preparedStatement.setString(2, user.getPasswordUser());
-        preparedStatement.setLong(3,user.getIdPerson().getIdPerson());
-        preparedStatement.setString(4, user.getRoleUser());
-        preparedStatement.execute();
-        preparedStatement.close();
+        userRepository.save(user);
     }
 
 }

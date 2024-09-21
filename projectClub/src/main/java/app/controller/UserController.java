@@ -2,122 +2,64 @@ package app.controller;
 
 import app.controller.validator.PersonValidator;
 import app.controller.validator.UserValidator;
-import app.dto.*;
-import app.service.Service;
-import app.service.interfaces.GuestService;
-import app.service.interfaces.PartnerService;
-import app.service.interfaces.UserService;
+import app.dto.LoginDto;
+import app.dto.MessageDto;
+import app.dto.UserDto;
+import app.service.UserService;
+import jakarta.persistence.EntityExistsException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-import javax.swing.*;
-import java.util.Map;
 
-public class UserController implements ControllerInterface{
 
-    private final UserValidator userValidator;
-    private final PersonValidator personValidator;
+@RestController
+@RequestMapping("/usersAPI/v1/users")
+public class UserController {
+
     private final UserService userService;
-    private final PartnerService partnerService;
-    private final GuestService guestService;
-
-
-    private final PersonDto personDto;
-    private final UserDto userDto;
-    private final GuestDto guestDto;
-
-    private final String[] OPTIONS = {"Crear", "Volver"};//, "Modificar", "Eliminar", "Volver"};
-    private String role;
-
-    public UserController() {
-        this.userValidator = new UserValidator();
-        this.personValidator = new PersonValidator();
-        this.userDto = new UserDto();
-        this.personDto = new PersonDto();
-        this.guestDto = new GuestDto();
-        this.userService = new Service();
-        this.partnerService = new Service();
-        this.guestService = new Service();
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    @PostMapping
+    public ResponseEntity<?> createUser(@RequestBody UserDto userDto){
+        return ResponseEntity.ok(userService.save(userDto) + "Usuario creado");
+//        MessageDto creationDetails = new MessageDto("Usuario creado", "202");
+//        return new ResponseEntity<>(creationDetails, HttpStatus.CREATED);
     }
 
-    @Override
-    public void session()  {
-        boolean session = true;
-        while (session) {
-            session = menuUser();
-        }
+    @GetMapping("/{userName}")
+    public ResponseEntity<UserDto> getUser(@PathVariable String userName) {
+        return ResponseEntity.ok(userService.getUserByUserName(userName));
     }
 
-    private boolean menuUser() {
-        try {
-            int option = Utils.showMenu("Menú " + this.role, "\nSelecciona una opción:\n", OPTIONS);
-            return options(option);
-        } catch (Exception e) {
-            Utils.showError(e.getMessage());
-        }
-        return false;
+    @PostMapping("/login")
+    public ResponseEntity<MessageDto> login(@RequestBody LoginDto loginDto) {
+        userService.login(loginDto.getUsername(), loginDto.getPassword());
+        MessageDto loginDetails = new MessageDto("Usuario valido", "200");
+        return new ResponseEntity<>(loginDetails, HttpStatus.OK);
     }
 
-    private boolean options(int option) throws Exception{
-        return switch (option) {
-            case 0 -> {
-                this.createUser();
-                yield true;
-            }
-            case 1 -> false;
-            default -> {
-                Utils.showError("Ingrese una opción valida");
-                yield true;
-            }
-        };
+    @PatchMapping("/changeRole/{id}/{role}")
+    public ResponseEntity<MessageDto> updateRole(@PathVariable Long id, @PathVariable String role) {
+        UserDto userDto = new UserDto();
+        userDto.setIdUser(id);
+        userService.updateRoleUserByIdUser(userDto,role);
+        MessageDto updateDetails = new MessageDto("Usuario actualizado", "202");
+        return new ResponseEntity<>(updateDetails, HttpStatus.OK);
     }
 
-    private void createUser() throws Exception {
-        String[] labels = {"Cédula", "Nombre", "Celular", "Usuario", "Contraseña"};
-        JPanel panel = new JPanel();
-        Map<String, JTextField> fieldsMap = Utils.createPanelWithFields(labels, panel);
-
-        if (Utils.showConfirmDialog(panel, "Crear " + this.role)) {
-
-            userValidator.validUserName(fieldsMap.get("Usuario").getText());
-            userValidator.validPassword(fieldsMap.get("Contraseña").getText());
-
-            this.userDto.setPasswordUser(fieldsMap.get("Contraseña").getText());
-            this.userDto.setNameUser(fieldsMap.get("Usuario").getText());
-            this.userDto.setRoleUser(this.role);
-
-            personValidator.validName(fieldsMap.get("Nombre").getText());
-
-            this.personDto.setDocumentPerson(personValidator.validDocument(fieldsMap.get("Cédula").getText()));
-            this.personDto.setNamePerson(fieldsMap.get("Nombre").getText());
-            this.personDto.setCellphonePerson(personValidator.validCellphone(fieldsMap.get("Celular").getText()));
-
-            this.createByRole();
-            Utils.showMessage("El %s se ha creado con éxito".formatted(this.role));
-        }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<MessageDto> deleteUser(@PathVariable Long id) {
+        userService.deleteById(id);
+        MessageDto deleteDetail = new MessageDto("Usuario eliminado", "200");
+        return new ResponseEntity<>(deleteDetail, HttpStatus.OK);
     }
 
-    private void createByRole() throws Exception{
-        switch (this.role){
-            case "administrador": {
-                this.userService.createAdmin(this.userDto, this.personDto);
-                break;
-            }
-            case "socio": {
-                this.partnerService.createPartner(this.userDto, this.personDto);
-                break;
-            }
-            case "invitado": {
-                this.guestService.createGuest(this.guestDto, this.userDto, this.personDto);
-                break;
-            }
-            default: {
-                break;
-            }
-        }
+    @ExceptionHandler(EntityExistsException.class)
+    public ResponseEntity<MessageDto> handleEntityExistsException(EntityExistsException ex) {
+        MessageDto errorDetails = new MessageDto(ex.getMessage(), "409");
+        return new ResponseEntity<>(errorDetails, HttpStatus.CONFLICT);
     }
-
 }
-

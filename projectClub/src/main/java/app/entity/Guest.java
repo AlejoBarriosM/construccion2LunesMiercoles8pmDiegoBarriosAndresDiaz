@@ -4,8 +4,8 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
-@Table(name = "guest")
 @Data
+@Table(name = "guest")
 public class Guest {
 
     @Id
@@ -13,19 +13,16 @@ public class Guest {
     @Column(name = "id")
     private long idGuest;
 
-    @JoinColumn(name = "userid")
+    @JoinColumn(name = "user_id")
     @OneToOne(cascade = CascadeType.ALL)
     private User userIdGuest;
 
-    @JoinColumn(name = "partnerId")
+    @JoinColumn(name = "partner_id")
     @ManyToOne(cascade = CascadeType.ALL)
     private Partner partnerIdGuest;
 
     @Column(name = "status", nullable = false)
     private String statusGuest;
-
-    public Guest() {
-    }
 
 }
 

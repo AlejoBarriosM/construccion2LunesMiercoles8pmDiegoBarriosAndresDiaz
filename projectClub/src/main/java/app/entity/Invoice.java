@@ -6,8 +6,8 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "invoice")
 @Data
+@Table(name = "invoice")
 public class Invoice {
 
     @Id
@@ -15,15 +15,15 @@ public class Invoice {
     @Column(name = "id")
     private long idInvoice;
 
-    @JoinColumn(name = "personId")
+    @JoinColumn(name = "person_id")
     @ManyToOne(cascade = CascadeType.ALL)
     private Person idPerson;
 
-    @JoinColumn(name = "partnerId")
+    @JoinColumn(name = "partner_id")
     @ManyToOne(cascade = CascadeType.ALL)
     private Partner idPartner;
 
-    @Column(name = "creationDate", nullable = false)
+    @Column(name = "creation_date", nullable = false)
     private String creationDateInvoice;
 
     @Column(name = "amount", nullable = false)
@@ -36,9 +36,6 @@ public class Invoice {
     protected void onCreate() {
         this.creationDateInvoice = String.valueOf(LocalDateTime.now());
     }
-
-    public Invoice() {  }
-
 
 }
 

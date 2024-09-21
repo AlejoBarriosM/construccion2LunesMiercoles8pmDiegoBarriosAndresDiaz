@@ -7,15 +7,16 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "partner")
 @Data
+@Table(name = "partner")
 public class Partner {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private long idPartner;
 
-    @JoinColumn(name = "userid")
+    @JoinColumn(name = "user_id")
     @OneToOne(cascade = CascadeType.ALL)
     private User idUserPartner;
 
@@ -25,15 +26,12 @@ public class Partner {
     @Column(name = "type", nullable = false)
     private String typePartner;
 
-    @Column(name = "creationDate", nullable = false)
+    @Column(name = "creation_date", nullable = false)
     private String creationDatePartner;
 
     @PrePersist
     protected void onCreate() {
         this.creationDatePartner = String.valueOf(LocalDateTime.now());
-    }
-
-    public Partner() {
     }
 
 }

@@ -5,15 +5,16 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
-@Table(name = "invoiceDetail")
 @Data
+@Table(name = "invoice_detail")
 public class InvoiceDetail {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private long idInvoiceDetail;
 
-    @JoinColumn(name = "invoiceid")
+    @JoinColumn(name = "invoice_id")
     @OneToOne(cascade = CascadeType.ALL)
     private Invoice idInvoice;
 
@@ -25,7 +26,5 @@ public class InvoiceDetail {
 
     @Column(name = "amount", nullable = false)
     private double amountInvoiceDetail;
-
-    public InvoiceDetail() { }
 
 }

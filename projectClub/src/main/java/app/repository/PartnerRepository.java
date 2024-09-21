@@ -15,14 +15,16 @@ public interface PartnerRepository extends JpaRepository<Partner, Long> {
 
     @Modifying
     @Query("UPDATE Partner p SET p.amountPartner = p.amountPartner + :amount WHERE p.idPartner = :partner")
-    void incrementAmount(@Param("partner") Partner partner, @Param("amount") Double amount);
+    void increaseAmount(@Param("partner") Long partner, @Param("amount") Double amount);
 
     @Modifying
     @Query("UPDATE Partner p SET p.amountPartner = p.amountPartner - :amount WHERE p.idPartner = :partner")
-    void decrementAmount(@Param("partner") Partner partner, @Param("amount") Double amount);
+    void decreaseAmount(@Param("partner") Long partner, @Param("amount") Double amount);
 
     int countByTypePartner(String type);
 
-    void updateTypePartnerByIdPartner(Partner partner, String type);
+    @Modifying
+    @Query("UPDATE Partner p SET p.typePartner = :type WHERE p.idPartner = :partner")
+    void updateTypePartnerByIdPartner(@Param("partner") Long partner, @Param("type") String type);
 
 }

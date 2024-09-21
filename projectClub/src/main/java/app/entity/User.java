@@ -4,19 +4,20 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
-@Table(name = "user")
 @Data
+@Table(name = "user")
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private long idUser;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "personId", nullable = false)
+    @JoinColumn(name = "person_id", nullable = false)
     private Person idPerson;
 
-    @Column(name = "userName", nullable = false)
+    @Column(name = "username", nullable = false, unique = true)
     private String userName;
 
     @Column(name = "password", nullable = false)
@@ -24,7 +25,5 @@ public class User {
 
     @Column(name = "role", nullable = false)
     private String roleUser;
-
-    public User() { }
 
 }

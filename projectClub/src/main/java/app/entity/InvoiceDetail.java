@@ -15,7 +15,7 @@ public class InvoiceDetail {
     private long idInvoiceDetail;
 
     @JoinColumn(name = "invoice_id")
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     private Invoice idInvoice;
 
     @Column(name = "item", nullable = false)

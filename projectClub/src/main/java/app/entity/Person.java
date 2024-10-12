@@ -19,7 +19,7 @@ public class Person {
     @Column(name = "name", nullable = false)
     private String namePerson;
 
-    @Column(name = "cellphone", nullable = false)
+    @Column(name = "cellphone", nullable = false, length = 10)
     private Long cellphonePerson;
 
 }

@@ -7,6 +7,7 @@ import app.entity.User;
 import app.repository.PersonRepository;
 import app.repository.UserRepository;
 import jakarta.persistence.EntityExistsException;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,35 +30,34 @@ public class UserService {
 
     public UserDto save(UserDto userDto) {
         User user = UserMapper.INSTANCE.toUser(userDto);
-        if (personRepository.existsByDocumentPerson(user.getIdPerson().getDocumentPerson())){
+        if (personRepository.existsByDocumentPerson(user.getIdPerson().getDocumentPerson())) {
             throw new EntityExistsException("Persona ya existe");
         }
         if (userRepository.existsByUserName(user.getUserName())) {
             throw new EntityExistsException("Usuario ya existe");
         }
-
         return UserMapper.INSTANCE.toUserDto(userRepository.save(user));
     }
 
     public UserDto login(String userName, String password) {
-        if (userRepository.existsByUserNameAndPasswordUser(userName, password)){
-            return UserMapper.INSTANCE.toUserDto(userRepository.findByUserName(userName));
+        if (!userRepository.existsByUserNameAndPasswordUser(userName, password)) {
+            throw new EntityNotFoundException("Usuario o contraseña invalida");
         }
-        throw new EntityExistsException("Usuario o contraseña invalida");
+        return UserMapper.INSTANCE.toUserDto(userRepository.findByUserName(userName));
     }
 
     public void updateRoleUserByIdUser(UserDto userDto, String role) {
         User user = UserMapper.INSTANCE.toUser(userDto);
-        if (userRepository.existsById(user.getIdUser())){
-            userRepository.updateRoleUserByIdUser(user.getIdUser(), role);
+        if (!userRepository.existsById(user.getIdUser())) {
+            throw new EntityExistsException("Usuario no existe");
         }
-        throw new EntityExistsException("Usuario no existe");
+        userRepository.updateRoleUserByIdUser(user.getIdUser(), role);
     }
 
     public UserDto getUserByUserName(String userName) {
-        return UserMapper.INSTANCE.toUserDto(userRepository.findByUserName(userName));
+        User user = userRepository.findByUserName(userName);
+        return UserMapper.INSTANCE.toUserDto(user);
     }
-
 
     public void deleteById(Long id) {
         if (!userRepository.existsById(id)) {

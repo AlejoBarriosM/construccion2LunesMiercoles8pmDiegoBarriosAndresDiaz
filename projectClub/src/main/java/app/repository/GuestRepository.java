@@ -9,6 +9,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface GuestRepository extends JpaRepository<Guest, Long> {
 
@@ -17,4 +19,6 @@ public interface GuestRepository extends JpaRepository<Guest, Long> {
     @Modifying
     @Query("UPDATE Guest g SET g.statusGuest = :status WHERE g.idGuest = :guest")
     void updateStatusGuestByIdGuest(@Param("guest") Long guest, @Param("status") String status);
+
+    List<Guest> findByPartnerIdGuest_IdPartner(Long id);
 }

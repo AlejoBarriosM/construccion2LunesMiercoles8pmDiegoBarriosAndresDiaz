@@ -1,6 +1,7 @@
 package app.service;
 
 import app.dto.PartnerDto;
+import app.dto.UserDto;
 import app.dto.mapper.PartnerMapper;
 import app.entity.Partner;
 import app.entity.User;
@@ -8,9 +9,13 @@ import app.repository.PartnerRepository;
 import app.repository.PersonRepository;
 import app.repository.UserRepository;
 import jakarta.persistence.EntityExistsException;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class PartnerService {
@@ -70,6 +75,15 @@ public class PartnerService {
     }
 
     public PartnerDto findById(Long id) {
-        return PartnerMapper.INSTANCE.toPartnerDto(partnerRepository.findById(id).orElse(null));
+        return PartnerMapper.INSTANCE.toPartnerDto(partnerRepository.findById(id).orElseThrow(()-> new EntityNotFoundException("El socio no existe")));
+    }
+
+    public List<PartnerDto> findAll() {
+        List<Partner> partners = partnerRepository.findAll();
+        List<PartnerDto> partnerDtos = new ArrayList<>();
+        for(Partner partner: partners){
+            partnerDtos.add(PartnerMapper.INSTANCE.toPartnerDto(partner));
+        }
+        return partnerDtos;
     }
 }

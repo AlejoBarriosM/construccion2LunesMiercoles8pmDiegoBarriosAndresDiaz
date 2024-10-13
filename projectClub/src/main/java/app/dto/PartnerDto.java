@@ -11,7 +11,4 @@ public class PartnerDto {
     private String typePartner;
     private String creationDatePartner;
 
-    public PartnerDto() {
-    }
-
 }

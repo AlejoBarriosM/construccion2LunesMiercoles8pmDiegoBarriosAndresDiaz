@@ -2,6 +2,9 @@ package app.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.OnDelete;
+
+import static org.hibernate.annotations.OnDeleteAction.CASCADE;
 
 @Entity
 @Data
@@ -14,15 +17,18 @@ public class Guest {
     private long idGuest;
 
     @JoinColumn(name = "user_id")
-    @OneToOne(cascade = CascadeType.ALL)
+    @OnDelete(action = CASCADE)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     private User userIdGuest;
 
     @JoinColumn(name = "partner_id")
+    @OnDelete(action = CASCADE)
     @ManyToOne(cascade = CascadeType.ALL)
     private Partner partnerIdGuest;
 
     @Column(name = "status", nullable = false)
-    private String statusGuest;
+    @Enumerated(EnumType.STRING)
+    private GuestStatus statusGuest;
 
 }
 

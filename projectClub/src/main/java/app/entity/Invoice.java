@@ -2,8 +2,11 @@ package app.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.OnDelete;
 
 import java.time.LocalDateTime;
+
+import static org.hibernate.annotations.OnDeleteAction.CASCADE;
 
 @Entity
 @Data
@@ -16,10 +19,12 @@ public class Invoice {
     private long idInvoice;
 
     @JoinColumn(name = "person_id")
+    @OnDelete(action = CASCADE)
     @ManyToOne(cascade = CascadeType.ALL)
     private Person idPerson;
 
     @JoinColumn(name = "partner_id")
+    @OnDelete(action = CASCADE)
     @ManyToOne(cascade = CascadeType.ALL)
     private Partner idPartner;
 
@@ -30,7 +35,8 @@ public class Invoice {
     private double amountInvoice;
 
     @Column(name = "status", nullable = false)
-    private String statusInvoice;
+    @Enumerated(EnumType.STRING)
+    private InvoiceStatus statusInvoice;
 
     @PrePersist
     protected void onCreate() {

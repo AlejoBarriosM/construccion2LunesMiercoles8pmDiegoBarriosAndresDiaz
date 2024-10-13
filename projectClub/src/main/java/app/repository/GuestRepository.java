@@ -14,11 +14,6 @@ import java.util.List;
 @Repository
 public interface GuestRepository extends JpaRepository<Guest, Long> {
 
-    Guest findByUserIdGuest(User userIdGuest);
     int countGuestByPartnerIdGuest(Partner partner);
-    @Modifying
-    @Query("UPDATE Guest g SET g.statusGuest = :status WHERE g.idGuest = :guest")
-    void updateStatusGuestByIdGuest(@Param("guest") Long guest, @Param("status") String status);
-
     List<Guest> findByPartnerIdGuest_IdPartner(Long id);
 }

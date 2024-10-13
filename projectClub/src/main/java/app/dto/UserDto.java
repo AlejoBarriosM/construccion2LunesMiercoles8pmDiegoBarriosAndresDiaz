@@ -1,9 +1,7 @@
 package app.dto;
 
+import app.entity.Role;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-
 
 @Data
 public class UserDto {
@@ -12,9 +10,7 @@ public class UserDto {
     private PersonDto idPerson;
     private String userName;
     private String passwordUser;
-    private String roleUser;
-
-
+    private Role roleUser;
 
 }
 

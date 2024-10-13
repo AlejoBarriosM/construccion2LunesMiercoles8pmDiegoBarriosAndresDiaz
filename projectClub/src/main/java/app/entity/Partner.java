@@ -3,8 +3,11 @@ package app.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.OnDelete;
 
 import java.time.LocalDateTime;
+
+import static org.hibernate.annotations.OnDeleteAction.CASCADE;
 
 @Entity
 @Data
@@ -17,14 +20,16 @@ public class Partner {
     private long idPartner;
 
     @JoinColumn(name = "user_id")
-    @OneToOne(cascade = CascadeType.ALL)
+    @OnDelete(action = CASCADE)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     private User idUserPartner;
 
     @Column(name = "amount", nullable = false)
     private double amountPartner;
 
     @Column(name = "type", nullable = false)
-    private String typePartner;
+    @Enumerated(EnumType.STRING)
+    private Subscription typePartner;
 
     @Column(name = "creation_date", nullable = false)
     private String creationDatePartner;

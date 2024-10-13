@@ -3,6 +3,9 @@ package app.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.OnDelete;
+
+import static org.hibernate.annotations.OnDeleteAction.CASCADE;
 
 @Entity
 @Data
@@ -15,6 +18,7 @@ public class InvoiceDetail {
     private long idInvoiceDetail;
 
     @JoinColumn(name = "invoice_id")
+    @OnDelete(action = CASCADE)
     @ManyToOne(cascade = CascadeType.ALL)
     private Invoice idInvoice;
 

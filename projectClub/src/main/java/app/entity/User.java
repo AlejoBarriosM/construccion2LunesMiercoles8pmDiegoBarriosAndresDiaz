@@ -2,6 +2,9 @@ package app.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.OnDelete;
+
+import static org.hibernate.annotations.OnDeleteAction.CASCADE;
 
 @Entity
 @Data
@@ -13,7 +16,8 @@ public class User {
     @Column(name = "id")
     private long idUser;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OnDelete(action = CASCADE)
     @JoinColumn(name = "person_id", nullable = false)
     private Person idPerson;
 
@@ -24,6 +28,8 @@ public class User {
     private String passwordUser;
 
     @Column(name = "role", nullable = false)
-    private String roleUser;
+    @Enumerated(EnumType.STRING)
+    private Role roleUser;
 
 }
+

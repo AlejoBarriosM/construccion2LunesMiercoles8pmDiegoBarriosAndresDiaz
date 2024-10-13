@@ -9,12 +9,10 @@ import java.util.Date;
 @Setter
 public class MessageDto {
     private Object result;
-    private int statusCode;
     private Date timestamp;
 
-    public MessageDto(Object result, int statusCode) {
+    public MessageDto(Object result) {
         this.timestamp = new Date();
-        this.statusCode = statusCode;
         this.result = result;
     }
 }

@@ -5,6 +5,7 @@ import app.dto.NewGuestDto;
 import app.dto.UpdateGuestDto;
 import app.service.GuestService;
 import jakarta.persistence.EntityExistsException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,7 +45,7 @@ public class GuestController {
 
     @ExceptionHandler(EntityExistsException.class)
     public ResponseEntity<?> handleEntityExistsException(EntityExistsException ex) {
-        return ResponseEntity.badRequest().body(new MessageDto(ex.getMessage()));
+        return new ResponseEntity<>(new MessageDto(ex.getMessage(), 409, "Conflict"), HttpStatus.CONFLICT);
     }
 
 }

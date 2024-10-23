@@ -42,7 +42,7 @@ public class PartnerController {
 
     @ExceptionHandler(EntityExistsException.class)
     public ResponseEntity<?> handleEntityExistsException(EntityExistsException ex) {
-        return ResponseEntity.badRequest().body(new MessageDto(ex.getMessage()));
+        return ResponseEntity.badRequest().body(new MessageDto(ex.getMessage(), 400, "Bad Request"));
     }
 
 }

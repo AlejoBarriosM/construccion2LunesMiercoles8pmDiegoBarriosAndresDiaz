@@ -1,6 +1,5 @@
 package app.service;
 
-import app.controller.GuestController;
 import app.dto.*;
 import app.dto.mapper.GuestMapper;
 import app.dto.mapper.NewGuestMapper;
@@ -18,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class GuestService {

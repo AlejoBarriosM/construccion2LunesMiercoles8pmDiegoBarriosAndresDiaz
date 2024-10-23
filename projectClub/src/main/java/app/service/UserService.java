@@ -1,16 +1,12 @@
 package app.service;
 
 
-import app.dto.NewUserDto;
-import app.dto.PersonDto;
-import app.dto.UpdateUserDto;
-import app.dto.UserDto;
-import app.dto.mapper.NewPersonMapper;
-import app.dto.mapper.NewUserMapper;
-import app.dto.mapper.UserMapper;
+import app.dto.*;
+import app.dto.mapper.*;
 import app.entity.Person;
-import app.entity.Role;
 import app.entity.User;
+import app.repository.GuestRepository;
+import app.repository.PartnerRepository;
 import app.repository.PersonRepository;
 import app.repository.UserRepository;
 import jakarta.persistence.EntityExistsException;
@@ -21,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class UserService {
@@ -29,12 +24,16 @@ public class UserService {
     private final UserRepository userRepository;
     private final PersonRepository personRepository;
     private final PersonService personService;
+    private final PartnerRepository partnerRepository;
+    private final GuestRepository guestRepository;
 
     @Autowired
-    public UserService(UserRepository userRepository, PersonRepository personRepository, PersonService personService) {
+    public UserService(UserRepository userRepository, PersonRepository personRepository, PersonService personService, PartnerRepository partnerRepository, GuestRepository guestRepository) {
         this.userRepository = userRepository;
         this.personRepository = personRepository;
         this.personService = personService;
+        this.partnerRepository = partnerRepository;
+        this.guestRepository = guestRepository;
     }
 
     public ResponseEntity<?> save(NewUserDto newUserDto) {
@@ -74,7 +73,14 @@ public class UserService {
         if (!userRepository.existsByUserNameAndPasswordUser(userName, password)) {
             throw new EntityNotFoundException("Usuario o contraseña invalida");
         }
-        return ResponseEntity.ok(UserMapper.INSTANCE.toUserDto(userRepository.findByUserName(userName)));
+        User user = userRepository.findByUserName(userName);
+        UserDto userDto = UserMapper.INSTANCE.toUserDto(user);
+        return switch (userDto.getRoleUser()) {
+            case ADMIN -> ResponseEntity.ok().header("Role", "ADMIN").body(userDto);
+            case PARTNER -> ResponseEntity.ok().header("Role", "PARTNER").body(PartnerMapper.INSTANCE.toPartnerDto(partnerRepository.findByidUserPartner(user)));
+            case GUEST -> ResponseEntity.ok().header("Role", "GUEST").body(GuestMapper.INSTANCE.toGuestDto(guestRepository.findByuserIdGuest(user)));
+        };
+
     }
 
     public ResponseEntity<?> updateById(Long id, UpdateUserDto fields) {

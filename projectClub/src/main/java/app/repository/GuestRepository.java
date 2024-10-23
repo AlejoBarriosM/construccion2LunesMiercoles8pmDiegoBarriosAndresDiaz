@@ -16,4 +16,6 @@ public interface GuestRepository extends JpaRepository<Guest, Long> {
 
     int countGuestByPartnerIdGuest(Partner partner);
     List<Guest> findByPartnerIdGuest_IdPartner(Long id);
+
+    Guest findByuserIdGuest(User user);
 }

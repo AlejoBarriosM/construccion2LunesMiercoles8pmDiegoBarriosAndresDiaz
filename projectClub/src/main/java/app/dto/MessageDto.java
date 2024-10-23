@@ -8,11 +8,13 @@ import java.util.Date;
 @Getter
 @Setter
 public class MessageDto {
-    private Object result;
-    private Date timestamp;
+    private Object body;
+    private int statusCodeValue;
+    private String statusCode;
 
-    public MessageDto(Object result) {
-        this.timestamp = new Date();
-        this.result = result;
+    public MessageDto(Object body, int statusCodeValue, String statusCode) {
+        this.body = body;
+        this.statusCodeValue = statusCodeValue;
+        this.statusCode = statusCode;
     }
 }

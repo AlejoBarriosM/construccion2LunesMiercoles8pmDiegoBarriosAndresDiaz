@@ -1,0 +1,555 @@
+{
+	"info": {
+		"_postman_id": "6f8da2ec-c0ef-4161-a0da-36e9b443d21a",
+		"name": "Club",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25043363"
+	},
+	"item": [
+		{
+			"name": "usersAPI",
+			"item": [
+				{
+					"name": "/usersAPI/v1/users (params)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/usersAPI/v1/users",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"usersAPI",
+								"v1",
+								"users"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "username",
+									"value": "admin",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/usersAPI/v1/users",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"idPerson\": {\r\n    \"documentPerson\": 30,\r\n    \"namePerson\": \"ademin\",\r\n    \"cellphonePerson\": 0\r\n  },\r\n  \"userName\": \"ademin\",\r\n  \"passwordUser\": \"ademin123\",\r\n  \"roleUser\": \"ADMIN\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/usersAPI/v1/users",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"usersAPI",
+								"v1",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/usersAPI/v1/users/login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"admin\",\r\n    \"password\": \"admin123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/usersAPI/v1/users/login",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"usersAPI",
+								"v1",
+								"users",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/usersAPI/v1/users/{id}",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/usersAPI/v1/users/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"usersAPI",
+								"v1",
+								"users",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/usersAPI/v1/users/{id}",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"documentPerson\": 0,\r\n    \"namePerson\": \"string\",\r\n    \"cellphonePerson\": 0,\r\n    \"userName\": \"string\",\r\n    \"password\": \"string\",\r\n    \"roleUser\": \"ADMIN\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/usersAPI/v1/users/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"usersAPI",
+								"v1",
+								"users",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "partnersAPI",
+			"item": [
+				{
+					"name": "/partnersAPI/v1/partner (params)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/partnersAPI/v1/partner?id=1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"partnersAPI",
+								"v1",
+								"partner"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Generated from cURL: curl -X 'POST' \\\r\n  'http://localhost:8080/partnerAPI/v1/partner' \\\r\n  -H 'accept: */*' \\\r\n  -H 'Content-Type: application/json' \\\r\n  -d '{\r\n  \"idPartner\": 0,\r\n  \"idUserPartner\": {\r\n    \"idUser\": 0,\r\n    \"idPerson\": {\r\n      \"idPerson\": 0,\r\n      \"documentPerson\": 0,\r\n      \"namePerson\": \"string\",\r\n      \"cellphonePerson\": 0\r\n    },\r\n    \"userName\": \"string\",\r\n    \"passwordUser\": \"string\",\r\n    \"roleUser\": \"string\"\r\n  },\r\n  \"amountPartner\": 0,\r\n  \"typePartner\": \"string\",\r\n  \"creationDatePartner\": \"string\"\r\n}'"
+					},
+					"response": []
+				},
+				{
+					"name": "/partnersAPI/v1/partner",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"idUserPartner\": {\r\n    \"idPerson\": {\r\n      \"documentPerson\": 220,\r\n      \"namePerson\": \"string\",\r\n      \"cellphonePerson\": 0\r\n    },\r\n    \"userName\": \"striny3g\",\r\n    \"passwordUser\": \"string\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/partnersAPI/v1/partner",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"partnersAPI",
+								"v1",
+								"partner"
+							]
+						},
+						"description": "Generated from cURL: curl -X 'POST' \\\r\n  'http://localhost:8080/partnerAPI/v1/partner' \\\r\n  -H 'accept: */*' \\\r\n  -H 'Content-Type: application/json' \\\r\n  -d '{\r\n  \"idPartner\": 0,\r\n  \"idUserPartner\": {\r\n    \"idUser\": 0,\r\n    \"idPerson\": {\r\n      \"idPerson\": 0,\r\n      \"documentPerson\": 0,\r\n      \"namePerson\": \"string\",\r\n      \"cellphonePerson\": 0\r\n    },\r\n    \"userName\": \"string\",\r\n    \"passwordUser\": \"string\",\r\n    \"roleUser\": \"string\"\r\n  },\r\n  \"amountPartner\": 0,\r\n  \"typePartner\": \"string\",\r\n  \"creationDatePartner\": \"string\"\r\n}'"
+					},
+					"response": []
+				},
+				{
+					"name": "/partnersAPI/v1/partner/{id}",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    //\"amount\": 500000.0,\r\n    //\"increase\": true\r\n    //\"typePartner\": \"VIP\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/partnersAPI/v1/partner/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"partnersAPI",
+								"v1",
+								"partner",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "guestAPI",
+			"item": [
+				{
+					"name": "/guestsAPI/v1/guest (params)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/guestsAPI/v1/guest?id=1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"guestsAPI",
+								"v1",
+								"guest"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Generated from cURL: curl -X 'POST' \\\r\n  'http://localhost:8080/partnerAPI/v1/partner' \\\r\n  -H 'accept: */*' \\\r\n  -H 'Content-Type: application/json' \\\r\n  -d '{\r\n  \"idPartner\": 0,\r\n  \"idUserPartner\": {\r\n    \"idUser\": 0,\r\n    \"idPerson\": {\r\n      \"idPerson\": 0,\r\n      \"documentPerson\": 0,\r\n      \"namePerson\": \"string\",\r\n      \"cellphonePerson\": 0\r\n    },\r\n    \"userName\": \"string\",\r\n    \"passwordUser\": \"string\",\r\n    \"roleUser\": \"string\"\r\n  },\r\n  \"amountPartner\": 0,\r\n  \"typePartner\": \"string\",\r\n  \"creationDatePartner\": \"string\"\r\n}'"
+					},
+					"response": []
+				},
+				{
+					"name": "/guestsAPI/v1/guest",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"userIdGuest\": {\r\n    \"idPerson\": {\r\n      \"documentPerson\": 440,\r\n      \"namePerson\": \"string\",\r\n      \"cellphonePerson\": 0\r\n    },\r\n    \"userName\": \"strifgdfng\",\r\n    \"passwordUser\": \"string\"\r\n  },\r\n  \"idPartner\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/guestsAPI/v1/guest",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"guestsAPI",
+								"v1",
+								"guest"
+							]
+						},
+						"description": "Generated from cURL: curl -X 'POST' \\\r\n  'http://localhost:8080/partnerAPI/v1/partner' \\\r\n  -H 'accept: */*' \\\r\n  -H 'Content-Type: application/json' \\\r\n  -d '{\r\n  \"idPartner\": 0,\r\n  \"idUserPartner\": {\r\n    \"idUser\": 0,\r\n    \"idPerson\": {\r\n      \"idPerson\": 0,\r\n      \"documentPerson\": 0,\r\n      \"namePerson\": \"string\",\r\n      \"cellphonePerson\": 0\r\n    },\r\n    \"userName\": \"string\",\r\n    \"passwordUser\": \"string\",\r\n    \"roleUser\": \"string\"\r\n  },\r\n  \"amountPartner\": 0,\r\n  \"typePartner\": \"string\",\r\n  \"creationDatePartner\": \"string\"\r\n}'"
+					},
+					"response": []
+				},
+				{
+					"name": "/guestsAPI/v1/guest/{id}",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"status\": \"ACTIVE\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/guestsAPI/v1/guest/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"guestsAPI",
+								"v1",
+								"guest",
+								"1"
+							]
+						},
+						"description": "Generated from cURL: curl -X 'POST' \\\r\n  'http://localhost:8080/partnerAPI/v1/partner' \\\r\n  -H 'accept: */*' \\\r\n  -H 'Content-Type: application/json' \\\r\n  -d '{\r\n  \"idPartner\": 0,\r\n  \"idUserPartner\": {\r\n    \"idUser\": 0,\r\n    \"idPerson\": {\r\n      \"idPerson\": 0,\r\n      \"documentPerson\": 0,\r\n      \"namePerson\": \"string\",\r\n      \"cellphonePerson\": 0\r\n    },\r\n    \"userName\": \"string\",\r\n    \"passwordUser\": \"string\",\r\n    \"roleUser\": \"string\"\r\n  },\r\n  \"amountPartner\": 0,\r\n  \"typePartner\": \"string\",\r\n  \"creationDatePartner\": \"string\"\r\n}'"
+					},
+					"response": []
+				},
+				{
+					"name": "/guestsAPI/v1/guest/partner/{id}",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/guestsAPI/v1/guest/partner/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"guestsAPI",
+								"v1",
+								"guest",
+								"partner",
+								"1"
+							]
+						},
+						"description": "Generated from cURL: curl -X 'POST' \\\r\n  'http://localhost:8080/partnerAPI/v1/partner' \\\r\n  -H 'accept: */*' \\\r\n  -H 'Content-Type: application/json' \\\r\n  -d '{\r\n  \"idPartner\": 0,\r\n  \"idUserPartner\": {\r\n    \"idUser\": 0,\r\n    \"idPerson\": {\r\n      \"idPerson\": 0,\r\n      \"documentPerson\": 0,\r\n      \"namePerson\": \"string\",\r\n      \"cellphonePerson\": 0\r\n    },\r\n    \"userName\": \"string\",\r\n    \"passwordUser\": \"string\",\r\n    \"roleUser\": \"string\"\r\n  },\r\n  \"amountPartner\": 0,\r\n  \"typePartner\": \"string\",\r\n  \"creationDatePartner\": \"string\"\r\n}'"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "invoicesAPI",
+			"item": [
+				{
+					"name": "/invoicesAPI/v1/invoices",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/invoicesAPI/v1/invoices?id=1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"invoicesAPI",
+								"v1",
+								"invoices"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/invoicesAPI/v1/invoices/partner/{idPartner}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/invoicesAPI/v1/invoices/partner/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"invoicesAPI",
+								"v1",
+								"invoices",
+								"partner",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/invoicesAPI/v1/invoices",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"idPerson\": 1,\r\n  \"idPartner\": 2,\r\n  \"amountInvoice\": 10,\r\n  \"statusInvoice\": \"PAID\",\r\n  \"detailInvoice\": [\r\n    {\r\n      \"item\": 1,\r\n      \"descriptionInvoiceDetail\": \"dad\",\r\n      \"amountInvoiceDetail\": 323\r\n    },\r\n    {\r\n      \"item\": 2,\r\n      \"descriptionInvoiceDetail\": \"rfw\",\r\n      \"amountInvoiceDetail\": 3233\r\n    }\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/invoicesAPI/v1/invoices",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"invoicesAPI",
+								"v1",
+								"invoices"
+							]
+						},
+						"description": "Generated from cURL: curl -X 'POST' \\\r\n  'http://localhost:8080/invoicesAPI/v1/invoices' \\\r\n  -H 'accept: */*' \\\r\n  -H 'Content-Type: application/json' \\\r\n  -d '{\r\n  \"invoice\": {\r\n    \"idInvoice\": 0,\r\n    \"idPerson\": {\r\n      \"idPerson\": 0,\r\n      \"documentPerson\": 0,\r\n      \"namePerson\": \"string\",\r\n      \"cellphonePerson\": 0\r\n    },\r\n    \"idPartner\": {\r\n      \"idPartner\": 0,\r\n      \"idUserPartner\": {\r\n        \"idUser\": 0,\r\n        \"idPerson\": {\r\n          \"idPerson\": 0,\r\n          \"documentPerson\": 0,\r\n          \"namePerson\": \"string\",\r\n          \"cellphonePerson\": 0\r\n        },\r\n        \"userName\": \"string\",\r\n        \"passwordUser\": \"string\",\r\n        \"roleUser\": \"string\"\r\n      },\r\n      \"amountPartner\": 0,\r\n      \"typePartner\": \"string\",\r\n      \"creationDatePartner\": \"string\"\r\n    },\r\n    \"creationDateInvoice\": \"string\",\r\n    \"amountInvoice\": 0,\r\n    \"statusInvoice\": \"string\"\r\n  },\r\n  \"detailInvoice\": [\r\n    {\r\n      \"idInvoiceDetail\": 0,\r\n      \"idInvoice\": {\r\n        \"idInvoice\": 0,\r\n        \"idPerson\": {\r\n          \"idPerson\": 0,\r\n          \"documentPerson\": 0,\r\n          \"namePerson\": \"string\",\r\n          \"cellphonePerson\": 0\r\n        },\r\n        \"idPartner\": {\r\n          \"idPartner\": 0,\r\n          \"idUserPartner\": {\r\n            \"idUser\": 0,\r\n            \"idPerson\": {\r\n              \"idPerson\": 0,\r\n              \"documentPerson\": 0,\r\n              \"namePerson\": \"string\",\r\n              \"cellphonePerson\": 0\r\n            },\r\n            \"userName\": \"string\",\r\n            \"passwordUser\": \"string\",\r\n            \"roleUser\": \"string\"\r\n          },\r\n          \"amountPartner\": 0,\r\n          \"typePartner\": \"string\",\r\n          \"creationDatePartner\": \"string\"\r\n        },\r\n        \"creationDateInvoice\": \"string\",\r\n        \"amountInvoice\": 0,\r\n        \"statusInvoice\": \"string\"\r\n      },\r\n      \"item\": 0,\r\n      \"descriptionInvoiceDetail\": \"string\",\r\n      \"amountInvoiceDetail\": 0\r\n    }\r\n  ]\r\n}'"
+					},
+					"response": []
+				},
+				{
+					"name": "/invoicesAPI/v1/invoices/{id}",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"status\": \"PENDING\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/invoicesAPI/v1/invoices/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"invoicesAPI",
+								"v1",
+								"invoices",
+								"1"
+							]
+						},
+						"description": "Generated from cURL: curl -X 'POST' \\\r\n  'http://localhost:8080/invoicesAPI/v1/invoices' \\\r\n  -H 'accept: */*' \\\r\n  -H 'Content-Type: application/json' \\\r\n  -d '{\r\n  \"invoice\": {\r\n    \"idInvoice\": 0,\r\n    \"idPerson\": {\r\n      \"idPerson\": 0,\r\n      \"documentPerson\": 0,\r\n      \"namePerson\": \"string\",\r\n      \"cellphonePerson\": 0\r\n    },\r\n    \"idPartner\": {\r\n      \"idPartner\": 0,\r\n      \"idUserPartner\": {\r\n        \"idUser\": 0,\r\n        \"idPerson\": {\r\n          \"idPerson\": 0,\r\n          \"documentPerson\": 0,\r\n          \"namePerson\": \"string\",\r\n          \"cellphonePerson\": 0\r\n        },\r\n        \"userName\": \"string\",\r\n        \"passwordUser\": \"string\",\r\n        \"roleUser\": \"string\"\r\n      },\r\n      \"amountPartner\": 0,\r\n      \"typePartner\": \"string\",\r\n      \"creationDatePartner\": \"string\"\r\n    },\r\n    \"creationDateInvoice\": \"string\",\r\n    \"amountInvoice\": 0,\r\n    \"statusInvoice\": \"string\"\r\n  },\r\n  \"detailInvoice\": [\r\n    {\r\n      \"idInvoiceDetail\": 0,\r\n      \"idInvoice\": {\r\n        \"idInvoice\": 0,\r\n        \"idPerson\": {\r\n          \"idPerson\": 0,\r\n          \"documentPerson\": 0,\r\n          \"namePerson\": \"string\",\r\n          \"cellphonePerson\": 0\r\n        },\r\n        \"idPartner\": {\r\n          \"idPartner\": 0,\r\n          \"idUserPartner\": {\r\n            \"idUser\": 0,\r\n            \"idPerson\": {\r\n              \"idPerson\": 0,\r\n              \"documentPerson\": 0,\r\n              \"namePerson\": \"string\",\r\n              \"cellphonePerson\": 0\r\n            },\r\n            \"userName\": \"string\",\r\n            \"passwordUser\": \"string\",\r\n            \"roleUser\": \"string\"\r\n          },\r\n          \"amountPartner\": 0,\r\n          \"typePartner\": \"string\",\r\n          \"creationDatePartner\": \"string\"\r\n        },\r\n        \"creationDateInvoice\": \"string\",\r\n        \"amountInvoice\": 0,\r\n        \"statusInvoice\": \"string\"\r\n      },\r\n      \"item\": 0,\r\n      \"descriptionInvoiceDetail\": \"string\",\r\n      \"amountInvoiceDetail\": 0\r\n    }\r\n  ]\r\n}'"
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "host",
+			"value": "http://localhost:8080",
+			"type": "string"
+		}
+	]
+}

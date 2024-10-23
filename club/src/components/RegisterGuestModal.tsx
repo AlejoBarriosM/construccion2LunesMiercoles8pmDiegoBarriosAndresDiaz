@@ -100,7 +100,7 @@ export function RegisterGuestModal({ isOpen, onClose, onRegister }: RegisterGues
             } else {
                 throw new Error(response.body.toString());
             }
-        } catch (error){
+        } catch (error) {
             let errorMessage = "Ocurrió un error al registrar el invitado.";
 
             if (error instanceof Error) {

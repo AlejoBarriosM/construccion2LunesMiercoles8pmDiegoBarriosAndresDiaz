@@ -124,6 +124,8 @@ export default function Invoices() {
         return sortDirection === 'asc' ? <ChevronUp className="ml-2 h-4 w-4" /> : <ChevronDown className="ml-2 h-4 w-4" />
     }
 
+
+
     function handleRegisterInvoice() {
         if (session?.user?.roleUser === 'ADMIN') {
             return null

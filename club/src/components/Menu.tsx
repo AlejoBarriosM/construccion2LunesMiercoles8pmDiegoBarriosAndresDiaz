@@ -4,7 +4,8 @@ import React, { useState } from 'react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { ThemeToggle } from '@/components/ThemeToggle'
-import { UserCircle, Users, CreditCard, ClipboardList, Settings, LogOut } from 'lucide-react'
+import { UserCircle, Users, CreditCard, ClipboardList, HandCoins , LogOut } from 'lucide-react'
+import useSession from '@/hooks/useSession'
 
 type UserRole = 'ADMIN' | 'PARTNER' | 'GUEST'
 
@@ -15,24 +16,25 @@ interface MenuItem {
     onClick?: () => void;
 }
 
-const createMenuItems = (onEditProfile: () => void, onLogout: () => void): Record<UserRole, MenuItem[]> => ({
+const createMenuItems = (onUpdateBalance: () => void,  onChangeVIP: () => void,onEditProfile: () => void, onLogout: () => void, isVIP: boolean): Record<UserRole, MenuItem[]> => ({
     ADMIN: [
         { name: 'Registrar Socios', href: '/partners', icon: UserCircle },
         { name: 'Historial de Facturas', href: '/invoices', icon: ClipboardList },
-        { name: 'Promoción a VIP', href: '/vip-promotion', icon: Users },
-        { name: 'Configuración', href: '/settings', icon: Settings },
+        { name: 'Promoción a VIP', href: '/subscriptions', icon: Users },
+        //{ name: 'Configuración', href: '/settings', icon: Settings },
         //{ name: 'Editar Perfil', icon: UserCircle, onClick: onEditProfile },
         { name: 'Cerrar Sesión', icon: LogOut, onClick: onLogout },
     ],
     PARTNER: [
         { name: 'Mis Invitados', href: '/guests', icon: Users },
         { name: 'Mis Facturas', href: '/invoices', icon: CreditCard },
-        { name: 'Solicitar VIP', href: '/request-vip', icon: Users },
-        //{ name: 'Editar Perfil', icon: UserCircle, onClick: onEditProfile },
+        ...(!isVIP ? [{ name: 'Solicitar VIP', onClick: onChangeVIP, icon: Users }] : []),
+        { name: 'Aumentar Saldo', icon: HandCoins, onClick: onUpdateBalance },
         { name: 'Cerrar Sesión', icon: LogOut, onClick: onLogout },
     ],
     GUEST: [
-        { name: 'Mis Consumos', href: '/my-consumptions', icon: CreditCard },
+        { name: 'Mis Consumos', href: '/invoices', icon: CreditCard },
+        { name: 'Cambiar Suscripción', href: '/request-vip', icon: Users },
        // { name: 'Editar Perfil', icon: UserCircle, onClick: onEditProfile },
         { name: 'Cerrar Sesión', icon: LogOut, onClick: onLogout },
     ],
@@ -41,12 +43,16 @@ const createMenuItems = (onEditProfile: () => void, onLogout: () => void): Recor
 interface MenuProps {
     userRole: UserRole;
     onEditProfile: () => void;
+    onChangeVIP: () => void;
     onLogout: () => void;
+    onUpdateBalance: () => void;
 }
 
-export function Menu({ userRole, onEditProfile, onLogout }: MenuProps) {
+export function Menu({onUpdateBalance, onChangeVIP, userRole, onEditProfile, onLogout }: MenuProps) {
+    const {session} = useSession() ?? {}
     const [isOpen, setIsOpen] = useState(false)
-    const menuItems = createMenuItems(onEditProfile, onLogout)[userRole]
+    const isVIP = session?.partner?.typePartner === 'VIP'
+    const menuItems = createMenuItems(onUpdateBalance, onChangeVIP, onEditProfile, onLogout, isVIP)[userRole]
 
     const renderMenuItem = (item: MenuItem) => {
         const className = "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium flex items-center"

@@ -33,6 +33,12 @@ interface RegisterPartnerModalProps {
     onRegister: () => Promise<void>;
 }
 
+interface ApiResponse {
+    body: unknown | string;
+    statusCodeValue: number;
+    statusCode: string;
+}
+
 export function RegisterPartnerModal({ isOpen, onClose, onRegister }: RegisterPartnerModalProps) {
     const [partnerData, setPartnerData] = useState<RegisterPartnerData>({
         idUserPartner: {
@@ -46,7 +52,7 @@ export function RegisterPartnerModal({ isOpen, onClose, onRegister }: RegisterPa
         }
     })
     const { toast } = useToast()
-    const { request, loading } = useApi()
+    const { request, loading } = useApi<ApiResponse>()
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
@@ -85,14 +91,22 @@ export function RegisterPartnerModal({ isOpen, onClose, onRegister }: RegisterPa
                     }
                 })
             } else {
-                throw new Error("La respuesta no fue exitosa")
+                throw new Error(response.body.toString());
             }
-        } catch {
+        } catch (error){
+            let errorMessage = "Ocurrió un error al registrar el socio.";
+
+            if (error instanceof Error) {
+                errorMessage = error.message;
+            } else if (typeof error === 'object' && error !== null && 'body' in error) {
+                errorMessage = (error as { body: string }).body;
+            }
+
             toast({
                 title: "Error",
-                description: "Hubo un problema al registrar al socio. Por favor, intenta de nuevo.",
+                description: errorMessage,
                 variant: "destructive",
-            })
+            });
         }
     }
 

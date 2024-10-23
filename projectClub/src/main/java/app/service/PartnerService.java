@@ -68,6 +68,15 @@ public class PartnerService {
         return ResponseEntity.ok(partnerDtos);
     }
 
+    public ResponseEntity<?> findByTypePartner(Subscription typePartner) {
+        List<Partner> partners = partnerRepository.findByTypePartner(typePartner);
+        List<PartnerDto> partnerDtos = new ArrayList<>();
+        for (Partner partner : partners) {
+            partnerDtos.add(PartnerMapper.INSTANCE.toPartnerDto(partner));
+        }
+        return ResponseEntity.ok(partnerDtos);
+    }
+
     public ResponseEntity<?> updateById(Long id, UpdatePartnerDto fields) {
 
         if (!partnerRepository.existsById(id)) throw new EntityExistsException("El socio no existe");
@@ -95,7 +104,7 @@ public class PartnerService {
     }
 
     private static Boolean maxAmount(Partner partner, Double amount) {
-        return (partner.getTypePartner() == Subscription.VIP && amount < 5000000.0) || (partner.getTypePartner() == Subscription.REGULAR && amount < 1000000.0);
+        return (partner.getTypePartner() == Subscription.VIP && amount < 5000000.0) || ((partner.getTypePartner() == Subscription.REGULAR || partner.getTypePartner() == Subscription.PENDIENTE) && amount < 1000000.0);
     }
 
     private static void updateAmount(UpdatePartnerDto fields, Partner partner, Double amount) {

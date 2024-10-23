@@ -20,7 +20,7 @@ function useApi<T>() {
         loading: false,
     });
 
-    const request = useCallback(async (method: "get" | "post" | "put" | "delete", url: string, data?: any) => {
+    const request = useCallback(async (method: "get" | "post" | "put" | "delete" | "patch", url: string, data?: any) => {
         setState({ data: null, error: null, loading: true });
 
         try {

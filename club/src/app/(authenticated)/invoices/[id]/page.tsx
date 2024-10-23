@@ -146,6 +146,10 @@ export default function InvoiceDetail() {
         }
     }
 
+    const handlePrint = () => {
+        window.print();
+    }
+
     if (apiLoading) {
         return <div className="flex justify-center items-center h-screen">Cargando detalles de la factura...</div>
     }
@@ -239,7 +243,7 @@ export default function InvoiceDetail() {
                             <Button onClick={handleSaveInvoice}>Guardar Factura</Button>
                         )}
                         {id !== 'new' && (
-                            <Button className="w-full">Imprimir Factura</Button>
+                            <Button className="w-full" onClick={handlePrint}>Imprimir Factura</Button>
                         )}
                     </CardFooter>
                 </Card>

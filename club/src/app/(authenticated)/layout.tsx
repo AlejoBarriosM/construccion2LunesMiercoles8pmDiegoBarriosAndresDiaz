@@ -7,11 +7,15 @@ import useSession from '@/hooks/useSession'
 import {ThemeProvider} from "next-themes";
 import {ProfileEditModal} from "@/components/ProfileEditModal";
 import { Toaster } from "@/components/ui/toaster";
+import { VipConfirmationModal } from '@/components/VipConfirmationModal'
+import { IncreaseBalanceModal } from '@/components/IncreaseBalanceModal'
 
 export default function AuthenticatedLayout({ children }: { children: React.ReactNode }) {
     const router = useRouter()
     const { session, clearSession, loading } = useSession()
+    const [isVipModalOpen, setIsVipModalOpen] = useState(false)
     const [isProfileModalOpen, setIsProfileModalOpen] = useState(false)
+    const [isIncreaseBalanceModalOpen, setIsIncreaseBalanceModalOpen] = useState(false)
 
     useEffect(() => {
         if (!loading && !session) {
@@ -42,11 +46,21 @@ export default function AuthenticatedLayout({ children }: { children: React.Reac
             <Menu
                 userRole={session.user.roleUser as 'ADMIN' | 'PARTNER' | 'GUEST'}
                 onEditProfile={() => setIsProfileModalOpen(true)}
+                onChangeVIP={() => setIsVipModalOpen(true)}
+                onUpdateBalance={() => setIsIncreaseBalanceModalOpen(true)}
                 onLogout={handleLogout}
             />
             <main className="container mx-auto px-4 py-8">
                 {React.cloneElement(children as React.ReactElement, { session })}
             </main>
+            <VipConfirmationModal
+                isOpen={isVipModalOpen}
+                onClose={() => setIsVipModalOpen(false)}
+            />
+            <IncreaseBalanceModal
+                isOpen={isIncreaseBalanceModalOpen}
+                onClose={() => setIsIncreaseBalanceModalOpen(false)}
+            />
             <ProfileEditModal
                 user={{
                     id: session.user.idUser,

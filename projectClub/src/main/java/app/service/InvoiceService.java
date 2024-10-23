@@ -66,6 +66,7 @@ public class InvoiceService {
     public ResponseEntity<?> findById(Long id) {
         Invoice invoice = invoiceRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Factura no encontrada"));
         InvoiceDto invoiceDto = InvoiceMapper.INSTANCE.toInvoiceDto(invoice);
+        invoiceDto.setDetailsInvoice(InvoiceDetailMapper.INSTANCE.toInvoiceDetailDtoList(invoiceDetailRepository.findAllByIdInvoice(invoice)));
         return ResponseEntity.ok(invoiceDto);
     }
 
@@ -83,7 +84,7 @@ public class InvoiceService {
 
     @ExceptionHandler(EntityExistsException.class)
     public ResponseEntity<?> handleEntityExistsException(EntityExistsException ex) {
-        return ResponseEntity.badRequest().body(new MessageDto(ex.getMessage()));
+        return ResponseEntity.badRequest().body(new MessageDto(ex.getMessage(), 400, "Bad Request"));
     }
 
 }

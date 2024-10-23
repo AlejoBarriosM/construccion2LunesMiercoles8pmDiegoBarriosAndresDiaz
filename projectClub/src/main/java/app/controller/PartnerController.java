@@ -4,6 +4,7 @@ import app.dto.MessageDto;
 import app.dto.NewPartnerDto;
 import app.dto.PartnerDto;
 import app.dto.UpdatePartnerDto;
+import app.entity.Subscription;
 import app.service.PartnerService;
 import jakarta.persistence.EntityExistsException;
 import org.springframework.http.HttpStatus;
@@ -28,9 +29,12 @@ public class PartnerController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getPartner(@RequestParam(required = false) Long id) {
+    public ResponseEntity<?> getPartner(@RequestParam(required = false) Long id, @RequestParam(required = false) Subscription typePartner) {
         if (id != null) {
             return ResponseEntity.ok(partnerService.findById(id));
+        }
+        if (typePartner != null) {
+            return ResponseEntity.ok(partnerService.findByTypePartner(typePartner));
         }
         return ResponseEntity.ok(partnerService.findAll());
     }
@@ -42,7 +46,12 @@ public class PartnerController {
 
     @ExceptionHandler(EntityExistsException.class)
     public ResponseEntity<?> handleEntityExistsException(EntityExistsException ex) {
-        return ResponseEntity.badRequest().body(new MessageDto(ex.getMessage()));
+        return ResponseEntity.badRequest().body(new MessageDto(ex.getMessage(), 400, "Bad Request"));
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<?> handleIllegalArgumentException(IllegalArgumentException ex) {
+        return ResponseEntity.badRequest().body(new MessageDto(ex.getMessage(), 400, "Bad Request"));
     }
 
 }

@@ -2,9 +2,11 @@ package app.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
 import org.hibernate.annotations.OnDelete;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.hibernate.annotations.OnDeleteAction.CASCADE;
 
@@ -37,6 +39,10 @@ public class Invoice {
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
     private InvoiceStatus statusInvoice;
+
+    @OneToMany(mappedBy = "idInvoice", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @ToString.Exclude
+    private List<InvoiceDetail> invoiceDetails;
 
     @PrePersist
     protected void onCreate() {
